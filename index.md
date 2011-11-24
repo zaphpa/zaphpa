@@ -5,9 +5,11 @@ title: Zaphpa Library
 
 # What is Zaphpa?
 
+Zaphpa is a colleague of <a href="http://www.sinatrarb.com/">Sinatra</a>, wearing a PHPeather hat.
+
 Zaphpa is a swiss-army tool for developing RESTful HTTP APIs in PHP. It's a lightweight library that has a single purpose: free API developers from the boilerplate of handling HTTP requests and implementing REST. 
 
-You can think of it as an equivalent of Sinatra (Ruby) or Express.js (Javascript) for PHP, if you will.
+You can think of it as an equivalent of Sinatra (Ruby) or Express.js (Javascript) frameworks for PHP, if you will.
 
 # Quick Introduction
 
