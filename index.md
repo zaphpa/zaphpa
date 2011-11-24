@@ -35,14 +35,14 @@ RewriteRule ^ /your_www_root/api.php [NC,NS,L]
 For a very simple case of getting specific user object, the code of api.php would look something like:
 
 <pre>
-require_once(dirname(__FILE__) . '/zaphpa/uroute.lib.php');
+require_once(dirname(__FILE__) . '/zaphpa/zaphpa.lib.php');
 
-$router = new URoute_Router();
+$router = new Zaphpa_Router();
 
 $router->addRoute(array(
 	  'path'     => '/users/{id}',
 	  'handlers' => array(
-	    'id'         => URoute_Constants::PATTERN_DIGIT, //regex
+	    'id'         => Zaphpa_Constants::PATTERN_DIGIT, //regex
 	  ),
 	  'get'      => array('MyController', 'getPage'),
 	)
@@ -56,7 +56,7 @@ In this example, {id} is a URI parameter, so `MyController->getPage()` function 
 * http://example.com/users/32424
 * http://example.com/users/23
 
-However, we asked the library to ascertain that the {id} parameter is a number by attaching a validating handler: "URoute_Constants::PATTERN_DIGIT" to it. As such, following URL will not be handed over to the `MyController->getPage()` callback:
+However, we asked the library to ascertain that the {id} parameter is a number by attaching a validating handler: "Zaphpa_Constants::PATTERN_DIGIT" to it. As such, following URL will not be handed over to the `MyController->getPage()` callback:
 
 * http://example.com/users/ertla
 * http://example.com/users/asda32424
@@ -107,16 +107,14 @@ When invoked callbacks get two arguments:
 # A More Advanced Router Example
 
 <pre>
-require_once(dirname(__FILE__) .'/../uroute.lib.php');
-
-$router = new URoute_Router();
+$router = new Zaphpa_Router();
 
 $router->addRoute(array(
       'path'     => '/pages/{id}/{categories}/{name}/{year}',
       'handlers' => array(
-        'id'         => URoute_Constants::PATTERN_DIGIT, //regex
-        'categories' => URoute_Constants::PATTERN_ARGS,  //regex
-        'name'       => URoute_Constants::PATTERN_ANY,   //regex
+        'id'         => Zaphpa_Constants::PATTERN_DIGIT, //regex
+        'categories' => Zaphpa_Constants::PATTERN_ARGS,  //regex
+        'name'       => Zaphpa_Constants::PATTERN_ANY,   //regex
         'year'       => 'handle_year',       //callback function
       ),
       'get'      => array('MyController', 'getPage'),
@@ -145,7 +143,7 @@ One way you can do this is to fully declare all four routes. But that would mean
 $router->addRoute(array(
       'path'     => '/books/{id}',
       'handlers' => array(
-        'id'         => URoute_Constants::PATTERN_DIGIT, 
+        'id'         => Zaphpa_Constants::PATTERN_DIGIT, 
       ),
       'get'      => array('MyController', 'getBook'),
       'post'     => array('MyController', 'createBook'),
