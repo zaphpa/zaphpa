@@ -1,21 +1,21 @@
 <?php
 
 /** Invalid path exception **/
-class URoute_InvalidPathException extends Exception {}
+class Zaphpa_InvalidPathException extends Exception {}
 /** File not found exception **/
-class URoute_CallbackFileNotFoundException extends Exception {}
+class Zaphpa_CallbackFileNotFoundException extends Exception {}
 /** Invalid callback exception **/
-class URoute_InvalidCallbackException extends Exception {}
+class Zaphpa_InvalidCallbackException extends Exception {}
 /** Invalid URI Parameter exception **/
-class URoute_InvalidURIParameterException extends Exception {}
+class Zaphpa_InvalidURIParameterException extends Exception {}
 /** Invalid HTTP Response Code exception **/
-class URoute_InvalidResponseCodeException extends Exception {}
+class Zaphpa_InvalidResponseCodeException extends Exception {}
 
 
 /**
 * Handy regexp patterns for common types of URI parameters.
 */
-final class URoute_Constants {
+final class Zaphpa_Constants {
   const PATTERN_ARGS       = '?(?P<%s>(?:/.+)+)';
   const PATTERN_ARGS_ALPHA = '?(?P<%s>(?:/[-\w]+)+)';
   const PATTERN_WILD_CARD  = '(?P<%s>.*)';
@@ -32,7 +32,7 @@ final class URoute_Constants {
 /**
 * Callback class for route-processing.
 */
-class URoute_Callback_Util {
+class Zaphpa_Callback_Util {
   
   private static function loadFile($file) {
     if (file_exists($file)) {
@@ -40,7 +40,7 @@ class URoute_Callback_Util {
         include($file);
       }
     } else {
-      throw new URoute_CallbackFileNotFoundException('Controller file not found');
+      throw new Zaphpa_CallbackFileNotFoundException('Controller file not found');
     }
   }
   
@@ -72,7 +72,7 @@ class URoute_Callback_Util {
         return $callback;
       }
 
-      throw new URoute_InvalidCallbackException("Invalid callback");
+      throw new Zaphpa_InvalidCallbackException("Invalid callback");
       
     } catch (Exception $ex) {
       throw $ex;
@@ -82,7 +82,7 @@ class URoute_Callback_Util {
   
 }
 
-class URoute_Template {
+class Zaphpa_Template {
   
   private static $globalQueryParams = array();
   
@@ -171,12 +171,12 @@ class URoute_Template {
           } else {
             
             if (isset($this->callbacks[$k])) {              
-              $callback = URoute_Callback::getCallback($this->callbacks[$k]);
+              $callback = Zaphpa_Callback::getCallback($this->callbacks[$k]);
               $value    = call_user_func($callback, $v);
               if ($value) {
                 $matches[$k] = $value;
               } else {
-                throw new URoute_InvalidURIParameterException('Ivalid parameters detected');
+                throw new Zaphpa_InvalidURIParameterException('Ivalid parameters detected');
               }
             }
             
@@ -236,7 +236,7 @@ class URoute_Template {
 /**
 * Response class
 */
-class URoute_Response {
+class Zaphpa_Response {
 
   /** Ordered chunks of the output buffer **/
   public $chunks = array();
@@ -284,7 +284,7 @@ class URoute_Response {
       $protocol = $this->req->protocol;
       header("$protocol $code $resp_text");
     } else {
-      throw new URoute_InvalidResponseCodeException("Invalid Response Code: " . $code);
+      throw new Zaphpa_InvalidResponseCodeException("Invalid Response Code: " . $code);
     }
     
     // If no format was set explicitely, use the request format for response.
@@ -356,13 +356,13 @@ class URoute_Response {
     );
   }
   
-} // end URoute_Request
+} // end Zaphpa_Request
 
 
 /**
 * HTTP Request class
 */
-class URoute_Request {
+class Zaphpa_Request {
   public $params;
   public $data;
   public $format;
@@ -460,10 +460,10 @@ class URoute_Request {
   private function common_format_parsing() {
   }
     
-} // end URoute_Request
+} // end Zaphpa_Request
 
 
-class URoute_Router {
+class Zaphpa_Router {
   
   protected $routes  = array();
   protected static $methods = array('get', 'post', 'put', 'delete', 'head', 'options');
@@ -475,7 +475,7 @@ class URoute_Router {
     
     if (!empty($params['path'])) {
       
-      $template = new URoute_Template($params['path']);
+      $template = new Zaphpa_Template($params['path']);
       
       if (!empty($params['handlers'])) {
         foreach ($params['handlers'] as $key => $pattern) {
@@ -523,12 +523,12 @@ class URoute_Router {
         $params = $route['template']->match($uri);
   
         if (!is_null($params)) {
-          $callback = URoute_Callback_Util::getCallback($route['callback'], $route['file']);
+          $callback = Zaphpa_Callback_Util::getCallback($route['callback'], $route['file']);
           return $this->invoke_callback($callback, $params);
         }        
       }
       
-      throw new URoute_InvalidPathException('Invalid path');
+      throw new Zaphpa_InvalidPathException('Invalid path');
       
     } catch (Exception $ex) {
       throw $ex;
@@ -541,14 +541,14 @@ class URoute_Router {
   * invokation logic, without having to copy/paste rest of the logic in the route() function.
   */
   protected function invoke_callback($callback, $params) {
-    $req = new URoute_Request();
+    $req = new Zaphpa_Request();
     $req->params = $params;         
-    $res = new URoute_Response($req);
+    $res = new Zaphpa_Response($req);
     
     return call_user_func($callback, $req, $res);    
   }
   
 
   
-} // end URoute_Router
+} // end Zaphpa_Router
 

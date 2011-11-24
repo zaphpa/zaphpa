@@ -1,6 +1,6 @@
 ## Maintainers
 
-Following are the major contributors to URoute library:
+Following are the major contributors to Zaphpa library:
 
   * Ioseb Dzmanashvili - Creator. ([ioseb](http://github.com/ioseb))
   * Irakli Nadareishvili ([inadarei](http://github.com/inadarei))
