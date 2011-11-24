@@ -1,11 +1,11 @@
 ---
 layout: default
-title: URoute Library
+title: Zaphpa Library
 ---
 
-# What is URoute?
+# What is Zaphpa?
 
-URoute is a swiss-army tool for developing RESTful HTTP APIs in PHP. It's a lightweight library that has a single purpose: free API developers from the boilerplate of handling HTTP requests and implementing REST. 
+Zaphpa is a swiss-army tool for developing RESTful HTTP APIs in PHP. It's a lightweight library that has a single purpose: free API developers from the boilerplate of handling HTTP requests and implementing REST. 
 
 You can think of it as an equivalent of Sinatra (Ruby) or Express.js (Javascript) for PHP, if you will.
 
@@ -13,11 +13,11 @@ You can think of it as an equivalent of Sinatra (Ruby) or Express.js (Javascript
 
 To start serving RESTful HTTP requests, you need to go through three simple steps:
 
-1. Setup URoute Library
+1. Setup Zaphpa Library
 1. Instantiate and configure a router object
 1. Write callbacks/controllers.
 
-## Setting Up URoute Library
+## Setting Up Zaphpa Library
 
 You need to register a PHP script to handle all HTTP requests. For Apache it would look something like the following: 
 
@@ -35,7 +35,7 @@ RewriteRule ^ /your_www_root/api.php [NC,NS,L]
 For a very simple case of getting specific user object, the code of api.php would look something like:
 
 <pre>
-require_once(dirname(__FILE__) . '/URoute/uroute.lib.php');
+require_once(dirname(__FILE__) . '/zaphpa/uroute.lib.php');
 
 $router = new URoute_Router();
 
@@ -102,7 +102,7 @@ When invoked callbacks get two arguments:
 
 # Convenience Functions
 
-1. $req->get_var('varname') - since $req object populates $data object, you can access request variables (request parameters or HTTP Body data, depending on the type of request) through the array directly. However due to malformed clients or some other application logic, variable may not be set, causing PHP to throw a warning. Instead of having you check each call to $req->data['varname'] on being empty URoute provides a convenience method: $req->get_var('varanme').
+1. $req->get_var('varname') - since $req object populates $data object, you can access request variables (request parameters or HTTP Body data, depending on the type of request) through the array directly. However due to malformed clients or some other application logic, variable may not be set, causing PHP to throw a warning. Instead of having you check each call to $req->data['varname'] on being empty Zaphpa provides a convenience method: $req->get_var('varanme').
 
 # A More Advanced Router Example
 
