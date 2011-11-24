@@ -2,12 +2,12 @@
 
 Following are the major contributors to URoute library:
 
-  * Ioseb Dzmanashvili ([ioseb](http://github.com/ioseb))
+  * Ioseb Dzmanashvili - Creator. ([ioseb](http://github.com/ioseb))
   * Irakli Nadareishvili ([inadarei](http://github.com/inadarei))
 
 ## Documentation
 
-http://ioseb.github.com/URoute/
+http://zaphpa.github.com/zaphpa/
 
 
 ## License 
