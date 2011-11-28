@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /URoute/samples
+RewriteBase /zaphpa/samples
 
 RewriteRule "(^|/)\." - [F]
 RewriteCond %{REQUEST_FILENAME} !-f
