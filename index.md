@@ -34,6 +34,8 @@ RewriteCond %{REQUEST_URI} !=/favicon.ico
 RewriteRule ^ /your_www_root/api.php [NC,NS,L]
 </pre>
 
+Please note that this configuration is for a httpd.conf, if you are putting it into an .htaccess file, you may want to remove the leading %{DOCUMENT_ROOT} in the corresponding RewriteConds.
+
 ## Instantiating And Configuring A Router
 
 For a very simple case of getting specific user object, the code of api.php would look something like:
