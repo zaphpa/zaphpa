@@ -28,8 +28,8 @@ You need to register a PHP script to handle all HTTP requests. For Apache it wou
 <pre>
 RewriteEngine On
 RewriteRule "(^|/)\." - [F]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !=/favicon.ico
 RewriteRule ^ /your_www_root/api.php [NC,NS,L]
 </pre>
