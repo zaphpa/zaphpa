@@ -1,86 +1,56 @@
 html {
-    margin: 0;
-    padding: 0;
     font-family: Helvetica;
-    font-size: 14px;
-    line-height: 150%;
     color: #777;
-    background: #D9DFE4;
 }
 
-div.site {
-  margin: 0 auto;
-  padding: 10px;
-  width: 90%;
-  max-width: 990px;
-}
-
-div#content {
-  float: right;
-  width: 80%;
-  padding: 10px;
+#content {
   background: white;
-  border: 1px solid gray;
 }
 
-div#column {
-  font-size: 0.9em;
-  float: right;
-  width: 15%;
-  padding: 5px 10px;
-  background-color: #efefef;
-  border-top-left-radius: 5% 5%;
-  -moz-border-top-left-radius: 5% 5%;
-  -webkit-border-top-left-radius: 5% 5%;
-  border-bottom-left-radius: 5% 5%;
-  -moz-border-bottom-left-radius: 5% 5%;
-  -webkit-border-bottom-left-radius: 5% 5%;
+#column {
+  background: #f2f2f2 url("../img/bordershadow.png") top right repeat-y;
 }
 
-div#column a {
+#column a {
   display: block;
-  color: blue;
+  color: #2E87DD;
+  text-decoration: none;
+  margin-bottom: .5em;
+}
+
+#column a:hover {
   text-decoration: underline;
-  margin-bottom: 6px;
 }
-
-h1, h2, h3, h4, h5, h6 {
-  color: black;
-}
-
 
 code, pre, tt, textarea {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+
 pre {
-  font-size: 12px; /** 12/14 **/
-  padding: 2px 0 2px 12px;
+  padding: 1em 0 .5em .8em;
   border-left: 6px solid #D8D8ED;
   background-color: #F8F8FF;
-  margin: 0px 0 30px;
+  margin: .5em 0 2em 0;
 }
 code, pre, tt {
   font-family: Monaco, Consolas, "Lucida Console", monospace;
-  font-size: 12px;
-  line-height: 18px;
+  font-size: 0.85em;
   color: #5F5529;
 }
 
-
-
-div#column ul {
+#column ul {
     list-style: none;
 	margin: 0;
 	padding: 0!important;
 }
-div#column ul {
+#column ul {
 	margin: 0;
 }
-div#column ul li ul {
+#column ul li ul {
     margin-bottom: 0.75em;
 }
-div#column ul li ul li ul {
+#column ul li ul li ul {
     margin-bottom: 0.25em;
 }
 
