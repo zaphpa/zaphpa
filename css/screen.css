@@ -1,5 +1,8 @@
+@import url(http://fonts.googleapis.com/css?family=Questrial);
+@import url(http://fonts.googleapis.com/css?family=Noticia+Text);
+
 html {
-    font-family: Helvetica;
+    font-family: 'Noticia Text', serif;
     color: #777;
 }
 
@@ -7,8 +10,10 @@ html {
   background: white;
 }
 
-#column {
+section#column {
   background: #f2f2f2 url("../img/bordershadow.png") top right repeat-y;
+  font-family: 'Questrial', sans-serif;
+  font-size: .8em;
 }
 
 #column a {
@@ -35,7 +40,8 @@ pre {
 }
 code, pre, tt {
   font-family: Monaco, Consolas, "Lucida Console", monospace;
-  font-size: 0.85em;
+  font-size: 0.70em;
+  line-height: 1.5em;
   color: #5F5529;
 }
 

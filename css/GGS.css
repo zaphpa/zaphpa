@@ -212,6 +212,8 @@ header, #main {
   padding-right: 10px;
 }
 h1,h2,h3,h4,h5 {color: black;}
+p {margin-bottom: 1.5em;}
+li {margin-bottom: 1em; }
 h1, h2 {
   margin: 0.9230769230769231em 0 1.3846153846153846em;
 }
@@ -284,7 +286,7 @@ h3 {
 	top: 0;
 	left: 0;
 	z-index: 0;
-	width: 25%;
+	width: 22%;
 	min-height: 100%;
   }
 
