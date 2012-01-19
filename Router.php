@@ -420,13 +420,23 @@ class Request {
   }
   
   /**
-  * Covenience method that checks is data item is empty to avoid notice-level warnings
+  * Convenience method that checks is data item is empty to avoid notice-level warnings
   *
   *    @param $idx
-  *        name o the data variable (either request var or HTTP body var).
+  *        name of the data variable (either request var or HTTP body var).
+  */ 
+  public function getVar($idx) {      
+    return !empty($this->data[$idx]) ? $this->data[$idx] : null;      
+  }
+
+  /**
+  * Convenience method for backward compatibility
+  *
+  *    @param $idx
+  *        name of the data variable (either request var or HTTP body var).
   */ 
   public function get_var($idx) {      
-    return !empty($this->data[$idx]) ? $this->data[$idx] : null;      
+    return $this->getVar($idx);     
   }
   
   /**
