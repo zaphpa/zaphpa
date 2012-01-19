@@ -386,10 +386,10 @@ class Request {
     $this->userAgent = empty($_SERVER['HTTP_USER_AGENT']) ? "" : $_SERVER['HTTP_USER_AGENT'];    
     $this->protocol = !empty($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : null;
 
-    $this->parse_special('encodings', 'HTTP_ACCEPT_ENCODING', array('utf-8'));    
-    $this->parse_special('charsets', 'HTTP_ACCEPT_CHARSET', array('text/html'));
-    $this->parse_special('accepted_formats', 'HTTP_ACCEPT');
-    $this->parse_special('languages', 'HTTP_ACCEPT_LANGUAGE', array('en-US'));
+    $this->parseSpecial('encodings', 'HTTP_ACCEPT_ENCODING', array('utf-8'));    
+    $this->parseSpecial('charsets', 'HTTP_ACCEPT_CHARSET', array('text/html'));
+    $this->parseSpecial('accepted_formats', 'HTTP_ACCEPT');
+    $this->parseSpecial('languages', 'HTTP_ACCEPT_LANGUAGE', array('en-US'));
     
     switch ($this->method) {
         case "GET":
@@ -445,7 +445,7 @@ class Request {
   /**
   * Parses some packed $_SERVER variables into more useful arrays.
   */
-  private function parse_special($varname, $argname, $default=array()) {
+  private function parseSpecial($varname, $argname, $default=array()) {
     $this->$varname = $default; 
     if (!empty($_SERVER[$argname])) {
       // parse before the first ";" character
