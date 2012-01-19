@@ -38,7 +38,7 @@ class Callback_Util {
   private static function loadFile($file) {
     if (file_exists($file)) {
       if (!in_array($file, get_included_files())) {
-        include($file);
+        require_once($file);
       }
     } else {
       throw new CallbackFileNotFoundException('Controller file not found');
