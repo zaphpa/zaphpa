@@ -171,7 +171,7 @@ class Zaphpa_Template {
           } else {
             
             if (isset($this->callbacks[$k])) {              
-              $callback = Zaphpa_Callback::getCallback($this->callbacks[$k]);
+              $callback = Zaphpa_Callback_Util::getCallback($this->callbacks[$k]);
               $value    = call_user_func($callback, $v);
               if ($value) {
                 $matches[$k] = $value;
