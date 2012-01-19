@@ -301,7 +301,7 @@ class Response {
   * automatically converted to proper HTTP content type definitions.
   */
   public function setFormat($format) {
-    $aliases = $this->req->common_aliases();
+    $aliases = $this->req->commonAliases();
     if (array_key_exists($format, $aliases)) {
       $format = $aliases[$format];
     }    
@@ -407,7 +407,7 @@ class Request {
     // Format in the URL request string takes priority over the one in HTTP headers, defaults to HTML.
     if (!empty($this->data['format'])) {
       $this->format = $this->data['format'];
-      $aliases = $this->common_aliases();
+      $aliases = $this->commonAliases();
       if (array_key_exists($this->format, $aliases)) {
         $this->format = $aliases[$this->format];
       }
@@ -432,7 +432,7 @@ class Request {
   /**
   * Subclass this function if you need a different set!
   */
-  public function common_aliases() {
+  public function commonAliases() {
     return array(
       'html' => 'text/html',
       'txt' => 'text/plain',
