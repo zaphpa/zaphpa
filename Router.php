@@ -528,7 +528,7 @@ class Router {
   
         if (!is_null($params)) {
           $callback = Callback_Util::getCallback($route['callback'], $route['file']);
-          return $this->invoke_callback($callback, $params);
+          return $this->invokeCallback($callback, $params);
         }        
       }
       
@@ -544,7 +544,7 @@ class Router {
   * Main reason this is a separate function is: in case library users want to change
   * invokation logic, without having to copy/paste rest of the logic in the route() function.
   */
-  protected function invoke_callback($callback, $params) {
+  protected function invokeCallback($callback, $params) {
     $req = new Request();
     $req->params = $params;         
     $res = new Response($req);
