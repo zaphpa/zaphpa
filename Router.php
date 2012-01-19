@@ -75,7 +75,7 @@ class Callback_Util {
 
       throw new InvalidCallbackException("Invalid callback");
       
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       throw $ex;
     }
     
