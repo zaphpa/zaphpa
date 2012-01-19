@@ -124,12 +124,12 @@ class Zaphpa_Template {
       if (isset($patterns[$token])) {
         $pattern = $patterns[$token];
       } else {
-        $pattern = self::PATTERN_ANY;
+        $pattern = Zaphpa_Constants::PATTERN_ANY;
       }
       
       if ((is_string($pattern) && is_callable($pattern)) || is_array($pattern)) {
         $this->callbacks[$token] = $pattern;
-        $patterns[$token] = $pattern = self::PATTERN_ANY;
+        $patterns[$token] = $pattern = Zaphpa_Constants::PATTERN_ANY;
       }
       
       return sprintf($pattern, $token);
@@ -139,7 +139,7 @@ class Zaphpa_Template {
   
   public function addQueryParam($name, $pattern = '', $defaultValue = null) {
     if (!$pattern) {
-      $pattern = self::PATTERN_ANY;
+      $pattern = Zaphpa_Constants::PATTERN_ANY;
     }
     $this->params[$name] = (object) array(
       'pattern' => sprintf($pattern, $name),
@@ -149,7 +149,7 @@ class Zaphpa_Template {
   
   public static function addGlobalQueryParam($name, $pattern = '', $defaultValue = null) {
     if (!$pattern) {
-      $pattern = self::PATTERN_ANY;
+      $pattern = Zaphpa_Constants::PATTERN_ANY;
     }
     self::$globalQueryParams[$name] = (object) array(
       'pattern' => sprintf($pattern, $name),
