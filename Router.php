@@ -1,21 +1,22 @@
 <?php
+namespace Zaphpa;
 
 /** Invalid path exception **/
-class Zaphpa_InvalidPathException extends Exception {}
+class InvalidPathException extends \Exception {}
 /** File not found exception **/
-class Zaphpa_CallbackFileNotFoundException extends Exception {}
+class CallbackFileNotFoundException extends \Exception {}
 /** Invalid callback exception **/
-class Zaphpa_InvalidCallbackException extends Exception {}
+class InvalidCallbackException extends \Exception {}
 /** Invalid URI Parameter exception **/
-class Zaphpa_InvalidURIParameterException extends Exception {}
+class InvalidURIParameterException extends \Exception {}
 /** Invalid HTTP Response Code exception **/
-class Zaphpa_InvalidResponseCodeException extends Exception {}
+class InvalidResponseCodeException extends \Exception {}
 
 
 /**
 * Handy regexp patterns for common types of URI parameters.
 */
-final class Zaphpa_Constants {
+final class Constants {
   const PATTERN_ARGS       = '?(?P<%s>(?:/.+)+)';
   const PATTERN_ARGS_ALPHA = '?(?P<%s>(?:/[-\w]+)+)';
   const PATTERN_WILD_CARD  = '(?P<%s>.*)';
@@ -32,15 +33,15 @@ final class Zaphpa_Constants {
 /**
 * Callback class for route-processing.
 */
-class Zaphpa_Callback_Util {
+class Callback_Util {
   
   private static function loadFile($file) {
     if (file_exists($file)) {
       if (!in_array($file, get_included_files())) {
-        include($file);
+        require_once($file);
       }
     } else {
-      throw new Zaphpa_CallbackFileNotFoundException('Controller file not found');
+      throw new CallbackFileNotFoundException('Controller file not found');
     }
   }
   
@@ -54,7 +55,7 @@ class Zaphpa_Callback_Util {
       
       if (is_array($callback)) {
           
-        $method = new ReflectionMethod(array_shift($callback), array_shift($callback));
+        $method = new \ReflectionMethod(array_shift($callback), array_shift($callback));
         
         if ($method->isPublic()) {
           if ($method->isStatic()) {
@@ -72,9 +73,9 @@ class Zaphpa_Callback_Util {
         return $callback;
       }
 
-      throw new Zaphpa_InvalidCallbackException("Invalid callback");
+      throw new InvalidCallbackException("Invalid callback");
       
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       throw $ex;
     }
     
@@ -82,7 +83,7 @@ class Zaphpa_Callback_Util {
   
 }
 
-class Zaphpa_Template {
+class Template {
   
   private static $globalQueryParams = array();
   
@@ -124,12 +125,12 @@ class Zaphpa_Template {
       if (isset($patterns[$token])) {
         $pattern = $patterns[$token];
       } else {
-        $pattern = self::PATTERN_ANY;
+        $pattern = Constants::PATTERN_ANY;
       }
       
       if ((is_string($pattern) && is_callable($pattern)) || is_array($pattern)) {
         $this->callbacks[$token] = $pattern;
-        $patterns[$token] = $pattern = self::PATTERN_ANY;
+        $patterns[$token] = $pattern = Constants::PATTERN_ANY;
       }
       
       return sprintf($pattern, $token);
@@ -139,7 +140,7 @@ class Zaphpa_Template {
   
   public function addQueryParam($name, $pattern = '', $defaultValue = null) {
     if (!$pattern) {
-      $pattern = self::PATTERN_ANY;
+      $pattern = Constants::PATTERN_ANY;
     }
     $this->params[$name] = (object) array(
       'pattern' => sprintf($pattern, $name),
@@ -149,7 +150,7 @@ class Zaphpa_Template {
   
   public static function addGlobalQueryParam($name, $pattern = '', $defaultValue = null) {
     if (!$pattern) {
-      $pattern = self::PATTERN_ANY;
+      $pattern = Constants::PATTERN_ANY;
     }
     self::$globalQueryParams[$name] = (object) array(
       'pattern' => sprintf($pattern, $name),
@@ -171,12 +172,12 @@ class Zaphpa_Template {
           } else {
             
             if (isset($this->callbacks[$k])) {              
-              $callback = Zaphpa_Callback::getCallback($this->callbacks[$k]);
+              $callback = Callback_Util::getCallback($this->callbacks[$k]);
               $value    = call_user_func($callback, $v);
               if ($value) {
                 $matches[$k] = $value;
               } else {
-                throw new Zaphpa_InvalidURIParameterException('Ivalid parameters detected');
+                throw new InvalidURIParameterException('Ivalid parameters detected');
               }
             }
             
@@ -209,7 +210,7 @@ class Zaphpa_Template {
             }          
             
             if ($matched == false) {
-              throw new Exception('Request do not match');
+              throw new \Exception('Request do not match');
             }
             
           }
@@ -220,7 +221,7 @@ class Zaphpa_Template {
         
       }
       
-    } catch(Exception $ex) {
+    } catch(\Exception $ex) {
       throw $ex;
     }
     
@@ -236,7 +237,7 @@ class Zaphpa_Template {
 /**
 * Response class
 */
-class Zaphpa_Response {
+class Response {
 
   /** Ordered chunks of the output buffer **/
   public $chunks = array();
@@ -284,7 +285,7 @@ class Zaphpa_Response {
       $protocol = $this->req->protocol;
       header("$protocol $code $resp_text");
     } else {
-      throw new Zaphpa_InvalidResponseCodeException("Invalid Response Code: " . $code);
+      throw new InvalidResponseCodeException("Invalid Response Code: " . $code);
     }
     
     // If no format was set explicitely, use the request format for response.
@@ -300,7 +301,7 @@ class Zaphpa_Response {
   * automatically converted to proper HTTP content type definitions.
   */
   public function setFormat($format) {
-    $aliases = $this->req->common_aliases();
+    $aliases = $this->req->commonAliases();
     if (array_key_exists($format, $aliases)) {
       $format = $aliases[$format];
     }    
@@ -356,13 +357,13 @@ class Zaphpa_Response {
     );
   }
   
-} // end Zaphpa_Request
+} // end Response
 
 
 /**
 * HTTP Request class
 */
-class Zaphpa_Request {
+class Request {
   public $params;
   public $data;
   public $format;
@@ -385,10 +386,10 @@ class Zaphpa_Request {
     $this->userAgent = empty($_SERVER['HTTP_USER_AGENT']) ? "" : $_SERVER['HTTP_USER_AGENT'];    
     $this->protocol = !empty($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : null;
 
-    $this->parse_special('encodings', 'HTTP_ACCEPT_ENCODING', array('utf-8'));    
-    $this->parse_special('charsets', 'HTTP_ACCEPT_CHARSET', array('text/html'));
-    $this->parse_special('accepted_formats', 'HTTP_ACCEPT');
-    $this->parse_special('languages', 'HTTP_ACCEPT_LANGUAGE', array('en-US'));
+    $this->parseSpecial('encodings', 'HTTP_ACCEPT_ENCODING', array('utf-8'));    
+    $this->parseSpecial('charsets', 'HTTP_ACCEPT_CHARSET', array('text/html'));
+    $this->parseSpecial('accepted_formats', 'HTTP_ACCEPT');
+    $this->parseSpecial('languages', 'HTTP_ACCEPT_LANGUAGE', array('en-US'));
     
     switch ($this->method) {
         case "GET":
@@ -406,7 +407,7 @@ class Zaphpa_Request {
     // Format in the URL request string takes priority over the one in HTTP headers, defaults to HTML.
     if (!empty($this->data['format'])) {
       $this->format = $this->data['format'];
-      $aliases = $this->common_aliases();
+      $aliases = $this->commonAliases();
       if (array_key_exists($this->format, $aliases)) {
         $this->format = $aliases[$this->format];
       }
@@ -419,19 +420,29 @@ class Zaphpa_Request {
   }
   
   /**
-  * Covenience method that checks is data item is empty to avoid notice-level warnings
+  * Convenience method that checks is data item is empty to avoid notice-level warnings
   *
   *    @param $idx
-  *        name o the data variable (either request var or HTTP body var).
+  *        name of the data variable (either request var or HTTP body var).
+  */ 
+  public function getVar($idx) {      
+    return !empty($this->data[$idx]) ? $this->data[$idx] : null;      
+  }
+
+  /**
+  * Convenience method for backward compatibility
+  *
+  *    @param $idx
+  *        name of the data variable (either request var or HTTP body var).
   */ 
   public function get_var($idx) {      
-    return !empty($this->data[$idx]) ? $this->data[$idx] : null;      
+    return $this->getVar($idx);     
   }
   
   /**
   * Subclass this function if you need a different set!
   */
-  public function common_aliases() {
+  public function commonAliases() {
     return array(
       'html' => 'text/html',
       'txt' => 'text/plain',
@@ -444,7 +455,7 @@ class Zaphpa_Request {
   /**
   * Parses some packed $_SERVER variables into more useful arrays.
   */
-  private function parse_special($varname, $argname, $default=array()) {
+  private function parseSpecial($varname, $argname, $default=array()) {
     $this->$varname = $default; 
     if (!empty($_SERVER[$argname])) {
       // parse before the first ";" character
@@ -453,17 +464,10 @@ class Zaphpa_Request {
       $this->$varname = explode(",", $truncated);
     }    
   }
-  
-  /**
-  * Make it easy to indicate common formats by mapping them to handy aliases
-  */
-  private function common_format_parsing() {
-  }
-    
-} // end Zaphpa_Request
+} // end Request
 
 
-class Zaphpa_Router {
+class Router {
   
   protected $routes  = array();
   protected static $methods = array('get', 'post', 'put', 'delete', 'head', 'options');
@@ -475,7 +479,7 @@ class Zaphpa_Router {
     
     if (!empty($params['path'])) {
       
-      $template = new Zaphpa_Template($params['path']);
+      $template = new Template($params['path']);
       
       if (!empty($params['handlers'])) {
         foreach ($params['handlers'] as $key => $pattern) {
@@ -523,14 +527,14 @@ class Zaphpa_Router {
         $params = $route['template']->match($uri);
   
         if (!is_null($params)) {
-          $callback = Zaphpa_Callback_Util::getCallback($route['callback'], $route['file']);
-          return $this->invoke_callback($callback, $params);
+          $callback = Callback_Util::getCallback($route['callback'], $route['file']);
+          return $this->invokeCallback($callback, $params);
         }        
       }
       
-      throw new Zaphpa_InvalidPathException('Invalid path');
+      throw new InvalidPathException('Invalid path');
       
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       throw $ex;
     }
     
@@ -540,15 +544,15 @@ class Zaphpa_Router {
   * Main reason this is a separate function is: in case library users want to change
   * invokation logic, without having to copy/paste rest of the logic in the route() function.
   */
-  protected function invoke_callback($callback, $params) {
-    $req = new Zaphpa_Request();
+  protected function invokeCallback($callback, $params) {
+    $req = new Request();
     $req->params = $params;         
-    $res = new Zaphpa_Response($req);
+    $res = new Response($req);
     
     return call_user_func($callback, $req, $res);    
   }
   
 
   
-} // end Zaphpa_Router
+} // end Router
 

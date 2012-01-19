@@ -1,15 +1,15 @@
 <?php
 
-require_once(dirname(__FILE__) .'/../zaphpa.lib.php');
+require_once(dirname(__FILE__) .'/../Router.php');
 
-$router = new Zaphpa_Router();
+$router = new Zaphpa\Router();
 
 $router->addRoute(array(
       'path'     => '/pages/{id}/{categories}/{name}/{year}',
       'handlers' => array(
-        'id'         => Zaphpa_Constants::PATTERN_DIGIT, //regex
-        'categories' => Zaphpa_Constants::PATTERN_ARGS,  //regex
-        'name'       => Zaphpa_Constants::PATTERN_ANY,   //regex
+        'id'         => Zaphpa\Constants::PATTERN_DIGIT, //regex
+        'categories' => Zaphpa\Constants::PATTERN_ARGS,  //regex
+        'name'       => Zaphpa\Constants::PATTERN_ANY,   //regex
         'year'       => 'handle_year',       //callback function
       ),
       'get'      => array('MyController', 'getPage'),
