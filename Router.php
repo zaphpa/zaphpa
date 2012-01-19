@@ -454,13 +454,6 @@ class Request {
       $this->$varname = explode(",", $truncated);
     }    
   }
-  
-  /**
-  * Make it easy to indicate common formats by mapping them to handy aliases
-  */
-  private function common_format_parsing() {
-  }
-    
 } // end Request
 
 
