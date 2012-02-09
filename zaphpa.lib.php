@@ -395,12 +395,16 @@ class Zaphpa_Request {
             $this->data = $_GET;
             break;                
         case "POST":
-            $this->data = $_POST;
+            $this->data = $_GET + $_POST; //people do use query params with POST
             break;                
         default:
-            parse_str(file_get_contents("php://input"), $this->data);
+            $contents = file_get_contents("php://input");
+            $parsed_contents = null;
+            parse_str($contents, $parsed_contents);
+            $this->data = $_GET + $parsed_contents; //people do use query params with PUT and DELETE
+            $this->data['_RAW_HTTP_DATA'] = $contents;
             break;                
-    }    
+    }       
 
     // Requested output format, if any. 
     // Format in the URL request string takes priority over the one in HTTP headers, defaults to HTML.
