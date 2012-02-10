@@ -5,7 +5,7 @@ title: Zaphpa Library
 
 # What is Zaphpa?
 
-Zaphpa is a colleague of <a href="http://www.sinatrarb.com/">Sinatra</a>, wearing a PHPeather hat. 
+Zaphpa is a colleague of [Sinatra](http://www.sinatrarb.com/), wearing a PHPeather hat. 
 
 <img src="http://gravatar.com/avatar/fc564aeb3c58786c628277b58dd9943c?s=85" />
 
