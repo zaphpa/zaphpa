@@ -36,6 +36,9 @@ RewriteRule ^ /your_www_root/api.php [NC,NS,L]
 
 Please note that this configuration is for a httpd.conf, if you are putting it into an .htaccess file, you may want to remove the leading %{DOCUMENT_ROOT} in the corresponding RewriteConds.
 
+The very first RewriteRule is a security-hardening feature, ensuring that system files (the ones typically starting with dot) do not accidentally get exposed.
+
+
 ## Instantiating And Configuring A Router
 
 For a very simple case of getting specific user object, the code of api.php would look something like:
