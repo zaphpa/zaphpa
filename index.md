@@ -38,6 +38,15 @@ Please note that this configuration is for a httpd.conf, if you are putting it i
 
 The very first RewriteRule is a security-hardening feature, ensuring that system files (the ones typically starting with dot) do not accidentally get exposed.
 
+For Nginx, you need to make sure that Nginx is properly configured with PHP-FPM as CGI and the actual configuration in the virtualhost may look something like:
+<pre>
+location / {
+  # the main router script
+  if (!-e $request_filename) {
+    rewrite ^/(.*)$ /api.php?q=$1 last;
+  }
+}
+</pre>
 
 ## Instantiating And Configuring A Router
 
