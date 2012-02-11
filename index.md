@@ -87,24 +87,20 @@ However, we asked the library to ascertain that the {id} parameter is a number b
 class MyController {
 
 	public function getPage($req, $res) {
-		$res->add(pre($req->params));
-	    $res->add(pre($req->data));
-	    $res->send(301);    
+		$res->setFormat("json");
+		$res->add(json_encode($req->params));
+       $res->add(json_encode($req->data));
+       $res->send(301);    
 	}
 
 	public function postPage($req, $res) {
-		$res->add(pre($req->params));
-	    $res->add(pre($req->data));
-	    $res->send(301);    
+		$res->setFormat("json");
+		$res->add(json_encode($req->params));
+       $res->add(json_encode($req->data));
+       $res->send(301);    
 	}
 
 }	
-
-function pre($o) {
-  return strtr('&lt;pre&gt;%s&lt;/pre&gt;', 
-               array('%s' => print_r($o, true))
-         );
-}
 </pre>
 
 When invoked callbacks get two arguments:
