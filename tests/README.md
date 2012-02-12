@@ -7,4 +7,5 @@
   > sudo pear install --alldeps phpunit/PHPUnit
   
 #. Run all tests with:
-  > phpunit tests 
+  > cd tests
+  > phpunit . 
