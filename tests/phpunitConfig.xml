@@ -1,0 +1,5 @@
+<phpunit>
+  <php>
+    <var name="server" value="http://127.0.0.1:8080"/>
+  </php>
+</phpunit>
