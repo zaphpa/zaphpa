@@ -103,8 +103,7 @@ You may be able to guess the functionality from the regexp patterns associated w
 * PATTERN\_MD5 - ensures a path element to be valid MD5 hash
 * PATTERN\_ALPHA - ensures a path element to be valid alpha-numeric string (i.e. latin characters and numbers, as defined by \w pattern of regular expressions).
 * PATTERN\_ARGS - is a more sophisticated case that takes some explanation. It tries to match multiple path elements and could be useful in URLs like: <pre>/news/212424/**us/politics/elections**/some-title-goes-here/2012</pre> 
-where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator like: <script src="https://gist.github.com/1900311.js?file=gistfile1.txt"></script>    => Zaphpa\_Constants::PATTERN\_YEAR, 
-         ),```</pre> and you would get the function arguments in the callback as: <pre>[params] => Array
+where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator like: <script src="https://gist.github.com/1900311.js?file=gistfile1.txt"></script> and you would get the function arguments in the callback as: <pre>[params] => Array
         (
             [id] => 212424
             [categories] => Array
