@@ -1,13 +1,11 @@
 ---
 layout: default
-title: Zaphpa Library
+title: Zaphpa RESTful Microframework
 ---
 
 # What is Zaphpa?
 
-Zaphpa is a colleague of [Sinatra](http://www.sinatrarb.com/), wearing a PHPeather hat. 
-
-<img src="http://gravatar.com/avatar/fc564aeb3c58786c628277b58dd9943c?s=85" />
+Zaphpa, pronounced as the lastname of Frank Zappa, is a routing microkernel inspired by [Sinatra.rb](http://www.sinatrarb.com/), and implemented in PHP (hence the extra geeky "h" in the name creating the sub-pattern of "php.).
 
 Zaphpa is a swiss-army tool for developing RESTful HTTP APIs in PHP. It's a lightweight library that has a single purpose: free API developers from the boilerplate of handling HTTP requests and implementing REST. 
 
