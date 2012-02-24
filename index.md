@@ -102,7 +102,9 @@ You may be able to guess the functionality from the regexp patterns associated w
 * PATTERN\_DIGIT - alias to PATTERN\_NUM 
 * PATTERN\_MD5 - ensures a path element to be valid MD5 hash
 * PATTERN\_ALPHA - ensures a path element to be valid alpha-numeric string (i.e. latin characters and numbers, as defined by \w pattern of regular expressions).
-* PATTERN\_ARGS - is a more sophisticated case that takes some explanation. It tries to match multiple path elements and could be useful in URLs like: <pre>/news/212424/**us/politics/elections**/some-title-goes-here/2012</pre> where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator like: <pre>  'path'     => '/news/{id}/{categories}/{title}/{year}',  
+* PATTERN\_ARGS - is a more sophisticated case that takes some explanation. It tries to match multiple path elements and could be useful in URLs like: 
+    <pre>/news/212424/**us/politics/elections**/some-title-goes-here/2012</pre> 
+where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator like: <pre>  'path'     => '/news/{id}/{categories}/{title}/{year}',  
       'handlers' => array(
 		   'id'          => Zaphpa\_Constants::PATTERN\_NUM, 
            'categories'  => Zaphpa\_Constants::PATTERN\_ARGS, 
@@ -121,7 +123,7 @@ You may be able to guess the functionality from the regexp patterns associated w
             [year] => 2012</pre>
 * PATTERN\_ARGS - acts the exact same way as PATTERN\_ARGS but limits character set to alpha-numeric ones.
 * PATTERN\_ANY (default) - matches any one argument
-* PATTERN\_WILD\_CARD - allows providing a custom regular expression
+* PATTERN\_WILD\_CARD - "greedy" version of PATTERN\_ANY that can match multiple arguments
 * PATTERN\_YEAR - matches a 4-digit representation of a year.
 * PATTERN\_MONTH - matches 1 or 2 digit representation of a month
 * PATTERN\_DAY - matches 1 or 2 digit representation of a numeric day.
