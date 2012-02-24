@@ -58,7 +58,7 @@ $router = new Zaphpa_Router();
 $router->addRoute(array(
 	  'path'     => '/users/{id}',
 	  'handlers' => array(
-	    'id'         => Zaphpa_Constants::PATTERN_DIGIT, //regex
+	    'id'         => Zaphpa_Constants::PATTERN_DIGIT, //enforced to be numeric
 	  ),
 	  'get'      => array('MyController', 'getPage'),
 	)
@@ -67,7 +67,7 @@ $router->addRoute(array(
 $router->route();
 </pre>
 
-In this example, {id} is a URI parameter, so `MyController->getPage()` function will get control to serve URLs like:
+In this example, {id} is a URI parameter of the type "digit", so `MyController->getPage()` function will get control to serve URLs like:
 
 * http://example.com/users/32424
 * http://example.com/users/23
@@ -78,6 +78,58 @@ However, we asked the library to ascertain that the {id} parameter is a number b
 * http://example.com/users/asda32424
 * http://example.com/users/32424sfsd
 * http://example.com/users/324sdf24
+
+# Pre-defined Validator Types
+
+Zaphpa allows indicating completely custom function callbacks as validating handlers, but for the convenience it also provides number of pre-defined, common validators:
+<pre>
+  const PATTERN\_NUM        = '(?P<%s>\d+)';
+  const PATTERN\_DIGIT      = '(?P<%s>\d+)';
+  const PATTERN\_MD5        = '(?P<%s>[a-z0-9]{32})';
+  const PATTERN\_ALPHA      = '(?P<%s>(?:/?[-\w]+))';
+  const PATTERN\_ARGS       = '?(?P<%s>(?:/.+)+)';
+  const PATTERN\_ARGS\_ALPHA = '?(?P<%s>(?:/[-\w]+)+)';
+  const PATTERN\_ANY        = '(?P<%s>(?:/?[^/]*))';
+  const PATTERN\_WILD\_CARD  = '(?P<%s>.*)'; 
+  const PATTERN\_YEAR       = '(?P<%s>\d{4})';
+  const PATTERN\_MONTH      = '(?P<%s>\d{1,2})';
+  const PATTERN\_DAY        = '(?P<%s>\d{1,2})';
+</pre>
+
+You may be able to guess the functionality from the regexp patterns associated with each pre-defined validator, but let's go through the expected behavior of each one of them:
+
+* PATTERN_NUM - ensures a path element to be numeric
+* PATTERN\_DIGIT - alias to PATTERN\_NUM 
+* PATTERN\_MD5 - ensures a path element to be valid MD5 hash
+* PATTERN\_ALPHA - ensures a path element to be valid alpha-numeric string (i.e. latin characters and numbers, as defined by \w pattern of regular expressions).
+* PATTERN\_ARGS - is a more sophisticated case that takes some explanation. It tries to match multiple path elements and could be useful in URLs like: <pre>/news/212424/**us/politics/elections**/some-title-goes-here/2012</pre> where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator like: <pre>  'path'     => '/news/{id}/{categories}/{title}/{year}',  
+      'handlers' => array(
+		   'id'          => Zaphpa\_Constants::PATTERN\_NUM, 
+           'categories'  => Zaphpa\_Constants::PATTERN\_ARGS, 
+           'title'       => Zaphpa\_Constants::PATTERN\_ALPHA,
+           'year'       => Zaphpa\_Constants::PATTERN\_YEAR, 
+         ),</pre> and you would get the function arguments in the callback as: <pre>[params] => Array
+        (
+            [id] => 212424
+            [categories] => Array
+                (
+                    [0] => us
+                    [1] => politics
+                    [1] => elections
+                )
+            [title] => some-title-goes-here
+            [year] => 2012</pre>
+* PATTERN\_ARGS - acts the exact same way as PATTERN\_ARGS but limits character set to alpha-numeric ones.
+* PATTERN\_ANY (default) - matches any one argument
+* PATTERN\_WILD\_CARD - allows providing a custom regular expression
+* PATTERN\_YEAR - matches a 4-digit representation of a year.
+* PATTERN\_MONTH - matches 1 or 2 digit representation of a month
+* PATTERN\_DAY - matches 1 or 2 digit representation of a numeric day.
+
+For more custom cases, you can use a validator callback function: <pre>'handlers' => array(
+        'id'         => Zaphpa_Constants::PATTERN_DIGIT, //numeric
+        'uuid'       => 'handle_uuid',       //callback function
+      ),</pre>
 
 # Example Controllers/Callbacks
 
