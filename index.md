@@ -102,9 +102,7 @@ You may be able to guess the functionality from the regexp patterns associated w
 * PATTERN\_DIGIT - alias to PATTERN\_NUM 
 * PATTERN\_MD5 - ensures a path element to be valid MD5 hash
 * PATTERN\_ALPHA - ensures a path element to be valid alpha-numeric string (i.e. latin characters and numbers, as defined by \w pattern of regular expressions).
-* PATTERN\_ARGS - is a more sophisticated case that takes some explanation. It tries to match multiple path elements and could be useful in URLs like: 
-    <pre>/news/212424/**us/politics/elections**/some-title-goes-here/2012</pre> 
-where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator like: <pre>  'path'     => '/news/{id}/{categories}/{title}/{year}',  
+* PATTERN\_ARGS - is a more sophisticated case that takes some explanation. It tries to match multiple path elements and could be useful in URLs like: ```/news/212424/**us/politics/elections**/some-title-goes-here/2012``` where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator like: <pre>  'path'     => '/news/{id}/{categories}/{title}/{year}',  
       'handlers' => array(
 		   'id'          => Zaphpa\_Constants::PATTERN\_NUM, 
            'categories'  => Zaphpa\_Constants::PATTERN\_ARGS, 
