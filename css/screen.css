@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Questrial);
+/** @import url(http://fonts.googleapis.com/css?family=Questrial); **/
 @import url(http://fonts.googleapis.com/css?family=Noticia+Text);
 
 html {
@@ -12,7 +12,7 @@ html {
 
 section#column {
   background: #f2f2f2 url("../img/bordershadow.png") top right repeat-y;
-  font-family: 'Questrial', sans-serif;
+  font-family: 'Helvetica', sans-serif;
   font-size: .8em;
 }
 
