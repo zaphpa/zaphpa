@@ -111,10 +111,8 @@ where "us/politics/elections" is a part with variable number of "categories". To
 * PATTERN\_MONTH - matches 1 or 2 digit representation of a month
 * PATTERN\_DAY - matches 1 or 2 digit representation of a numeric day.
 
-For more custom cases, you can use a validator callback function: <pre>'handlers' => array(
-        'id'         => Zaphpa_Constants::PATTERN_DIGIT, //numeric
-        'uuid'       => 'handle_uuid',       //callback function
-      ),</pre>
+For more custom cases, you can use a validator callback function: 
+<script src="https://gist.github.com/1900339.js?file=gistfile1.txt"></script>
 
 # Example Controllers/Callbacks
 
