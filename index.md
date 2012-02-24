@@ -81,19 +81,19 @@ However, we asked the library to ascertain that the {id} parameter is a number b
 
 # Pre-defined Validator Types
 
-Zaphpa allows indicating completely custom function callbacks as validating handlers, but for the convenience it also provides number of pre-defined, common validators:
+Zaphpa allows indicating completely custom function callbacks as validating handlers, but for convenience it also provides number of pre-defined, common validators:
 <pre>
-  const PATTERN\_NUM        = '(?P<%s>\d+)';
-  const PATTERN\_DIGIT      = '(?P<%s>\d+)';
-  const PATTERN\_MD5        = '(?P<%s>[a-z0-9]{32})';
-  const PATTERN\_ALPHA      = '(?P<%s>(?:/?[-\w]+))';
-  const PATTERN\_ARGS       = '?(?P<%s>(?:/.+)+)';
-  const PATTERN\_ARGS\_ALPHA = '?(?P<%s>(?:/[-\w]+)+)';
-  const PATTERN\_ANY        = '(?P<%s>(?:/?[^/]*))';
-  const PATTERN\_WILD\_CARD  = '(?P<%s>.*)'; 
-  const PATTERN\_YEAR       = '(?P<%s>\d{4})';
-  const PATTERN\_MONTH      = '(?P<%s>\d{1,2})';
-  const PATTERN\_DAY        = '(?P<%s>\d{1,2})';
+  const PATTERN_NUM        = '(?P<%s>\d+)';
+  const PATTERN_DIGIT      = '(?P<%s>\d+)';
+  const PATTERN_MD5        = '(?P<%s>[a-z0-9]{32})';
+  const PATTERN_ALPHA      = '(?P<%s>(?:/?[-\w]+))';
+  const PATTERN_ARGS       = '?(?P<%s>(?:/.+)+)';
+  const PATTERN_ARGS_ALPHA = '?(?P<%s>(?:/[-\w]+)+)';
+  const PATTERN_ANY        = '(?P<%s>(?:/?[^/]*))';
+  const PATTERN_WILD_CARD  = '(?P<%s>.*)'; 
+  const PATTERN_YEAR       = '(?P<%s>\d{4})';
+  const PATTERN_MONTH      = '(?P<%s>\d{1,2})';
+  const PATTERN_DAY        = '(?P<%s>\d{1,2})';
 </pre>
 
 You may be able to guess the functionality from the regexp patterns associated with each pre-defined validator, but let's go through the expected behavior of each one of them:
