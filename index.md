@@ -103,17 +103,7 @@ You may be able to guess the functionality from the regexp patterns associated w
 * PATTERN\_MD5 - ensures a path element to be valid MD5 hash
 * PATTERN\_ALPHA - ensures a path element to be valid alpha-numeric string (i.e. latin characters and numbers, as defined by \w pattern of regular expressions).
 * PATTERN\_ARGS - is a more sophisticated case that takes some explanation. It tries to match multiple path elements and could be useful in URLs like: <pre>/news/212424/**us/politics/elections**/some-title-goes-here/2012</pre> 
-where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator like: <script src="https://gist.github.com/1900311.js?file=gistfile1.txt"></script> and you would get the function arguments in the callback as: <pre>[params] => Array
-        (
-            [id] => 212424
-            [categories] => Array
-                (
-                    [0] => us
-                    [1] => politics
-                    [1] => elections
-                )
-            [title] => some-title-goes-here
-            [year] => 2012</pre>
+where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator like: <script src="https://gist.github.com/1900311.js?file=gistfile1.txt"></script> and you would get the function arguments in the callback as: <script src="https://gist.github.com/1900324.js?file=gistfile1.txt"></script>
 * PATTERN\_ARGS - acts the exact same way as PATTERN\_ARGS but limits character set to alpha-numeric ones.
 * PATTERN\_ANY (default) - matches any one argument
 * PATTERN\_WILD\_CARD - "greedy" version of PATTERN\_ANY that can match multiple arguments
