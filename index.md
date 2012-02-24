@@ -111,8 +111,14 @@ where "us/politics/elections" is a part with variable number of "categories". To
 * PATTERN\_MONTH - matches 1 or 2 digit representation of a month
 * PATTERN\_DAY - matches 1 or 2 digit representation of a numeric day.
 
-For more custom cases, you can use a validator callback function: 
+For more custom cases, you can use a custom regex:
+<script src="https://gist.github.com/1900357.js?file=gistfile1.txt"></script>
+
+or attach a validator/parser callback function where you can do whatever you need: 
 <script src="https://gist.github.com/1900339.js?file=gistfile1.txt"></script>
+
+The output of a custom parser callback should match that of a regex call i.e.: should return a parsed array of matches or null.
+
 
 # Example Controllers/Callbacks
 
