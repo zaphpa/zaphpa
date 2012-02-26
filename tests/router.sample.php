@@ -8,30 +8,38 @@ $router = new Zaphpa_Router();
 $router->addRoute(array(
       'path'     => '/users/{id}',
       'handlers' => array(
-        'id'         => Zaphpa_Constants::PATTERN_DIGIT, //regex
+        'id'         => Zaphpa_Constants::PATTERN_DIGIT,
       ),
-      'get'      => array('TestController', 'getUserByNumericId'),
+      'get'      => array('TestController', 'getTestJsonResponse'),
     )
 );
 
 $router->addRoute(array(
       'path'     => '/tags/{id}',
       'handlers' => array(
-        'id'         => Zaphpa_Constants::PATTERN_ALPHA, //regex
+        'id'         => Zaphpa_Constants::PATTERN_ALPHA,
       ),
-      'get'      => array('TestController', 'getTagByAlphaId'),
+      'get'      => array('TestController', 'getTestJsonResponse'),
     )
 );
+
+$router->addRoute(array(
+    'path'     => '/users/{user_id}/books/{book_id}',
+    'handlers' => array(
+      'user_id'         => Zaphpa_Constants::PATTERN_NUM,
+      'book_id'         => Zaphpa_Constants::PATTERN_ALPHA,
+    ),
+    'get'      => array('TestController', 'getTestJsonResponse'),
+  )
+);
+
+
 
 try {
     $router->route();
 } catch (Zaphpa_InvalidPathException $ex) {
-    header("Content-Type: application/json;");    
-    header("HTTP/1.0 404 Not Found");
-    header("Status: 404 Not Found"); // For FastCGI
-    
+    header("Content-Type: application/json;", TRUE, 404);
     $out = array("error" => "not found");        
-    $out = json_encode($out);
-    die ($out);
+    die(json_encode($out));
 }
 

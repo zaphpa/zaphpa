@@ -14,6 +14,7 @@ class Zaphpa_InvalidResponseCodeException extends Exception {}
 
 /**
 * Handy regexp patterns for common types of URI parameters.
+* @see: http://zaphpa.github.com/zaphpa/#Pre-defined_Validator_Types
 */
 final class Zaphpa_Constants {
   const PATTERN_ARGS       = '?(?P<%s>(?:/.+)+)';
@@ -82,9 +83,13 @@ class Zaphpa_Callback_Util {
   
 }
 
+/**
+ * Generic URI matcher and parser implementation.
+ */
 class Zaphpa_Template {
   
   private static $globalQueryParams = array();
+  private $patterns = array();
   
   private $template  = null;
   private $params    = array();
@@ -103,7 +108,7 @@ class Zaphpa_Template {
   
   public function getExpression() {
     $expression = $this->template;
-    
+
     if (preg_match_all('~(?P<match>\{(?P<name>.+?)\})~', $expression, $matches)) {
       $expressions = array_map(array($this, 'pattern'), $matches['name']);
       $expression  = str_replace($matches['match'], $expressions, $expression);
@@ -113,28 +118,26 @@ class Zaphpa_Template {
   }
   
   public function pattern($token, $pattern = null) {
-    static $patterns = array();
-    
+
     if ($pattern) {
-      if (!isset($patterns[$token])) {
-        $patterns[$token] = $pattern;
+      if (!isset($this->patterns[$token])) {
+        $this->patterns[$token] = $pattern;
       } 
     } else {
       
-      if (isset($patterns[$token])) {
-        $pattern = $patterns[$token];
+      if (isset($this->patterns[$token])) {
+        $pattern = $this->patterns[$token];
       } else {
         $pattern = Zaphpa_Constants::PATTERN_ANY;
       }
       
       if ((is_string($pattern) && is_callable($pattern)) || is_array($pattern)) {
         $this->callbacks[$token] = $pattern;
-        $patterns[$token] = $pattern = Zaphpa_Constants::PATTERN_ANY;
+        $this->patterns[$token] = $pattern = Zaphpa_Constants::PATTERN_ANY;
       }
-      
+
       return sprintf($pattern, $token);
-       
-    }    
+    }
   }
   
   public function addQueryParam($name, $pattern = '', $defaultValue = null) {
@@ -162,7 +165,7 @@ class Zaphpa_Template {
     try {
     
       $uri = rtrim($uri, '\/');
-      
+
       if (preg_match($this->getExpression(), $uri, $matches)) {
         
         foreach($matches as $k=>$v) {
@@ -480,7 +483,7 @@ class Zaphpa_Router {
     if (!empty($params['path'])) {
       
       $template = new Zaphpa_Template($params['path']);
-      
+
       if (!empty($params['handlers'])) {
         foreach ($params['handlers'] as $key => $pattern) {
            $template->pattern($key, $pattern);
@@ -519,11 +522,10 @@ class Zaphpa_Router {
     }
   
     $routes = $this->getRoutes();
-        
+
     try {
-    
+
       foreach ($routes as $route) {
-        
         $params = $route['template']->match($uri);
   
         if (!is_null($params)) {
