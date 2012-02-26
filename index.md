@@ -176,7 +176,14 @@ $router->addRoute(array(
     )
 );
 
-$router->route();
+// Add default 404 handler.
+try {
+    $router->route();
+} catch (Zaphpa_InvalidPathException $ex) {
+    header("Content-Type: application/json;", TRUE, 404);
+    $out = array("error" => "not found");        
+    die(json_encode($out));
+}
 
 function handle_year($param) {
   return preg_match('~^\d{4}$~', $param) ? array(
