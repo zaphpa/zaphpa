@@ -15,36 +15,9 @@ You can think of it as an equivalent of Sinatra (Ruby) or Express.js (Javascript
 
 To start serving RESTful HTTP requests, you need to go through three simple steps:
 
-1. Setup Zaphpa Library
+1. Setup Zaphpa Library (see: Appendix A)
 1. Instantiate and configure a router object
 1. Write callbacks/controllers.
-
-## Setting Up Zaphpa Library
-
-You need to register a PHP script to handle all HTTP requests. For Apache it would look something like the following: 
-
-<pre>
-RewriteEngine On
-RewriteRule "(^|/)\." - [F]
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_URI} !=/favicon.ico
-RewriteRule ^ /your_www_root/api.php [NC,NS,L]
-</pre>
-
-Please note that this configuration is for a httpd.conf, if you are putting it into an .htaccess file, you may want to remove the leading %{DOCUMENT_ROOT} in the corresponding RewriteConds.
-
-The very first RewriteRule is a security-hardening feature, ensuring that system files (the ones typically starting with dot) do not accidentally get exposed.
-
-For Nginx, you need to make sure that Nginx is properly configured with PHP-FPM as CGI and the actual configuration in the virtualhost may look something like:
-<pre>
-location / {
-  # the main router script
-  if (!-e $request_filename) {
-    rewrite ^/(.*)$ /api.php?q=$1 last;
-  }
-}
-</pre>
 
 ## Instantiating And Configuring A Router
 
@@ -212,4 +185,31 @@ $router->addRoute(array(
       'file'     => 'controllers/bookcontroller.php'
     )
 );
+</pre>
+
+# Appendix A: Setting Up Zaphpa Library
+
+You need to register a PHP script to handle all HTTP requests. For Apache it would look something like the following: 
+
+<pre>
+RewriteEngine On
+RewriteRule "(^|/)\." - [F]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !=/favicon.ico
+RewriteRule ^ /your_www_root/api.php [NC,NS,L]
+</pre>
+
+Please note that this configuration is for a httpd.conf, if you are putting it into an .htaccess file, you may want to remove the leading %{DOCUMENT_ROOT} in the corresponding RewriteConds.
+
+The very first RewriteRule is a security-hardening feature, ensuring that system files (the ones typically starting with dot) do not accidentally get exposed.
+
+For Nginx, you need to make sure that Nginx is properly configured with PHP-FPM as CGI and the actual configuration in the virtualhost may look something like:
+<pre>
+location / {
+  # the main router script
+  if (!-e $request_filename) {
+    rewrite ^/(.*)$ /api.php?q=$1 last;
+  }
+}
 </pre>
