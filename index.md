@@ -91,8 +91,9 @@ Response object is basically an output buffer that you can keep adding output ch
 
 1. add($string) - adds a string to output buffer
 1. flush($code, $format) - sends current output buffer to client. Can take optional output code (defaults to 200) and output format 
-   (defaults to request format) arguments. Caution: obviously you can/should only indicate $code or $format, the first time
-   you invoke them, since these values can not be set once output is sent to the client.
+   (defaults to request format) arguments. 
+   **Caution**: obviously you can/should only indicate $code or $format, the first time
+   you invoke the method, since these values can not be set once output is sent to the client.
 1. send($code, $format) - sends current output buffer to the client and terminates response.
 
 # Output format aliases
