@@ -15,7 +15,7 @@ You can think of it as an equivalent of Sinatra (Ruby) or Express.js (Javascript
 
 To start serving RESTful HTTP requests, you need to go through three simple steps:
 
-1. Setup Zaphpa Library (see: Appendix A)
+1. Setup Zaphpa Library (see: [Appendix A](http://zaphpa.github.com/zaphpa/#Appendix_A:_Setting_Up_Zaphpa_Library) )
 1. Instantiate and configure a router object
 1. Write callbacks/controllers.
 
