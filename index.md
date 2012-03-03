@@ -88,6 +88,7 @@ When invoked callbacks get two arguments:
 # Response Object
 
 Response object is basically an output buffer that you can keep adding output chunks while you are building a response. Following methods are defined on the response class:
+
 1. add($string) - adds a string to output buffer
 1. flush($code, $format) - sends current output buffer to client. Can take optional output code (defaults to 200) and output format 
    (defaults to request format) arguments. Caution: obviously you can/should only indicate $code or $format, the first time
