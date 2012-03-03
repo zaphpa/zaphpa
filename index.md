@@ -52,47 +52,6 @@ However, we asked the library to ascertain that the {id} parameter is a number b
 * http://example.com/users/32424sfsd
 * http://example.com/users/324sdf24
 
-# Pre-defined Validator Types
-
-Zaphpa allows indicating completely custom function callbacks as validating handlers, but for convenience it also provides number of pre-defined, common validators:
-<pre>
-  const PATTERN_NUM        = '(?P<%s>\d+)';
-  const PATTERN_DIGIT      = '(?P<%s>\d+)';
-  const PATTERN_MD5        = '(?P<%s>[a-z0-9]{32})';
-  const PATTERN_ALPHA      = '(?P<%s>(?:/?[-\w]+))';
-  const PATTERN_ARGS       = '?(?P<%s>(?:/.+)+)';
-  const PATTERN_ARGS_ALPHA = '?(?P<%s>(?:/[-\w]+)+)';
-  const PATTERN_ANY        = '(?P<%s>(?:/?[^/]*))';
-  const PATTERN_WILD_CARD  = '(?P<%s>.*)'; 
-  const PATTERN_YEAR       = '(?P<%s>\d{4})';
-  const PATTERN_MONTH      = '(?P<%s>\d{1,2})';
-  const PATTERN_DAY        = '(?P<%s>\d{1,2})';
-</pre>
-
-You may be able to guess the functionality from the regexp patterns associated with each pre-defined validator, but let's go through the expected behavior of each one of them:
-
-* PATTERN_NUM - ensures a path element to be numeric
-* PATTERN\_DIGIT - alias to PATTERN\_NUM 
-* PATTERN\_MD5 - ensures a path element to be valid MD5 hash
-* PATTERN\_ALPHA - ensures a path element to be valid alpha-numeric string (i.e. latin characters and numbers, as defined by \w pattern of regular expressions).
-* PATTERN\_ARGS - is a more sophisticated case that takes some explanation. It tries to match multiple path elements and could be useful in URLs like: <pre>/news/212424/**us/politics/elections**/some-title-goes-here/2012</pre> 
-where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator like: <script src="https://gist.github.com/1900311.js?file=gistfile1.txt"></script> and you would get the function arguments in the callback as: <script src="https://gist.github.com/1900324.js?file=gistfile1.txt"></script>
-* PATTERN\_ARGS\_ALPHA - acts the exact same way as PATTERN\_ARGS but limits character set to alpha-numeric ones.
-* PATTERN\_ANY (default) - matches any one argument
-* PATTERN\_WILD\_CARD - "greedy" version of PATTERN\_ANY that can match multiple arguments
-* PATTERN\_YEAR - matches a 4-digit representation of a year.
-* PATTERN\_MONTH - matches 1 or 2 digit representation of a month
-* PATTERN\_DAY - matches 1 or 2 digit representation of a numeric day.
-
-For more custom cases, you can use a custom regex:
-<script src="https://gist.github.com/1900357.js?file=gistfile1.txt"></script>
-
-or attach a validator/parser callback function where you can do whatever you need: 
-<script src="https://gist.github.com/1900339.js?file=gistfile1.txt"></script>
-
-The output of a custom parser callback should match that of a regex call i.e.: should return a parsed array of matches or null.
-
-
 # Example Controllers/Callbacks
 
 <pre>
@@ -126,9 +85,28 @@ When invoked callbacks get two arguments:
 		<script src="https://gist.github.com/1353603.js?file=HTTPOutput.php"></script>
 2. $res (response) object is used to incrementally create content. You can add chunks of text to the output buffer by calling: $res->add (String) and once you are done you can send entire buffer to the HTTP client by issuing: $res->send(<HTTP_RESPONSE_CODE>). HTTP_RESPONSE_CODE is an optional parameter which defaults to (you guessed it:) 200.
 
-# Convenience Functions
+# Response Object
 
-1. $req->get_var('varname') - since $req object populates $data object, you can access request variables (request parameters or HTTP Body data, depending on the type of request) through the array directly. However due to malformed clients or some other application logic, variable may not be set, causing PHP to throw a warning. Instead of having you check each call to $req->data['varname'] on being empty Zaphpa provides a convenience method: $req->get_var('varanme').
+Response object is basically an output buffer that you can keep adding output chunks while you are building a response. Following methods are defined on the response class:
+1. add($string) - adds a string to output buffer
+1. flush($code, $format) - sends current output buffer to client. Can take optional output code (defaults to 200) and output format 
+   (defaults to request format) arguments. Caution: obviously you can/should only indicate $code or $format, the first time
+   you invoke them, since these values can not be set once output is sent to the client.
+1. send($code, $format) - sends current output buffer to the client and terminates response.
+
+# Output format aliases
+
+The $format argument of the send() and flush() should be passed as a standard mime-type string. However, for convenience and brevity Zaphpa
+allows indicating some simple aliases for common mime types:
+
+    'html' => 'text/html',
+    'txt' => 'text/plain',
+    'css' => 'text/css',
+    'js' => 'application/x-javascript',
+    'xml' => 'application/xml', 
+    'rss' => 'application/rss+xml',
+    'atom' => 'application/atom+xml',
+    'json' => 'application/json',
 
 # A More Advanced Router Example
 
@@ -186,6 +164,51 @@ $router->addRoute(array(
     )
 );
 </pre>
+
+# Pre-defined Validator Types
+
+Zaphpa allows indicating completely custom function callbacks as validating handlers, but for convenience it also provides number of pre-defined, common validators:
+<pre>
+  const PATTERN_NUM        = '(?P<%s>\d+)';
+  const PATTERN_DIGIT      = '(?P<%s>\d+)';
+  const PATTERN_MD5        = '(?P<%s>[a-z0-9]{32})';
+  const PATTERN_ALPHA      = '(?P<%s>(?:/?[-\w]+))';
+  const PATTERN_ARGS       = '?(?P<%s>(?:/.+)+)';
+  const PATTERN_ARGS_ALPHA = '?(?P<%s>(?:/[-\w]+)+)';
+  const PATTERN_ANY        = '(?P<%s>(?:/?[^/]*))';
+  const PATTERN_WILD_CARD  = '(?P<%s>.*)'; 
+  const PATTERN_YEAR       = '(?P<%s>\d{4})';
+  const PATTERN_MONTH      = '(?P<%s>\d{1,2})';
+  const PATTERN_DAY        = '(?P<%s>\d{1,2})';
+</pre>
+
+You may be able to guess the functionality from the regexp patterns associated with each pre-defined validator, but let's go through the expected behavior of each one of them:
+
+* PATTERN_NUM - ensures a path element to be numeric
+* PATTERN\_DIGIT - alias to PATTERN\_NUM 
+* PATTERN\_MD5 - ensures a path element to be valid MD5 hash
+* PATTERN\_ALPHA - ensures a path element to be valid alpha-numeric string (i.e. latin characters and numbers, as defined by \w pattern of regular expressions).
+* PATTERN\_ARGS - is a more sophisticated case that takes some explanation. It tries to match multiple path elements and could be useful in URLs like: <pre>/news/212424/**us/politics/elections**/some-title-goes-here/2012</pre> 
+where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator like: <script src="https://gist.github.com/1900311.js?file=gistfile1.txt"></script> and you would get the function arguments in the callback as: <script src="https://gist.github.com/1900324.js?file=gistfile1.txt"></script>
+* PATTERN\_ARGS\_ALPHA - acts the exact same way as PATTERN\_ARGS but limits character set to alpha-numeric ones.
+* PATTERN\_ANY (default) - matches any one argument
+* PATTERN\_WILD\_CARD - "greedy" version of PATTERN\_ANY that can match multiple arguments
+* PATTERN\_YEAR - matches a 4-digit representation of a year.
+* PATTERN\_MONTH - matches 1 or 2 digit representation of a month
+* PATTERN\_DAY - matches 1 or 2 digit representation of a numeric day.
+
+For more custom cases, you can use a custom regex:
+<script src="https://gist.github.com/1900357.js?file=gistfile1.txt"></script>
+
+or attach a validator/parser callback function where you can do whatever you need: 
+<script src="https://gist.github.com/1900339.js?file=gistfile1.txt"></script>
+
+The output of a custom parser callback should match that of a regex call i.e.: should return a parsed array of matches or null.
+
+# Convenience Functions
+
+1. $req->get_var('varname') - since $req object populates $data object, you can access request variables (request parameters or HTTP Body data, depending on the type of request) through the array directly. However due to malformed clients or some other application logic, variable may not be set, causing PHP to throw a warning. Instead of having you check each call to $req->data['varname'] on being empty Zaphpa provides a convenience method: $req->get_var('varanme').
+
 
 # Appendix A: Setting Up Zaphpa Library
 
