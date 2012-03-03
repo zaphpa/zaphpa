@@ -244,24 +244,25 @@ class Zaphpa_Response {
   /** Ordered chunks of the output buffer **/
   public $chunks = array();
   
-  public $code;
+  public $code = 200;
   
   private $format;
   private $req;
 
+  / ** Public constructor **/
   function __construct($request=null) {
     $this->req = $request;  
   }
   
   /**
-  * Send output to the client
+  * Add string to output buffer.
   */
   public function add($out) {    
     $this->chunks[]  = $out;    
   }
   
   /**
-  * Send output to client and end request
+  * Flush output buffer to http client and end request
   *
   *  @param $code
   *      HTTP response Code
@@ -278,9 +279,9 @@ class Zaphpa_Response {
   *      HTTP response Code
   */  
   public function flush($code=null) {
-    $code = (!empty($this->code) && empty($code)) ? $this->code : $code;
-    $code = empty($code) ? 200 : $code; // default value if never set
-  
+    $this->code = (!empty(code)) ? $code : $this->code;
+    if (empty($code)) { $code = 200; } // default value if not set
+    
     $codes = $this->codes();
     if (array_key_exists($code, $codes)) {
       $resp_text = $codes[$code];
@@ -442,7 +443,11 @@ class Zaphpa_Request {
     return array(
       'html' => 'text/html',
       'txt' => 'text/plain',
+      'css' => 'text/css',
+      'js' => 'application/x-javascript',
       'xml' => 'application/xml', 
+      'rss' => 'application/rss+xml',
+      'atom' => 'application/atom+xml',
       'json' => 'application/json',   
     );
   }
