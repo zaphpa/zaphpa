@@ -267,9 +267,11 @@ class Zaphpa_Response {
   * Flush output buffer to http client and end request
   *
   *  @param $code
-  *      HTTP response Code
+  *      HTTP response Code. Defaults to 200
+  *  @param $format
+  *      Output mime type. Defaults to request format
   */
-  public function send($code=null) {      
+  public function send($code=null, $format=null) {      
     $this->flush($code);
     exit(); //prevent any further output
   }
@@ -278,11 +280,13 @@ class Zaphpa_Response {
   * Send output to client without ending the script
   *
   *  @param $code
-  *      HTTP response Code
+  *      HTTP response Code. Defaults to 200
+  *  @param $format
+  *      Output mime type. Defaults to request format
   *
   *  @return current respons eobject, so you can chain method calls on a response object.
   */  
-  public function flush($code=null, $format=) {
+  public function flush($code=null, $format=null) {
     $this->code = (!empty(code)) ? $code : $this->code;
     if (empty($code)) { $code = 200; } // default value if not set
     
