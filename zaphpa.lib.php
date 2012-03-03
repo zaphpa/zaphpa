@@ -8,6 +8,8 @@ class Zaphpa_CallbackFileNotFoundException extends Exception {}
 class Zaphpa_InvalidCallbackException extends Exception {}
 /** Invalid URI Parameter exception **/
 class Zaphpa_InvalidURIParameterException extends Exception {}
+/** Invalid State of HTTP Response exception **/
+class Zaphpa_InvalidResponseStateException extends Exception {}
 /** Invalid HTTP Response Code exception **/
 class Zaphpa_InvalidResponseCodeException extends Exception {}
 
@@ -277,26 +279,45 @@ class Zaphpa_Response {
   *
   *  @param $code
   *      HTTP response Code
+  *
+  *  @return current respons eobject, so you can chain method calls on a response object.
   */  
-  public function flush($code=null) {
+  public function flush($code=null, $format=) {
     $this->code = (!empty(code)) ? $code : $this->code;
     if (empty($code)) { $code = 200; } // default value if not set
     
-    $codes = $this->codes();
-    if (array_key_exists($code, $codes)) {
-      $resp_text = $codes[$code];
-      $protocol = $this->req->protocol;
-      header("$protocol $code $resp_text");
-    } else {
-      throw new Zaphpa_InvalidResponseCodeException("Invalid Response Code: " . $code);
+    if (!empty($code)) { 
+      if (headers_sent()) {
+        throw new Zaphpa_InvalidResponseStateException("Response code already sent! " . $this->code); 
+      }
+
+      $codes = $this->codes();
+      if (array_key_exists($code, $codes)) {
+        $resp_text = $codes[$code];
+        $protocol = $this->req->protocol;
+        $this->code = code;
+      } else {
+        throw new Zaphpa_InvalidResponseCodeException("Invalid Response Code: " . $code);
+      }
+    }
+        
+    // If no format was set explicitely, use the request format for response.
+    if (!empty($format)) { 
+      if (headers_sent()) {
+        throw new Zaphpa_InvalidResponseStateException("Response format already sent! " . $this->format); 
+      }
+      $this->setFormat($format);       
     }
     
-    // If no format was set explicitely, use the request format for response.
-    $format = !empty($this->format) ? $this->format : $this->req->format;
-    header("Content-Type: $format;");    
+    if (empty($this->format)) { $this->format = $this->req->format; }
+    
+    if (!headers_sent()) {
+      header("Content-Type: $format;", TRUE, $this->code);    
+    }
     
     $out = implode("", $this->chunks);
     echo ($out);
+    return $this;
   }
   
   /**
