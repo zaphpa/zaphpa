@@ -251,7 +251,7 @@ class Zaphpa_Response {
   private $format;
   private $req;
 
-  / ** Public constructor **/
+  /** Public constructor **/
   function __construct($request=null) {
     $this->req = $request;  
   }
@@ -287,9 +287,7 @@ class Zaphpa_Response {
   *  @return current respons eobject, so you can chain method calls on a response object.
   */  
   public function flush($code=null, $format=null) {
-    $this->code = (!empty(code)) ? $code : $this->code;
-    if (empty($code)) { $code = 200; } // default value if not set
-    
+
     if (!empty($code)) { 
       if (headers_sent()) {
         throw new Zaphpa_InvalidResponseStateException("Response code already sent! " . $this->code); 
@@ -299,7 +297,7 @@ class Zaphpa_Response {
       if (array_key_exists($code, $codes)) {
         $resp_text = $codes[$code];
         $protocol = $this->req->protocol;
-        $this->code = code;
+        $this->code = $code;
       } else {
         throw new Zaphpa_InvalidResponseCodeException("Invalid Response Code: " . $code);
       }
@@ -312,14 +310,17 @@ class Zaphpa_Response {
       }
       $this->setFormat($format);       
     }
-    
+
+    // Set default values (200 and request format) if nothing was set explicitely
     if (empty($this->format)) { $this->format = $this->req->format; }
-    
+    if (empty($this->code)) { $this->code = 200; }
+
     if (!headers_sent()) {
-      header("Content-Type: $format;", TRUE, $this->code);    
+      header("Content-Type: $this->format;", TRUE, $this->code);
     }
     
     $out = implode("", $this->chunks);
+    $this->chunks = array(); // reset
     echo ($out);
     return $this;
   }
