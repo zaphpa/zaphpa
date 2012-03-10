@@ -20,6 +20,8 @@ server {
     server_name  zaphpa.vm;
     root /path/to/zaphpa/code/tests;
     
+    index index.php router.sample.php;
+    
 location / {
       if (!-e $request_filename) {
         rewrite ^/(.*)$ /router.sample.php?q=$1 last;
