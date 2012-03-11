@@ -430,6 +430,7 @@ class Zaphpa_Request {
         default:
             $contents = file_get_contents("php://input");
             $parsed_contents = null;
+            // @TODO: considering $_SERVER['HTTP_CONTENT_TYPE'] == 'application/x-www-form-urlencoded' could help here
             parse_str($contents, $parsed_contents);
             $this->data = $_GET + $parsed_contents; //people do use query params with PUT and DELETE
             $this->data['_RAW_HTTP_DATA'] = $contents;
