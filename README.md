@@ -11,7 +11,7 @@ http://zaphpa.github.com/zaphpa/
 
 ## Special Thanks
 
-Our sincere gratitude goes to [JetBrains](http://www.jetbrains.com/) for providing an open-source project license to [PHPStorm](http://www.jetbrains.com/phpstorm/) for Zaphpa development.
+Our sincere gratitude goes to [JetBrains](http://www.jetbrains.com/) for providing an open-source project license to the wonderful [PHPStorm](http://www.jetbrains.com/phpstorm/) IDE for Zaphpa development.
 
 
 ## License 
