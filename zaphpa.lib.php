@@ -583,7 +583,7 @@ class Zaphpa_Router {
     $req->params = $params;         
     $res = new Zaphpa_Response($req);
     
-    return call_user_func($callback, $req, $res);    
+    return call_user_func($callback, $req, $res, $this->routes);    
   }
   
 

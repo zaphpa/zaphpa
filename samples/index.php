@@ -3,6 +3,11 @@
 require_once(dirname(__FILE__) .'/../zaphpa.lib.php');
 
 $router = new Zaphpa_Router();
+/* 
+   // Optional: Sets a base value used to resolve the RewriteBase command issue.
+   $router->setBasePath( "/api" );
+*/
+
 
 $router->addRoute(array(
       'path'     => '/pages/{id}/{categories}/{name}/{year}',
@@ -17,6 +22,17 @@ $router->addRoute(array(
       'file'     => 'controllers/mycontroller.php'
     )
 );
+
+/*
+
+$router->addRoute(array(
+      'path'     => '/docs',
+      'get'      => array('myDocumentation', 'getPage'),
+      'file'     => 'controllers/myDocumentation.php'
+    )
+);
+
+*/
 
 $router->route();
 
