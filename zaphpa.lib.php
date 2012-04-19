@@ -475,7 +475,8 @@ class Zaphpa_Request {
       'xml' => 'application/xml', 
       'rss' => 'application/rss+xml',
       'atom' => 'application/atom+xml',
-      'json' => 'application/json',   
+      'json' => 'application/json',  
+      'jsonp' => 'text/javascript',
     );
   }
   
