@@ -272,7 +272,7 @@ class Zaphpa_Response {
   *      Output mime type. Defaults to request format
   */
   public function send($code=null, $format=null) {      
-    $this->flush($code);
+    $this->flush($code, $format);
     exit(); //prevent any further output
   }
   
