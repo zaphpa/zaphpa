@@ -508,6 +508,18 @@ class Zaphpa_Router {
   protected $routes  = array();
   protected static $methods = array('get', 'post', 'put', 'delete', 'head', 'options');
   
+  /*
+   * SSMITH Added this to set the base property so the route
+   * will not be limited by a sub folder in the REQUEST_URI
+   *
+   */
+   
+  public static $basePath = '';
+
+  public function setBasePath($base) {
+    self::$basePath = $base;
+  }
+  
   /**
   * Add a new route to the configured list of routes
   */
@@ -551,7 +563,13 @@ class Zaphpa_Router {
   
     if (empty($uri)) {
       $tokens = parse_url($_SERVER['REQUEST_URI']);
+
+      // SSMith Added this to solve the base path issueseems that .htaccess does not alter the REQUEST_URI
       $uri = $tokens['path'];
+      if (self::$basePath) {
+        $uri = preg_replace('#'.self::$basePath.'#', '', $uri); 
+      }
+      // END
     }
   
     $routes = $this->getRoutes();
@@ -584,7 +602,7 @@ class Zaphpa_Router {
     $req->params = $params;         
     $res = new Zaphpa_Response($req);
     
-    return call_user_func($callback, $req, $res);    
+    return call_user_func($callback, $req, $res, $this->routes);    
   }
   
 
