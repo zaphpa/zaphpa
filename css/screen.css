@@ -1,64 +1,96 @@
-/** @import url(http://fonts.googleapis.com/css?family=Questrial); **/
-@import url(http://fonts.googleapis.com/css?family=Noticia+Text);
-
 html {
-    font-family: 'Noticia Text', serif;
     color: #777;
+}
+
+body {
+  padding-top: 10px;
 }
 
 #content {
   background: white;
+  max-width:  700px;
 }
+
+#content p, #content li {
+  font-size:  1.1em;  
+  line-height: 1.4em;  
+}
+
+
+h1, h2, h3, h4 {
+  margin: 25px 0 10px 0;
+  color: purple;  
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.4); 
+}
+
+h3 {
+  font-size: 18px; 
+}
+
+h4 {
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+
 
 section#column {
   background: #f2f2f2 url("../img/bordershadow.png") top right repeat-y;
   font-family: 'Helvetica', sans-serif;
-  font-size: .8em;
+  font-size: 1em;
+  padding-top:  30px;
 }
 
 #column a {
   display: block;
-  color: #2E87DD;
+  color: purple;
   text-decoration: none;
   margin-bottom: .5em;
 }
 
-#column a:hover {
-  text-decoration: underline;
-}
-
-code, pre, tt, textarea {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-pre {
-  padding: 1em 0 .5em .8em;
-  border-left: 6px solid #D8D8ED;
-  background-color: #F8F8FF;
-  margin: .5em 0 2em 0;
-}
-code, pre, tt {
-  font-family: Monaco, Consolas, "Lucida Console", monospace;
-  font-size: 0.70em;
-  line-height: 1.5em;
-  color: #5F5529;
-}
 
 #column ul {
-    list-style: none;
+  list-style: none;
 	margin: 0;
 	padding: 0!important;
 }
-#column ul {
-	margin: 0;
+
+
+#toc ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
-#column ul li ul {
-    margin-bottom: 0.75em;
+
+#toc li a {
+//    padding: 5px;
 }
-#column ul li ul li ul {
-    margin-bottom: 0.25em;
+
+#toc a {
+    color: purple;
+    text-decoration: none;
+    display: block;
 }
+
+#toc .toc-h2 {
+    padding-left: 0px;
+}
+
+#toc .toc-h3 {
+    padding-left: 10px;
+}
+
+#toc .toc-h4 {
+    padding-left: 20px;
+}
+
+#toc .toc-active a {
+    background: #336699;
+    padding:  5px;
+    color:  white;
+}
+
+
 
 
 .clearfix:before, .clearfix:after { content: ""; display: table; }

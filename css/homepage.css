@@ -1,0 +1,49 @@
+body {
+    /** background-image: url('../img/leather-1.jpg'); **/
+}
+
+div.top {
+  margin-top:  50px;  
+}
+
+.logo {
+}
+
+h1#headline {
+  margin-bottom: 18px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;    
+  text-align: center;
+}
+
+div#subhead {
+  margin-bottom:  40px;  
+  text-align: center;  
+}
+
+.social-links ul li {
+  display: block;
+}
+
+.social-links ul {
+  margin: 5px 0 0 0;
+  padding: 0;
+  list-style: none;  
+}
+
+
+.project-links {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+div.marketing h2 {
+  font-size:  2.5em;  
+  margin-bottom: 0.4em;
+}
+
+div.marketing p {
+  font-size: 1.3em;
+  line-height: 1.4em;
+}

@@ -18,41 +18,40 @@
 		<!-- Feel free to split the CSS into separate files, if you like. -->
 		<link rel="stylesheet" href="css/GGS.css"/> 
 		
-	    <!-- syntax highlighting CSS -->
-	    <link rel="stylesheet" href="css/syntax.css" type="text/css" />
-
-	    <!-- Homepage CSS -->
-	    <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />		
-				
-		<!-- 
-			This script enables structural HTML5 elements in old IE.
-			http://code.google.com/p/html5shim/
-		-->
-		<!--[if lt IE 9]>
-			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
+    <link href="css/prettify.css" type="text/css" rel="stylesheet" />
+		
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" type="text/css" />
+		<link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.min.css" type="text/css" />
+		
+    <!-- Homepage CSS -->
+    <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />		
 	</head>
 
 <body lang="en">
-	<a href="http://github.com/zaphpa/zaphpa"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub"></a>
+	<a href="http://github.com/zaphpa/zaphpa"><img style="position: absolute; top: 0; right: 0; border: 0;" 
+	   src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" 
+	   alt="Fork me on GitHub"></a>
 		
 	<section id="main" class="normal">	
 		<!-- Content begins -->
 		
 		<section id="column" class="wrapper">
-			<!-- This will be replaced by proper TOC through Javascript -->						
+			<!-- This will be replaced by proper TOC through Javascript -->		
+			<div id="toc"></div>				
 		</section><!--/ #column -->
 		
 		<section id="placeholder">&nbsp;</section>
 		
 		<section id="content" class="wrapper">
-{{ content }}
+      {{ content }}
 		</section>
 	
 	</section><!--/ #main -->
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script src="http://samaxesjs.googlecode.com/files/jquery.toc-1.1.2.min.js"></script>
+<script src="prettify/prettify.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="https://raw.github.com/jgallen23/toc/master/dist/jquery.toc.min.js"></script>
 <script src="js/site.js"></script>	
 </body>
 </html>

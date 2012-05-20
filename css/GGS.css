@@ -11,215 +11,7 @@
 *  except for form elements
 *
 */
-body,
-div,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-dl,
-dt,
-dd,
-fieldset,
-form,
-label,
-legend,
-th,
-td,
-article,
-aside,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-/*
-*
-*  Consistency fixes
-*  adopted from http://necolas.github.com/normalize.css/
-*
-*/
-html {
-  height: 100%;
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-}
-body {
-  min-height: 100%;
-  font-size: 100%;
-}
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-nav,
-section,
-audio,
-canvas,
-video {
-  display: block;
-}
-sub, sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-}
-sup {
-  top: -0.5em;
-}
-sub {
-  bottom: -0.25em;
-}
-pre {
-  white-space: pre;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-b, strong {
-  font-weight: bold;
-}
-abbr[title] {
-  border-bottom: 1px dotted;
-}
-input,
-textarea,
-button,
-select {
-  margin: 0;
-  font-size: 100%;
-  line-height: normal;
-  vertical-align: baseline;
-}
-button,
-html input[type="button"],
-input[type="reset"],
-input[type="submit"] {
-  cursor: pointer;
-  -webkit-appearance: button;
-}
-input[type="checkbox"], input[type="radio"] {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-}
-textarea {
-  overflow: auto;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-/*
-*
-*  Simple fluid media
-*
-*/
-figure {
-  position: relative;
-}
-figure img,
-figure object,
-figure embed,
-figure video {
-  max-width: 100%;
-  display: block;
-}
-img {
-  border: 0;
-  -ms-interpolation-mode: bicubic;
-}
-/*
-*
-*	Zoomable baseline grid
-*	type size presets
-*
-*/
-body {
-  /* 16px / 24px */
 
-  font-size: 1em;
-  line-height: 1.5em;
-}
-.small {
-  /* 13px / 18px */
-
-  font-size: 0.8125em;
-  line-height: 1.3846153846153846em;
-}
-.normal, h3 {
-  /* 16px / 24px */
-
-  font-size: 1em;
-  line-height: 1.5em;
-  /* 24 */
-
-}
-.large, h2, h1 {
-  /* 26 / 36px */
-
-  font-size: 1.625em;
-  line-height: 1.3846153846153846em;
-}
-.huge {
-  /* 42px / 48px */
-
-  font-size: 2.625em;
-  line-height: 1.1428571428571428em;
-}
-.massive {
-  /* 68px / 72px */
-
-  font-size: 4.25em;
-  line-height: 1.0588235294117647em;
-}
-.gigantic {
-  /* 110px / 120px */
-
-  font-size: 6.875em;
-  line-height: 1.0909090909090908em;
-}
-/*
-*
-*  Four-column grid active
-*  ----------------------------------------
-*  Margin   | #  1   2   3   4   |   Margin
-*  5.55555% | %  25  50  75  100 | 5.55555%
-*
-*/
-header, #main {
-  margin: 0 5.555555555555555%;
-}
-#column {
-  padding-top: 20px;
-  padding-right: 10px;
-}
-h1,h2,h3,h4,h5 {color: black;}
-p {margin-bottom: 1.5em;}
-li {margin-bottom: 1em; }
-h1, h2 {
-  margin: 0.9230769230769231em 0 1.3846153846153846em;
-}
-h3 {
-  margin: 1.5em 0 1.5em;
-}
 /*
 *  Simple elastic gutters
 *  Note: box-sizing will not work in IE6-8
@@ -251,17 +43,6 @@ h3 {
 }
 /* @media screen and (min-width: 640px) */
 @media screen and (min-width: 40em) {
-  body {
-    /* Zoom baseline grid to 17/16 = 1.0625 */
-  
-    font-size: 1.0625em;
-  }
-  h1 {
-  
-    font-size: 2.325em;
-    line-height: 1.1428571428571428em;
-    margin: 1.1428571428571428em 0 0.5714285714285714em;
-  }
 }
 /*
 *
@@ -274,18 +55,13 @@ h3 {
 */
 /* @media screen and (min-width: 720px) */
 @media screen and (min-width: 45em) {
-  body {
-    /* Reset baseline grid to 16/16 = 1 */
-  
-    font-size: 1em;
-  }
 
   #column {
 	position: fixed;
 	top: 0;
 	left: 0;
 	z-index: 0;
-	width: 22%;
+	width: 17%;
 	min-height: 100%;
   }
 
@@ -296,54 +72,29 @@ h3 {
     
   #content {
     float: left;
-	width: 62.5%;
+	  width: 62.5%;
   }
 }
 /* @media screen and (min-width: 888px) */
 @media screen and (min-width: 55.5em) {
-  body {
-    /* Zoom baseline grid to 17/16 = 1.0625 */
-  
-    font-size: 1.0625em;
-  }
 }
 /* @media screen and (min-width: 984px) */
 @media screen and (min-width: 61.5em) {
-  body {
-    /* Reset baseline grid to 16/16 = 1.0 */
-  
-    font-size: 1em;
-  }
   header, #twoway {
     margin: 0 16.666666666666664%;
   }
 }
 /* @media screen and (min-width: 1200px) */
 @media screen and (min-width: 75em) {
-  body {
-    /* Zoom baseline grid to 17/16 = 1.0625 */
-  
-    font-size: 1.0625em;
-  }
 }
 /* @media screen and (min-width: 1392px) */
 @media screen and (min-width: 87em) {
-  body {
-    /* Reset baseline grid to 16/16 = 1.0 */
-  
-    font-size: 1em;
-  }
   header, #twoway {
     margin: 0 27.77777777777778%;
   }
 }
 /* @media screen and (min-width: 1680px) */
 @media screen and (min-width: 105em) {
-  body {
-    /* Zoom baseline grid to 17/16 = 1.0625 */
-  
-    font-size: 1.0625em;
-  }
 }
 /*
 *
@@ -374,8 +125,6 @@ h3 {
 @media screen and (min-width: 130em) {
   body {
     /* Zoom baseline grid to 18/16 = 1.125 */
-  
-    font-size: 1.125em;
     max-width: 160em;
   }
 }
