@@ -244,30 +244,39 @@ You may be able to guess the functionality from the regexp patterns associated w
 go through the expected behavior of each one of them:
 
 * `PATTERN_NUM` - ensures a path element to be numeric
-* `PATTERN\_DIGIT` - alias to `PATTERN\_NUM` 
-* `PATTERN\_MD5` - ensures a path element to be valid MD5 hash
-* `PATTERN\_ALPHA` - ensures a path element to be valid alpha-numeric string (i.e. latin characters and numbers, as defined 
+* `PATTERN_DIGIT` - alias to `PATTERN_NUM` 
+* `PATTERN_MD5` - ensures a path element to be valid MD5 hash
+* `PATTERN_ALPHA` - ensures a path element to be valid alpha-numeric string (i.e. latin characters and numbers, as defined 
 by \w pattern of regular expression syntax).
-* `PATTERN\_ARGS` - is a more sophisticated case that takes some explanation. It tries to match multiple path elements and 
+* `PATTERN_ARGS` - is a more sophisticated case that takes some explanation. It tries to match multiple path elements and 
 could be useful in URLs like: 
     * `/news/212424/**us/politics/elections**/some-title-goes-here/2012` 
 where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator 
 like: <script src="https://gist.github.com/1900311.js?file=gistfile1.txt"></script> and you would get the function arguments 
 in the callback as: <script src="https://gist.github.com/1900324.js?file=gistfile1.txt"></script>
-* `PATTERN\_ARGS\_ALPHA` - acts the exact same way as PATTERN\_ARGS but limits character set to alpha-numeric ones.
-* `PATTERN\_ANY` (default) - matches any one argument
-* `PATTERN\_WILD\_CARD` - "greedy" version of PATTERN\_ANY that can match multiple arguments
-* `PATTERN\_YEAR` - matches a 4-digit representation of a year.
-* `PATTERN\_MONTH` - matches 1 or 2 digit representation of a month
-* `PATTERN\_DAY` - matches 1 or 2 digit representation of a numeric day.
+* `PATTERN_ARGS_ALPHA` - acts the exact same way as `PATTERN_ARGS` but limits character set to alpha-numeric ones.
+* `PATTERN_ANY` (default) - matches any one argument
+* `PATTERN_WILD_CARD` - "greedy" version of `PATTERN_ANY` that can match multiple arguments
+* `PATTERN_YEAR` - matches a 4-digit representation of a year.
+* `PATTERN_MONTH` - matches 1 or 2 digit representation of a month
+* `PATTERN_DAY` - matches 1 or 2 digit representation of a numeric day.
 
 For more custom cases, you can use a custom regex:
-<script src="https://gist.github.com/1900357.js?file=gistfile1.txt"></script>
 
-or attach a validator/parser callback function where you can do whatever you need: 
-<script src="https://gist.github.com/1900339.js?file=gistfile1.txt"></script>
+    'handlers' => array(
+      'id'   => Zaphpa_Constants::PATTERN_DIGIT, //numeric
+      'full_date' => Zaphpa_Template::regex('\d{4}-\d{2}-\d{2}'); // custom regex
+    ),
 
-The output of a custom parser callback should match that of a regex call i.e.: should return a parsed array of matches or a null value.
+or attach a validator (you can also think of it as: URL parameter parser) callback function where you can get almost unlimited
+flexibility: 
+
+    'handlers' => array(
+      'id'         => Zaphpa_Constants::PATTERN_DIGIT, //numeric
+      'uuid'       => 'handle_uuid',       //callback function
+    ),
+
+The output of the custom validator callback should match that of a PHP regex call i.e.: should return a parsed array of matches or a null value.
 
 ## Appendix A: Setting Up Zaphpa Library
 
