@@ -8,6 +8,9 @@ $router = new Zaphpa_Router();
 
 $router->attach('ZaphpaTestMiddleware');
 
+// This one is a core plugin and should auto-load
+$router->attach('ZaphpaAutoDocumentator', '/testapidocs');
+
 $router->addRoute(array(
       'path'     => '/users',
       'get'      => array('TestController', 'getTestJsonResponse'),
@@ -20,6 +23,7 @@ $router->addRoute(array(
         'id'         => Zaphpa_Constants::PATTERN_DIGIT,
       ),
       'get'      => array('TestController', 'getTestJsonResponse'),
+      'post'      => array('TestController', 'getTestJsonResponse'),
     )
 );
 
@@ -41,7 +45,6 @@ $router->addRoute(array(
     'get'      => array('TestController', 'getTestJsonResponse'),
   )
 );
-
 
 
 try {

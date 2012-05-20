@@ -16,8 +16,10 @@ class ZaphpaTestMiddleware extends Zaphpa_Middleware {
   }
   
   function prerender(&$buffer) {
-      $dc = json_decode($buffer[0]);
-      $dc->version = "2.0";
-      $buffer[0] = json_encode($dc);
+      if (self::$context['pattern'] == '/middlewaretest/{mid}') {    
+        $dc = json_decode($buffer[0]);
+        $dc->version = "2.0";
+        $buffer[0] = json_encode($dc);
+      }
   }  
 }

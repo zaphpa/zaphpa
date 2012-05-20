@@ -15,6 +15,10 @@ class Zaphpa_InvalidResponseStateException extends Exception {}
 /** Invalid HTTP Response Code exception **/
 class Zaphpa_InvalidResponseCodeException extends Exception {}
 
+/* Enable auto-loading of plugins */
+
+require_once(__DIR__ . '/autoloader.php');
+
 
 /**
 * Handy regexp patterns for common types of URI parameters.
@@ -512,6 +516,7 @@ class Zaphpa_Request {
 abstract class Zaphpa_Middleware {
 
   public static $context = array();
+  public static $routes = array();
     
   public abstract function preprocess(&$route);
   public abstract function preroute(&$req, &$res);
@@ -547,6 +552,8 @@ class Zaphpa_Router {
           'callback' => $params[$method],
           'file'     => !empty($params['file']) ? $params['file'] : '',
         );
+        
+        Zaphpa_Middleware::$routes[$method][$params['path']] = $this->routes[$method][$params['path']];
       }
       
     }
@@ -556,23 +563,28 @@ class Zaphpa_Router {
   /**
   *  Add a new middleware to the list of middlewares
   */
-  public function attach($className) {
+  public function attach() {
+
+    $ctx = func_get_args();
+    $className = array_shift($ctx);
+
     if (!is_subclass_of($className,'Zaphpa_Middleware')) {
       throw new Zaphpa_InvalidMiddlewareClass("Middleware class: $className does not exist or is not a sub-class of Zaphpa_Middleware" );
     }
-    
-    self::$middleware[] = new $className();
+        
+    self::$middleware[] = new $className($ctx);
+
   }
   
   private static function getRequestMethod() {
     return strtolower($_SERVER['REQUEST_METHOD']);
   }
   
-  /* 
-  * Please note the performance optimization: only returns routes 
-  * for the current request method 
+  /** 
+  * Please note this method is performance-optimized to only return routes for
+  * current type of HTTP method 
   */
-  private function getRoutes() {
+  private function getRoutes($all = false) {
     $method = self::getRequestMethod();
     $routes = empty($this->routes[$method]) ? array() : $this->routes[$method];
     return $routes;
