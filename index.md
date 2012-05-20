@@ -16,7 +16,7 @@ title: Zaphpa PHP micro-router.
     require_once(__DIR__ . '/vendor/zaphpa/zaphpa.lib.php');
     $router = new Zaphpa_Router();
     
-    $router->attach('ZaphpaAutoDocumentator', '/apidocs');
+    $router->attach('ZaphpaAutoDocumentator', '/apidocs'); //auto-docs middleware
     
     $router->addRoute(array(
     	'path'  => '/users/{id}',
