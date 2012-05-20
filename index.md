@@ -13,17 +13,16 @@ title: Zaphpa PHP micro-router.
   </div>
 </header>
 
-<hr class="soften">
-
     require_once(__DIR__ . '/vendor/zaphpa/zaphpa.lib.php');
     $router = new Zaphpa_Router();
+    
+    $router->attach('ZaphpaAutoDocumentator', '/apidocs');
     
     $router->addRoute(array(
     	'path'  => '/users/{id}',
     	'get'   => array('UserController', 'getUser'),
     	'post'   => array('UserController', 'updateUser'),
-    ));
-    
+    ));    
     $router->route();
 
 <div class="marketing">
