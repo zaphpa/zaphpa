@@ -7,7 +7,7 @@ Following are the major contributors to Zaphpa library:
 
 ## Documentation
 
-http://zaphpa.github.com/zaphpa/
+http://zaphpa.org
 
 ## Special Thanks
 
