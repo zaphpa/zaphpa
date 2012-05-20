@@ -153,6 +153,53 @@ Following methods are available on the response class:
 1. `$res->send($code, $format)` - sends current output buffer to the client and terminates response.
 
 
+## Middleware
+
+One of the powerful features of Zaphpa is the ability to intercept request and perform centralized 
+pre- and post- processing of a request. To hook into request processing flow, register your middleware
+implementation with the router:
+
+    $router->attach('MyMiddlewareImpl');
+    
+Where `MyMiddlewareImpl` is the class name of an implementation of a Zaphpa_Middleware abstract class. 
+Zaphpa_Middleware requires that all middleware implements following functions 
+(however, implementation can be an empty one, of course):
+
+* `->preprocess(&$route)`- hooks very early into the process and allows adding custom route mappings.
+* `->preroute(&$req, &$res)` -   hooks into the process once request has been analyzed, route handler has been identified, but
+before route handler 
+* `->prerender(&$buffer)` - gets a chance to alter buffer right before it is assembled for output. Please
+note that this method may be called multiple times, to be more precise: every time your callback function 
+calls `->flush` and tries to output a chunk of response buffer to HTTP, `->prerender` will get a chance
+to alter the buffer.
+
+Middleware is an excellent place to implement central authentication, authorization, versioning and other 
+infrastructural features.
+
+An example implementation (however meaningless) of a middleware can be found in Zaphpa tests:
+
+    class ZaphpaTestMiddleware extends Zaphpa_Middleware {
+      function preprocess(&$router) {
+        $router->addRoute(array(
+              'path'     => '/middlewaretest/{mid}',
+              'get'      => array('TestController', 'getTestJsonResponse'),
+        ));
+      }
+      
+      function preroute(&$req, &$res) {
+        // you get to customize behavior depending on the pattern being matched in the current request
+        if (self::$context['pattern'] == '/middlewaretest/{mid}') {  
+          $req->params['bogus'] = "foo";
+        }    
+      }
+      
+      function prerender(&$buffer) {
+          $dc = json_decode($buffer[0]);
+          $dc->version = "2.0";
+          $buffer[0] = json_encode($dc);
+      }  
+    }
+
 ## Output format aliases
 
 The $format argument of the send() and flush() should be passed as a standard mime-type string. However, for convenience and brevity Zaphpa
