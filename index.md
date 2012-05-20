@@ -33,7 +33,7 @@ title: Zaphpa PHP micro-router.
    <a href="http://www.sinatrarb.com/">Sinatra.rb</a>, and implemented in PHP (hence the extra geeky "h" 
    in the name creating the sub-pattern of: "php").</p>
    
-	 <p>Zaphpa is a lightweight library that excels at single purpose: free API developers from 
+	 <p>Zaphpa is a lightweight library that excels at single mission: free PHP API developers from 
 	 the boilerplate of handling HTTP requests and implementing REST.</p> 
 	 
 	 <p>You can think of it as an equivalent of Sinatra (in Ruby) or Express.js (in Javascript) 
