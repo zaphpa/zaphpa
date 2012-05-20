@@ -200,6 +200,27 @@ An example implementation (however meaningless) of a middleware can be found in 
       }  
     }
 
+### Prebuilt Middleware: Docs
+
+On to more useful middleware implementation, Zaphpa comes with an auto-documentation middleware plugin. This
+plugin creates an endpoint that can list all available endpoints, even parse PHPDoc comments off your code
+to provide additional documentation. To enable the middleware:
+ 
+    $router->attach('ZaphpaAutoDocumentator');
+    
+which will create documentation endpoint at: '/docs'. If you would rather create endpoint at another URI:
+
+    $router->attach('ZaphpaAutoDocumentator', '/apidocs');
+    
+
+If you don't want some endpoints to be exposed in the documentation (say, for security reasons) you can
+easily hide those by adding `@hidden` attribute to the PHP docs of the callback for the endpoint. To build
+a more elaborate authorization schema, you would need to implement a custom middleware, but it's certainly
+possible.
+
+**Beware**: problem has been <a href="http://us.php.net/manual/en/reflectionfunctionabstract.getdoccomment.php#108061">reported</a>
+when trying to use doc comment parsing in PHP with eAccelerator. There seems to be no such problem with APC.
+
 ## Output format aliases
 
 The $format argument of the send() and flush() should be passed as a standard mime-type string. However, for convenience and brevity Zaphpa
