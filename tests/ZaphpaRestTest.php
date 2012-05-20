@@ -82,5 +82,29 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     $this->fail('Two-param test: user_id alpha should not have passed.');
 
   }
+  
+  public function test_middleware() {
+    try {
+      $resp = $this->rest_client->http_get('middlewaretest/777');
+      $this->assertEquals(777, $resp->decoded->params->mid, "Middleware response test");
+    } catch (ZaphpaRestClientException $ex) {
+      $this->fail('Middleware test: response test should have passed.');
+    }  	
+    
+    try {
+      $resp = $this->rest_client->http_get('middlewaretest/777');
+      $this->assertEquals("foo", $resp->decoded->params->bogus, "Middleware preroute test");
+    } catch (ZaphpaRestClientException $ex) {
+      $this->fail('Middleware test: preroute attachment of bogus param should have passed.');
+    }  	
+
+    try {
+      $resp = $this->rest_client->http_get('middlewaretest/777');
+      $this->assertEquals("2.0", $resp->decoded->version, "Middleware prerender test");
+    } catch (ZaphpaRestClientException $ex) {
+      $this->fail('Middleware test: prerender replacement of version should have passed.');
+    }  	
+    
+  }
 
 }

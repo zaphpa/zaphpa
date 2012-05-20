@@ -1,9 +1,18 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../zaphpa.lib.php');
-require_once(dirname(__FILE__) . '/TestController.class.php');
+require_once(__DIR__ . '/../zaphpa.lib.php');
+require_once(__DIR__ . '/TestController.class.php');
+require_once(__DIR__ . '/ZaphpaTestMiddleware.class.php');
 
 $router = new Zaphpa_Router();
+
+$router->attach('ZaphpaTestMiddleware');
+
+$router->addRoute(array(
+      'path'     => '/users',
+      'get'      => array('TestController', 'getTestJsonResponse'),
+    )
+);
 
 $router->addRoute(array(
       'path'     => '/users/{id}',

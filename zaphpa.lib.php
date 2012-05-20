@@ -2,6 +2,8 @@
 
 /** Invalid path exception **/
 class Zaphpa_InvalidPathException extends Exception {}
+/** Non existant middleware class **/
+class Zaphpa_InvalidMiddlewareClass extends Exception {}
 /** File not found exception **/
 class Zaphpa_CallbackFileNotFoundException extends Exception {}
 /** Invalid callback exception **/
@@ -234,7 +236,7 @@ class Zaphpa_Template {
   public static function regex($pattern) {
     return '(?P<%s>' . $pattern . ')';
   }
-  
+    
 }
 
 
@@ -319,6 +321,11 @@ class Zaphpa_Response {
       header("Content-Type: $this->format;", TRUE, $this->code);
     }
     
+    /* Call preprocessors on each middleware impl */
+    foreach (Zaphpa_Router::$middleware as $m) {
+      $m->prerender($this->chunks);
+    }
+        
     $out = implode("", $this->chunks);
     $this->chunks = array(); // reset
     echo ($out);
@@ -502,11 +509,20 @@ class Zaphpa_Request {
     
 } // end Zaphpa_Request
 
+abstract class Zaphpa_Middleware {
+
+  public static $context = array();
+    
+  public abstract function preprocess(&$route);
+  public abstract function preroute(&$req, &$res);
+  public abstract function prerender(&$buffer);
+} // end Zaphpa_Middleware
 
 class Zaphpa_Router {
   
   protected $routes  = array();
-  protected static $methods = array('get', 'post', 'put', 'delete', 'head', 'options');
+  public static $middleware = array();
+  protected static $methods = array('get', 'post', 'put', 'patch', 'delete', 'head', 'options');
   
   /**
   * Add a new route to the configured list of routes
@@ -516,13 +532,13 @@ class Zaphpa_Router {
     if (!empty($params['path'])) {
       
       $template = new Zaphpa_Template($params['path']);
-
+      
       if (!empty($params['handlers'])) {
         foreach ($params['handlers'] as $key => $pattern) {
            $template->pattern($key, $pattern);
         }
       }
-            
+                         
       $methods = array_intersect(self::$methods, array_keys($params));
 
       foreach ($methods as $method) {
@@ -537,10 +553,25 @@ class Zaphpa_Router {
     
   }
   
+  /**
+  *  Add a new middleware to the list of middlewares
+  */
+  public function attach($className) {
+    if (!is_subclass_of($className,'Zaphpa_Middleware')) {
+      throw new Zaphpa_InvalidMiddlewareClass("Middleware class: $className does not exist or is not a sub-class of Zaphpa_Middleware" );
+    }
+    
+    self::$middleware[] = new $className();
+  }
+  
   private static function getRequestMethod() {
     return strtolower($_SERVER['REQUEST_METHOD']);
   }
   
+  /* 
+  * Please note the performance optimization: only returns routes 
+  * for the current request method 
+  */
   private function getRoutes() {
     $method = self::getRequestMethod();
     $routes = empty($this->routes[$method]) ? array() : $this->routes[$method];
@@ -554,14 +585,22 @@ class Zaphpa_Router {
       $uri = $tokens['path'];
     }
   
+    /* Call preprocessors on each middleware impl */
+    foreach (self::$middleware as $m) {
+      $m->preprocess($this);
+    }
+    
     $routes = $this->getRoutes();
 
     try {
 
       foreach ($routes as $route) {
         $params = $route['template']->match($uri);
-  
-        if (!is_null($params)) {
+                  
+        if (!is_null($params)) {   
+//          echo("<pre>");   
+//          die(print_r($route['template']->getTemplate(),true));
+          Zaphpa_Middleware::$context['pattern'] = $route['template']->getTemplate();
           $callback = Zaphpa_Callback_Util::getCallback($route['callback'], $route['file']);
           return $this->invoke_callback($callback, $params);
         }        
@@ -583,6 +622,11 @@ class Zaphpa_Router {
     $req = new Zaphpa_Request();
     $req->params = $params;         
     $res = new Zaphpa_Response($req);
+    
+    /* Call preprocessors on each middleware impl */
+    foreach (self::$middleware as $m) {
+      $m->preroute($req,$res);
+    }
     
     return call_user_func($callback, $req, $res);    
   }
