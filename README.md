@@ -19,7 +19,7 @@ to the wonderful [PHPStorm](http://www.jetbrains.com/phpstorm/) IDE, for Zaphpa 
 
 (The MIT License)
 
-Copyright (c) 2011 Ioseb Dzmanashvili and Irakli Nadareishvili
+Copyright (c) 2011-2012 Ioseb Dzmanashvili and Irakli Nadareishvili
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
