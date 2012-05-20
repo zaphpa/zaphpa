@@ -7,8 +7,8 @@
 
 Zaphpa is actively used by <a href="http://npr.org">NPR</a>'s software teams in the Digital Media and Digital Servies
 divisions, benefiting from thorough bug-fixing, various contributions and overall creativity of these wonderful teams. 
-Most importantly: ([randallsquared](http://github.com/randallsquared)), ([d1b1](http://github.com/d1b1)) and
-([jsgrosman](http://github.com/jsgrosman)).
+Most importantly: [@randallsquared](http://github.com/randallsquared), [@d1b1](http://github.com/d1b1) and
+[@jsgrosman](http://github.com/jsgrosman).
 
 ## Documentation
 
