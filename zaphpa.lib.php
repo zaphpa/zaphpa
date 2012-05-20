@@ -278,7 +278,7 @@ class Zaphpa_Response {
   *      Output mime type. Defaults to request format
   */
   public function send($code=null, $format=null) {      
-    $this->flush($code, $format);
+    $this->flush($code);
     exit(); //prevent any further output
   }
   
@@ -441,7 +441,6 @@ class Zaphpa_Request {
         default:
             $contents = file_get_contents("php://input");
             $parsed_contents = null;
-            // @TODO: considering $_SERVER['HTTP_CONTENT_TYPE'] == 'application/x-www-form-urlencoded' could help here
             parse_str($contents, $parsed_contents);
             $this->data = $_GET + $parsed_contents; //people do use query params with PUT and DELETE
             $this->data['_RAW_HTTP_DATA'] = $contents;
@@ -486,8 +485,7 @@ class Zaphpa_Request {
       'xml' => 'application/xml', 
       'rss' => 'application/rss+xml',
       'atom' => 'application/atom+xml',
-      'json' => 'application/json',  
-      'jsonp' => 'text/javascript',
+      'json' => 'application/json',   
     );
   }
   
@@ -528,6 +526,17 @@ class Zaphpa_Router {
   protected $routes  = array();
   public static $middleware = array();
   protected static $methods = array('get', 'post', 'put', 'patch', 'delete', 'head', 'options');
+  
+  public function __construct()
+  {
+      // List of all episodes
+      $this->addRoute(array(
+        'path'	=> '/docs',
+      	'get'      => array('ZaphpaDocsCallback', 'generateDocs')
+      ));
+      
+      ZaphpaDocsCallback::addRoutes($this->routes);
+  }
   
   /**
   * Add a new route to the configured list of routes
@@ -593,8 +602,9 @@ class Zaphpa_Router {
   public function route($uri=null) {
   
     if (empty($uri)) {
-      $tokens = parse_url($_SERVER['REQUEST_URI']);
-      $uri = $tokens['path'];
+      // ad hoc fix for parse_url's irrational dislike of colons
+      $tokens = parse_url(str_replace(':', '%3A', $_SERVER['REQUEST_URI']));
+      $uri = rawurldecode($tokens['path']);
     }
   
     /* Call preprocessors on each middleware impl */
@@ -647,3 +657,72 @@ class Zaphpa_Router {
   
 } // end Zaphpa_Router
 
+class ZaphpaDocsCallback
+{
+    private static $currentRoutes;
+
+    public static function addRoutes(&$routes)
+    {
+        self::$currentRoutes = &$routes;
+    }
+
+    /**
+     * 	Print out the documentation for all the declared Zaphpa routes
+     */ 
+    public function generateDocs($req, $res)
+    {
+        $res->setFormat("text/html");
+        $res->add("<h1>API Documentation:</h1>");
+        $gets = self::$currentRoutes['get'];
+
+        $style = "<style>
+                .docs li { width: 90% }
+                h2 { margin: 5px 0px 5px 2px; padding:0px; background-color: #EFEFEF;}
+                p { margin: 3px 0px; padding: 0px; }
+              </style>";
+
+        $res->add($style);
+
+        $pattern = "<li>
+                  <h2>%i</h2>
+                  <p>%d</p>
+                  <i> <b>File:</b> %f,<b>Class:</b> %c, <b>Method:</b> %m</i>
+               </li>";
+
+        $return = "<ul class='docs'>\n";
+
+        foreach ($gets as $id => $get) {
+            
+            $reflector = new ReflectionClass($get['callback'][0]);
+            $classFilename = $get['file'];
+            if (empty($classFilename))
+            {
+                $classFilename = basename($reflector->getFileName());
+            }
+            
+            $callbackMethod = $reflector->getMethod($get['callback'][1]);
+            $methodComments = trim(substr($callbackMethod->getDocComment(), 3, -2));
+            
+            // remove the first *
+            $methodComments = preg_replace("/\*/", "", $methodComments, 1);
+            
+            // replace all the other *'s with line breaks
+            $methodComments = preg_replace("/\*/", "<br />", $methodComments);
+            
+            $data = array(
+        '%i' => $id,
+        '%f' => $classFilename,
+        '%d' => $methodComments,
+        '%c' => $get['callback'][0],
+        '%m' => $get['callback'][1]
+            );
+
+            $return .= strtr($pattern, $data);
+        }
+
+        $return .= "</ul>";
+
+        $res->add($return);
+        $res->send(200);
+    }
+}
