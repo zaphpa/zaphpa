@@ -162,8 +162,7 @@ implementation with the router:
     $router->attach('MyMiddlewareImpl');
     
 Where `MyMiddlewareImpl` is the class name of an implementation of a Zaphpa_Middleware abstract class. 
-Zaphpa_Middleware requires that all middleware implements following functions 
-(however, implementation can be an empty one, of course):
+You can implement following methods, in your middleware:
 
 * `->preprocess(&$route)`- hooks very early into the process and allows adding custom route mappings.
 * `->preroute(&$req, &$res)` -   hooks into the process once request has been analyzed, route handler has been identified, but
