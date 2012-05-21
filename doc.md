@@ -199,7 +199,9 @@ An example implementation (however meaningless) of a middleware can be found in 
       }  
     }
 
-### Prebuilt Middleware: Docs
+### Prebuilt Middleware 
+
+#### Auto-Documentator
 
 On to more useful middleware implementation, Zaphpa comes with an auto-documentation middleware plugin. This
 plugin creates an endpoint that can list all available endpoints, even parse PHPDoc comments off your code
@@ -220,6 +222,25 @@ possible.
 **Beware**: problem has been <a href="http://us.php.net/manual/en/reflectionfunctionabstract.getdoccomment.php#108061">reported</a>
 when trying to use doc comment parsing in PHP with eAccelerator. There seems to be no such problem with APC.
 
+#### Ajax-friendly Endpoints
+
+As you probably know, Ajax calls can not normally access API URLs on another domain (or even another port 
+of the same domain, actually). This is a problem sometimes solved using 
+<a href="http://en.wikipedia.org/wiki/JSONP">JSONP</a>. We think a better solution is: 
+<a href="http://en.wikipedia.org/wiki/Cross-Origin_Resource_Sharing">Cross-Origin Resource Sharing (CORS)</a>.
+Zaphpa comes with a simple pre-built middleware plugin to enable CORS for all endpoints. To enable CORS for any domain:
+
+    $router->attach('ZaphpaCORS');
+    
+or if you want to enable CORS only for specific domain(s):
+
+    $router->attach('ZaphpaCORS', 'http://example.com http://foo.example.com');
+    
+If you want to enable CORS only for specific routes:
+
+    $router->attach('ZaphpaCORS', '*', array('/users'));
+    
+        
 ## Output format aliases
 
 The $format argument of the send() and flush() should be passed as a standard mime-type string. However, for convenience and brevity Zaphpa
