@@ -11,6 +11,10 @@ $router->attach('ZaphpaTestMiddleware');
 // This one is a core plugin and should auto-load
 $router->attach('ZaphpaAutoDocumentator', '/testapidocs');
 
+/* THis one is a core plugin and should auto-load */
+$router->attach('ZaphpaCORS', '*', array('/users'));
+
+
 $router->addRoute(array(
       'path'     => '/users',
       'get'      => array('TestController', 'getTestJsonResponse'),

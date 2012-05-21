@@ -116,4 +116,9 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     }  	        
   }
 
+  /** @TODO implement CORS tests. This is currently a little tricky because default
+  * callback does not expose response headers **/
+  public function test_middleware_cors() {
+  }
+
 }
