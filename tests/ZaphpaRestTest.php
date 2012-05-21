@@ -107,4 +107,13 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     
   }
 
+
+  public function test_middleware_autodoc() {
+    try {
+      $resp = $this->rest_client->http_get('testapidocs');
+    } catch (ZaphpaRestClientException $ex) {
+      $this->fail('Middleware test: auto documentator response test should have passed.');
+    }  	        
+  }
+
 }

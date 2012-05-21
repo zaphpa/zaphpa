@@ -517,10 +517,14 @@ abstract class Zaphpa_Middleware {
 
   public static $context = array();
   public static $routes = array();
-    
-  public abstract function preprocess(&$route);
-  public abstract function preroute(&$req, &$res);
-  public abstract function prerender(&$buffer);
+  
+  /** Preprocess. This is where you'd add new routes **/  
+  public function preprocess(&$route) {}  
+  /** Preroute. This is where you would aler request, or implement things like: security etc. **/
+  public function preroute(&$req, &$res) {}
+  /** This is your chance to override output. It can be called multiple times for each ->flush() invocation! **/
+  public function prerender(&$buffer) {}
+  
 } // end Zaphpa_Middleware
 
 class Zaphpa_Router {

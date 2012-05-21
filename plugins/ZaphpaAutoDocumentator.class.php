@@ -86,7 +86,4 @@ STYLE;
     $res->send(200);
 
   }
-  
-  function preroute(&$req, &$res) {}  
-  function prerender(&$buffer) {}  
 }
