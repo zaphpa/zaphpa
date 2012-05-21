@@ -584,7 +584,7 @@ class Zaphpa_Router {
   * Please note this method is performance-optimized to only return routes for
   * current type of HTTP method 
   */
-  private function getRoutes($all = false) {
+  private function getRoutes() {
     $method = self::getRequestMethod();
     $routes = empty($this->routes[$method]) ? array() : $this->routes[$method];
     return $routes;
@@ -593,8 +593,9 @@ class Zaphpa_Router {
   public function route($uri=null) {
   
     if (empty($uri)) {
-      $tokens = parse_url($_SERVER['REQUEST_URI']);
-      $uri = $tokens['path'];
+      // ad hoc fix for parse_url's somewhat irrational dislike of colons
+      $tokens = parse_url(str_replace(':', '%3A', $_SERVER['REQUEST_URI']));
+      $uri = rawurldecode($tokens['path']);
     }
   
     /* Call preprocessors on each middleware impl */
@@ -610,8 +611,6 @@ class Zaphpa_Router {
         $params = $route['template']->match($uri);
                   
         if (!is_null($params)) {   
-//          echo("<pre>");   
-//          die(print_r($route['template']->getTemplate(),true));
           Zaphpa_Middleware::$context['pattern'] = $route['template']->getTemplate();
           $callback = Zaphpa_Callback_Util::getCallback($route['callback'], $route['file']);
           return $this->invoke_callback($callback, $params);
