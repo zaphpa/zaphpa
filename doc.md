@@ -201,7 +201,11 @@ An example implementation (however meaningless) of a middleware can be found in 
     
 **Please note:** the usage of `self::$context['pattern']` variable in the `->preroute` method. Often 
 `preroute` needs to modify behavior based on the current URL Route being matched. `self::$context['pattern']`
+<<<<<<< HEAD
 carries that pattern. Please make sure to match it with the exact definition(s) in your routes' configurations.
+=======
+carries that pattern. Please make sure to match it with the exact definition(s) in your routes configurations.
+>>>>>>> 98496e986432cda9fa45bb290dd9038b1a8ef181
 
 ### Prebuilt Middleware 
 
