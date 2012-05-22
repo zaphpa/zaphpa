@@ -199,13 +199,17 @@ An example implementation (however meaningless) of a middleware can be found in 
       }  
     }
     
-**Please note:** the usage of `self::$context['pattern']` variable in the `->preroute` method. Often 
+### Prebuilt Context
+
+Please note the usage of `self::$context['pattern']` variable in the `->preroute` method. Often 
 `preroute` needs to modify behavior based on the current URL Route being matched. `self::$context['pattern']`
-<<<<<<< HEAD
-carries that pattern. Please make sure to match it with the exact definition(s) in your routes' configurations.
-=======
 carries that pattern. Please make sure to match it with the exact definition(s) in your routes configurations.
->>>>>>> 98496e986432cda9fa45bb290dd9038b1a8ef181
+
+Full list of variables exposed through context:
+
+* `pattern` - URI pattern being matched (in the format it was defined in the routes configuration, includes placeholders)
+* `http_method` - current HTTP Method being processed.
+* `callback` - callback in PHP format i.e.: name of the function or an array containing classname and method name.
 
 ### Prebuilt Middleware 
 
