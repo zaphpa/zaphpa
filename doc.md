@@ -199,11 +199,11 @@ An example implementation (however meaningless) of a middleware can be found in 
       }  
     }
     
-### Prebuilt Context
+### Middleware Context
 
-Please note the usage of `self::$context['pattern']` variable in the `->preroute` method. Often 
-`preroute` needs to modify behavior based on the current URL Route being matched. `self::$context['pattern']`
-carries that pattern. Please make sure to match it with the exact definition(s) in your routes configurations.
+Please note the usage of `self::$context['pattern']` variable in the `->preroute` method. Often `preroute` needs 
+to modify behavior based on the current URL Route being matched. The variable `self::$context['pattern']` carries 
+that pattern. Please make sure to match it with the exact definition(s) in your routes configurations.
 
 Full list of variables exposed through context:
 
