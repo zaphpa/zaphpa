@@ -226,6 +226,10 @@ which will create documentation endpoint at: '/docs'. If you would rather create
     $router->attach('ZaphpaAutoDocumentator', '/apidocs');
     
 
+If you want documentation to also show filename, class and callback method for each endpoint:
+
+    $router->attach('ZaphpaAutoDocumentator', '/apidocs', $details = true);     
+    
 If you don't want some endpoints to be exposed in the documentation (say, for security reasons) you can
 easily hide those by adding `@hidden` attribute to the PHP docs of the callback for the endpoint. To build
 a more elaborate authorization schema, you would need to implement a custom middleware, but it's certainly
