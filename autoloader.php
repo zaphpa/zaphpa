@@ -13,8 +13,7 @@ function zaphpa_autoloader($classname) {
   $already_checked[$classname] = true;
   
   $pathname = __DIR__ . '/plugins/' . $classname . '.class.php';
-  if (file_exists($pathname)) {
-    
+  if (file_exists($pathname)) {    
     require_once($pathname);   
   }
 }
