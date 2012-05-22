@@ -198,6 +198,10 @@ An example implementation (however meaningless) of a middleware can be found in 
           $buffer[0] = json_encode($dc);
       }  
     }
+    
+**Please note:** the usage of `self::$context['pattern']` variable in the `->preroute` method. Often 
+`preroute` needs to modify behavior based on the current URL Route being matched. `self::$context['pattern']`
+carries that pattern. Please make sure to match it with the exact definition(s) in your routes' configurations.
 
 ### Prebuilt Middleware 
 
