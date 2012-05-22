@@ -616,6 +616,9 @@ class Zaphpa_Router {
                   
         if (!is_null($params)) {   
           Zaphpa_Middleware::$context['pattern'] = $route['template']->getTemplate();
+          Zaphpa_Middleware::$context['http_method'] = $_SERVER['REQUEST_METHOD'];
+          Zaphpa_Middleware::$context['callback'] = $route['callback'];
+          
           $callback = Zaphpa_Callback_Util::getCallback($route['callback'], $route['file']);
           return $this->invoke_callback($callback, $params);
         }        
