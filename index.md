@@ -25,7 +25,7 @@ title: Zaphpa PHP micro-router.
     ));    
     $router->route();
 
-<div class="marketing">
+<div class="intro">
   <h2>Created to make REST in PHP easy.</h2>
 
    <p>Zaphpa, pronounced as the last name of Frank Zappa, is a routing microkernel inspired by 
@@ -36,8 +36,15 @@ title: Zaphpa PHP micro-router.
 	 the boilerplate of handling HTTP requests and implementing REST.</p> 
 	 
 	 <p>You can think of it as an equivalent of Sinatra (in Ruby) or Express.js (in Javascript) 
-	 frameworks for PHP, if you will.</p>    
-</div><!-- /.marketing -->
+	 frameworks for PHP, if you will.</p>   
+	 
+	<h2>Who uses it?</h2>
+	 <p>Zaphpa is actively used by <a href="http://npr.org">NPR</a>'s software teams in the Digital Media and Digital Services
+	 divisions, benefiting from thorough bug-fixing and various contributions by: <a href="http://github.com/inadarei">@inadarei</a>,  
+	 <a href="http://github.com/randallsquared">@randallsquared</a>, <a href="http://github.com/johnymonster">@johnymonster</a>, 
+	 <a href="http://github.com/jsgrosman">@jsgrosman</a> and <a href="http://github.com/d1b1">@d1b1</a>.	 
+	  
+</div><!-- /.intro -->
 
 <hr class="soften">
 
