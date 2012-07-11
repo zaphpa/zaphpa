@@ -430,20 +430,19 @@ class Zaphpa_Request {
     $this->parse_special('charsets', 'HTTP_ACCEPT_CHARSET', array('text/html'));
     $this->parse_special('accepted_formats', 'HTTP_ACCEPT');
     $this->parse_special('languages', 'HTTP_ACCEPT_LANGUAGE', array('en-US'));
-    
+
+	// Caution: this piece of code assumes that when empty both $_GET and $_POST are hollow arrays. Which is true for current versions of PHP
+	// but it is PHP so it may change?
     switch ($this->method) {
         case "GET":
             $this->data = $_GET;
-            break;                
-        case "POST":
-            $this->data = $_GET + $_POST; //people do use query params with POST
             break;                
         default:
             $contents = file_get_contents("php://input");
             $parsed_contents = null;
             // @TODO: considering $_SERVER['HTTP_CONTENT_TYPE'] == 'application/x-www-form-urlencoded' could help here
             parse_str($contents, $parsed_contents);
-            $this->data = $_GET + $parsed_contents; //people do use query params with PUT and DELETE
+            $this->data = $_GET + $_POST + $parsed_contents; //people do use query params with POST, PUT and DELETE
             $this->data['_RAW_HTTP_DATA'] = $contents;
             break;                
     }       
