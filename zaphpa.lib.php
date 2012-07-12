@@ -16,13 +16,12 @@ class Zaphpa_InvalidResponseStateException extends Exception {}
 class Zaphpa_InvalidResponseCodeException extends Exception {}
 
 /* Enable auto-loading of plugins */
-
 require_once(__DIR__ . '/autoloader.php');
 
 
 /**
 * Handy regexp patterns for common types of URI parameters.
-* @see: http://zaphpa.github.com/zaphpa/#Pre-defined_Validator_Types
+* @see: http://zaphpa.org/doc.html#Pre-defined_Validator_Types
 */
 final class Zaphpa_Constants {
   const PATTERN_ARGS       = '?(?P<%s>(?:/.+)+)';
@@ -81,7 +80,7 @@ class Zaphpa_Callback_Util {
         return $callback;
       }
 
-      throw new Zaphpa_InvalidCallbackException("Invalid callback");
+      throw new Zaphpa_InvalidCallbackException('Invalid callback');
       
     } catch (Exception $ex) {
       throw $ex;
@@ -181,13 +180,13 @@ class Zaphpa_Template {
             unset($matches[$k]);
           } else {
             
-            if (isset($this->callbacks[$k])) {              
+            if (isset($this->callbacks[$k])) {
               $callback = Zaphpa_Callback_Util::getCallback($this->callbacks[$k]);
               $value    = call_user_func($callback, $v);
               if ($value) {
                 $matches[$k] = $value;
               } else {
-                throw new Zaphpa_InvalidURIParameterException('Ivalid parameters detected');
+                throw new Zaphpa_InvalidURIParameterException('Invalid parameters detected');
               }
             }
             
@@ -217,10 +216,10 @@ class Zaphpa_Template {
               $matched = $result;
             } else {
               $matched = false;
-            }          
+            }
             
             if ($matched == false) {
-              throw new Exception('Request do not match');
+              throw new Exception('Request does not match');
             }
             
           }
@@ -238,9 +237,9 @@ class Zaphpa_Template {
   }
   
   public static function regex($pattern) {
-    return '(?P<%s>' . $pattern . ')';
+    return "(?P<%s>$pattern)";
   }
-    
+
 }
 
 
@@ -259,14 +258,14 @@ class Zaphpa_Response {
 
   /** Public constructor **/
   function __construct($request=null) {
-    $this->req = $request;  
+    $this->req = $request;
   }
   
   /**
   * Add string to output buffer.
   */
-  public function add($out) {    
-    $this->chunks[]  = $out;    
+  public function add($out) {
+    $this->chunks[]  = $out;
   }
   
   /**
@@ -277,7 +276,7 @@ class Zaphpa_Response {
   *  @param $format
   *      Output mime type. Defaults to request format
   */
-  public function send($code=null, $format=null) {      
+  public function send($code=null, $format=null) {
     $this->flush($code, $format);
     exit(); //prevent any further output
   }
@@ -296,7 +295,7 @@ class Zaphpa_Response {
 
     if (!empty($code)) { 
       if (headers_sent()) {
-        throw new Zaphpa_InvalidResponseStateException("Response code already sent! " . $this->code); 
+        throw new Zaphpa_InvalidResponseStateException("Response code already sent: {$this->code}");
       }
 
       $codes = $this->codes();
@@ -305,16 +304,16 @@ class Zaphpa_Response {
         $protocol = $this->req->protocol;
         $this->code = $code;
       } else {
-        throw new Zaphpa_InvalidResponseCodeException("Invalid Response Code: " . $code);
+        throw new Zaphpa_InvalidResponseCodeException("Invalid Response Code: $code");
       }
     }
         
     // If no format was set explicitely, use the request format for response.
     if (!empty($format)) { 
       if (headers_sent()) {
-        throw new Zaphpa_InvalidResponseStateException("Response format already sent! " . $this->format); 
+        throw new Zaphpa_InvalidResponseStateException("Response format already sent: {$this->format}");
       }
-      $this->setFormat($format);       
+      $this->setFormat($format);
     }
 
     // Set default values (200 and request format) if nothing was set explicitely
@@ -322,7 +321,7 @@ class Zaphpa_Response {
     if (empty($this->code)) { $this->code = 200; }
 
     if (!headers_sent()) {
-      header("Content-Type: $this->format;", TRUE, $this->code);
+      header("Content-Type: $this->format;", true, $this->code);
     }
     
     /* Call preprocessors on each middleware impl */
@@ -330,7 +329,7 @@ class Zaphpa_Response {
       $m->prerender($this->chunks);
     }
         
-    $out = implode("", $this->chunks);
+    $out = implode('', $this->chunks);
     $this->chunks = array(); // reset
     echo ($out);
     return $this;
@@ -369,7 +368,7 @@ class Zaphpa_Response {
       '303' => 'See Other',
       '304' => 'Not Modified',
       '305' => 'Use Proxy',
-      '307' => 'Temporary Redirect',      
+      '307' => 'Temporary Redirect',
       '400' => 'Bad Request',
       '401' => 'Unauthorized',
       '402' => 'Payment Required',
@@ -393,7 +392,7 @@ class Zaphpa_Response {
       '502' => 'Bad Gateway',
       '503' => 'Service Unavailable',
       '504' => 'Gateway Timeout',
-      '505' => 'HTTP Version Not Supported',    
+      '505' => 'HTTP Version Not Supported',
     );
   }
   
@@ -409,8 +408,8 @@ class Zaphpa_Request {
   public $format;
   public $accepted_formats;
   public $encodings;
-  public $charsets;  
-  public $languages;  
+  public $charsets;
+  public $languages;
   public $version;
   public $method;
   public $clientIP;
@@ -420,32 +419,31 @@ class Zaphpa_Request {
   function __construct() {
     $this->method = $_SERVER['REQUEST_METHOD'];
     
-    $this->clientIP = !empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : "";
-    $this->clientIP = (empty($this->clientIP) && !empty($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : "";  
+    $this->clientIP = !empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : '';
+    $this->clientIP = (empty($this->clientIP) && !empty($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '';
     
-    $this->userAgent = empty($_SERVER['HTTP_USER_AGENT']) ? "" : $_SERVER['HTTP_USER_AGENT'];    
+    $this->userAgent = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
     $this->protocol = !empty($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : null;
 
-    $this->parse_special('encodings', 'HTTP_ACCEPT_ENCODING', array('utf-8'));    
+    $this->parse_special('encodings', 'HTTP_ACCEPT_ENCODING', array('utf-8'));
     $this->parse_special('charsets', 'HTTP_ACCEPT_CHARSET', array('text/html'));
     $this->parse_special('accepted_formats', 'HTTP_ACCEPT');
     $this->parse_special('languages', 'HTTP_ACCEPT_LANGUAGE', array('en-US'));
 
-	// Caution: this piece of code assumes that when empty both $_GET and $_POST are hollow arrays. Which is true for current versions of PHP
-	// but it is PHP so it may change?
+    // Caution: this piece of code assumes that both $_GET and $_POST are empty arrays when the request type is not GET or POST
+    // This is true for current versions of PHP, but it is PHP so it's subject to change
     switch ($this->method) {
-        case "GET":
-            $this->data = $_GET;
-            break;                
-        default:
-            $contents = file_get_contents("php://input");
-            $parsed_contents = null;
-            // @TODO: considering $_SERVER['HTTP_CONTENT_TYPE'] == 'application/x-www-form-urlencoded' could help here
-            parse_str($contents, $parsed_contents);
-            $this->data = $_GET + $_POST + $parsed_contents; //people do use query params with POST, PUT and DELETE
-            $this->data['_RAW_HTTP_DATA'] = $contents;
-            break;                
-    }       
+      case "GET":
+        $this->data = $_GET;
+        break;
+      default:
+        $contents = file_get_contents('php://input');
+        $parsed_contents = null;
+        // @TODO: considering $_SERVER['HTTP_CONTENT_TYPE'] == 'application/x-www-form-urlencoded' could help here
+        parse_str($contents, $parsed_contents);
+        $this->data = $_GET + $_POST + $parsed_contents; // people do use query params with POST, PUT, and DELETE
+        $this->data['_RAW_HTTP_DATA'] = $contents;
+    }
 
     // Requested output format, if any. 
     // Format in the URL request string takes priority over the one in HTTP headers, defaults to HTML.
@@ -456,11 +454,10 @@ class Zaphpa_Request {
         $this->format = $aliases[$this->format];
       }
       unset($this->data['format']);
-    } elseif (!empty($this->accepted_formats[0])) {  
+    } elseif (!empty($this->accepted_formats[0])) {
       $this->format = $this->accepted_formats[0];
-      unset ($this->data['format']);      
+      unset ($this->data['format']);
     }
-    
   }
   
   /**
@@ -469,8 +466,8 @@ class Zaphpa_Request {
   *    @param $idx
   *        name o the data variable (either request var or HTTP body var).
   */ 
-  public function get_var($idx) {      
-    return !empty($this->data[$idx]) ? $this->data[$idx] : null;      
+  public function get_var($idx) {
+    return !empty($this->data[$idx]) ? $this->data[$idx] : null;
   }
   
   /**
@@ -501,7 +498,7 @@ class Zaphpa_Request {
       $truncated = substr($_SERVER[$argname], 0, strpos($_SERVER[$argname], ";", 0));
       $truncated = !empty($truncated) ? $truncated : $_SERVER[$argname];
       $this->$varname = explode(",", $truncated);
-    }    
+    }
   }
   
   /**
@@ -517,8 +514,8 @@ abstract class Zaphpa_Middleware {
   public static $context = array();
   public static $routes = array();
   
-  /** Preprocess. This is where you'd add new routes **/  
-  public function preprocess(&$route) {}  
+  /** Preprocess. This is where you'd add new routes **/
+  public function preprocess(&$route) {}
   /** Preroute. This is where you would aler request, or implement things like: security etc. **/
   public function preroute(&$req, &$res) {}
   /** This is your chance to override output. It can be called multiple times for each ->flush() invocation! **/
@@ -546,7 +543,7 @@ class Zaphpa_Router {
            $template->pattern($key, $pattern);
         }
       }
-                         
+      
       $methods = array_intersect(self::$methods, array_keys($params));
 
       foreach ($methods as $method) {
@@ -571,7 +568,7 @@ class Zaphpa_Router {
     $ctx = func_get_args();
     $className = array_shift($ctx);
 
-    if (!is_subclass_of($className,'Zaphpa_Middleware')) {
+    if (!is_subclass_of($className, 'Zaphpa_Middleware')) {
       throw new Zaphpa_InvalidMiddlewareClass("Middleware class: $className does not exist or is not a sub-class of Zaphpa_Middleware" );
     }
         
@@ -587,7 +584,11 @@ class Zaphpa_Router {
   * Please note this method is performance-optimized to only return routes for
   * current type of HTTP method 
   */
-  private function getRoutes() {
+  private function getRoutes($all=false) {
+    if ($all) {
+      return $this->routes;
+    }
+    
     $method = self::getRequestMethod();
     $routes = empty($this->routes[$method]) ? array() : $this->routes[$method];
     return $routes;
@@ -612,15 +613,15 @@ class Zaphpa_Router {
 
       foreach ($routes as $route) {
         $params = $route['template']->match($uri);
-                  
-        if (!is_null($params)) {   
+        
+        if (!is_null($params)) {
           Zaphpa_Middleware::$context['pattern'] = $route['template']->getTemplate();
           Zaphpa_Middleware::$context['http_method'] = $_SERVER['REQUEST_METHOD'];
           Zaphpa_Middleware::$context['callback'] = $route['callback'];
           
           $callback = Zaphpa_Callback_Util::getCallback($route['callback'], $route['file']);
           return $this->invoke_callback($callback, $params);
-        }        
+        }
       }
       
       throw new Zaphpa_InvalidPathException('Invalid path');
@@ -628,7 +629,7 @@ class Zaphpa_Router {
     } catch (Exception $ex) {
       throw $ex;
     }
-    
+
   }
   
   /**
@@ -636,8 +637,9 @@ class Zaphpa_Router {
   * invokation logic, without having to copy/paste rest of the logic in the route() function.
   */
   protected function invoke_callback($callback, $params) {
+    
     $req = new Zaphpa_Request();
-    $req->params = $params;         
+    $req->params = $params;
     $res = new Zaphpa_Response($req);
     
     /* Call preprocessors on each middleware impl */
@@ -645,10 +647,7 @@ class Zaphpa_Router {
       $m->preroute($req,$res);
     }
     
-    return call_user_func($callback, $req, $res);    
+    return call_user_func($callback, $req, $res);
+    
   }
-  
-
-  
 } // end Zaphpa_Router
-
