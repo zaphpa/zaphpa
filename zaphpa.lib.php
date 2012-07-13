@@ -532,6 +532,29 @@ class Zaphpa_Router {
   public static $middleware = array();
   protected static $methods = array('get', 'post', 'put', 'patch', 'delete', 'head', 'options');
   
+	/** Zaphpa_Request object */
+	protected static $req;
+	/** Zaphpa_Response */
+	protected static $res;
+	
+	protected static function setRequest(Zaphpa_Request $req) {
+		self::$req = $req;		
+	}
+	
+	protected static function setResponse(Zaphpa_Response $res) {
+		self::$res = $res;
+	}
+	
+	/** Get current request object */
+	public static function request() {
+		return self::$req;
+	}
+	
+	/** Get current response object */
+	public static function response() {
+		return self::$res;
+	}
+	
   /**
   * Add a new route to the configured list of routes
   */
@@ -593,6 +616,11 @@ class Zaphpa_Router {
     return $routes;
   }
   
+  /**
+  * Start routing for current request or a specified $uri
+  * @param $uri
+  *		a custom URI to process instead of the one in current HTTP request.
+  */
   public function route($uri=null) {
   
     if (empty($uri)) {
@@ -645,6 +673,9 @@ class Zaphpa_Router {
       $m->preroute($req,$res);
     }
     
+		self::setRequest($req);
+		self::setResponse($res);
+		
     return call_user_func($callback, $req, $res);    
   }
   
