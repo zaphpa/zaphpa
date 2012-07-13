@@ -3,7 +3,7 @@ $('document').ready(function(){
   
   var safeTocString = function(text) {
     var nText = text.replace(/\s/gi,"_");
-    nText = nText.replace(/[,.!?;:]/gi, "");
+    nText = nText.replace(/[,.!?;:\/\$\&]/gi, "");
     return nText;    
   }
   
