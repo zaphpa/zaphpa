@@ -152,6 +152,14 @@ Following methods are available on the response class:
    you invoke the method, since these values can not be set once output is sent to the client.
 1. `$res->send($code, $format)` - sends current output buffer to the client and terminates response.
 
+## Accessors for Request/Response
+
+The request and response objects for the current HTTP process are passed to the callback function as arguments, but
+sometimes you need to access them from code much deeper in your codebase (e.g. models). To make this easy and avoid
+the necessity of extraneous passing around of $req and $res, Zaphpa provides two convenience static functions:
+
+    Zaphpa_Router::request() - returns $req
+    Zaphpa_Router::response() - returns $res
 
 ## Middleware
 
