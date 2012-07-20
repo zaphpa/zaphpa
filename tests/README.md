@@ -10,7 +10,7 @@ More information is available on [php.net](http://php.net/manual/en/features.com
 
 In Apache, Nginx, etc. (pick your posion) set up a virtualhost so that it points to the
 Zaphpa test router under `tests/index.php` and can process requests to 
-`http://localhost:8000` (or modify the value of `server_url` in `phpunit.xml` file).
+`http://localhost:8000` (or modify the value of `server_url` in the `phpunit.xml` file).
 
 For instance, for Nginx:
 ```
