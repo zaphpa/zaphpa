@@ -9,8 +9,8 @@ php -S localhost:8000 -t /path/to/zaphpa/tests
 More information is available on [php.net](http://php.net/manual/en/features.commandline.webserver.php).
 
 In Apache, Nginx, etc. (pick your posion) set up a virtualhost so that it points to the
-Zaphpa test router under `tests/index.php` and can process requests to 
-`http://localhost:8000` (or modify the value of `server_url` in the `phpunit.xml` file).
+Zaphpa test router in `/path/to/zaphpa/tests/index.php` and can process requests to 
+`http://localhost:8000`. If you prefer to use a different URL, simply modify the value of `server_url` in `/path/to/zaphpa/tests/phpunit.xml`.
 
 For instance, for Nginx:
 ```
