@@ -515,7 +515,7 @@ abstract class Zaphpa_Middleware {
   public static $routes = array();
   
   /** Preprocess. This is where you'd add new routes **/
-  public function preprocess(&$route) {}
+  public function preprocess(&$router) {}
   /** Preroute. This is where you would aler request, or implement things like: security etc. **/
   public function preroute(&$req, &$res) {}
   /** This is your chance to override output. It can be called multiple times for each ->flush() invocation! **/
@@ -565,14 +565,17 @@ class Zaphpa_Router {
   */
   public function attach() {
 
-    $ctx = func_get_args();
-    $className = array_shift($ctx);
+    $args = func_get_args();
+    $className = array_shift($args);
 
     if (!is_subclass_of($className, 'Zaphpa_Middleware')) {
       throw new Zaphpa_InvalidMiddlewareClass("Middleware class: $className does not exist or is not a sub-class of Zaphpa_Middleware" );
     }
-        
-    self::$middleware[] = new $className($ctx);
+     
+    $instance = new $className($args);
+
+    self::$middleware[] = $instance;
+    return $instance;
 
   }
   
