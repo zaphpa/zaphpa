@@ -19,7 +19,7 @@ class ZaphpaCORS extends Zaphpa_Middleware {
     }
   }
   
-  function preroute($req, $res) { 
+  function preroute(&$req, &$res) { 
     if (!empty($this->allowedRoutes) && !in_array(self::$context['pattern'], $this->allowedRoutes)) {
       return;
     }

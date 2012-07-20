@@ -326,7 +326,9 @@ class Zaphpa_Response {
     
     /* Call preprocessors on each middleware impl */
     foreach (Zaphpa_Router::$middleware as $m) {
-      $m->prerender($this->chunks);
+      if ($m->shouldRun('prerender')) {
+        $m->prerender($this->chunks);
+      }
     }
         
     $out = implode('', $this->chunks);
@@ -511,9 +513,69 @@ class Zaphpa_Request {
 
 abstract class Zaphpa_Middleware {
 
+  const ALL_METHODS = '*';
+
+  public $scope = array();
   public static $context = array();
   public static $routes = array();
   
+  /**
+   *  Restrict a middleware hook to certain paths and HTTP methods.
+   *  
+   *  No actual restriction takes place in this method.
+   *  We simply place the $rules array into $this->scope, keyed by its $hook.
+   *  
+   *  @param string $hook
+   *    A middleware hook, either 'preroute' or 'prerender'.
+   *  @param array $rules
+   *    An associative array of paths and their allowed methods:
+   *    - path: A URL route string, the same as are used in $router->addRoute(). 
+   *      - methods: An array of HTTP methods that are allowed, or an '*' to match all methods.
+   *  
+   *  @return Zaphpa_Middlware
+   *    The current middleware object, to allow for chaining a la jQuery.
+   */
+  public function restrict($hook, $rules) {
+    $this->scope[$hook] = $rules;
+    return $this;
+  }
+
+  /**
+   *  Determine whether the current route has any route restrictions for this middleware.
+   *  
+   *  If the middleware has restrictions for a given $hook, we check the current route.
+   *  If if the current route is in the list of allowed paths, we check that the 
+   *  request method is also allowed. Otherwise, the current route needn't run the $hook.
+   *  
+   *  @param string $hook
+   *    A middleware hook, either 'preroute' or 'prerender'.
+   *  
+   *  @return bool
+   *    Whether the current route should run $hook.
+   */
+  public function shouldRun($hook) {
+    if (isset($this->scope[$hook])) {
+      if (array_key_exists(self::$context['pattern'], $this->scope[$hook])) {
+        $methods = $this->scope[$hook][self::$context['pattern']];
+
+        if ($methods == self::ALL_METHODS) {
+          return true;
+        }
+
+        if (!is_array($methods)) {
+          return false;
+        }
+
+        if (!in_array(self::$context['http_method'], array_map('strtoupper', $methods))) {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
   /** Preprocess. This is where you'd add new routes **/
   public function preprocess(&$router) {}
   /** Preroute. This is where you would aler request, or implement things like: security etc. **/
@@ -569,7 +631,7 @@ class Zaphpa_Router {
     $className = array_shift($args);
 
     if (!is_subclass_of($className, 'Zaphpa_Middleware')) {
-      throw new Zaphpa_InvalidMiddlewareClass("Middleware class: $className does not exist or is not a sub-class of Zaphpa_Middleware" );
+      throw new Zaphpa_InvalidMiddlewareClass("Middleware class: '$className' does not exist or is not a sub-class of Zaphpa_Middleware" );
     }
      
     $instance = new $className($args);
@@ -647,7 +709,9 @@ class Zaphpa_Router {
     
     /* Call preprocessors on each middleware impl */
     foreach (self::$middleware as $m) {
-      $m->preroute($req,$res);
+      if ($m->shouldRun('preroute')) {
+        $m->preroute($req,$res);
+      }
     }
     
     return call_user_func($callback, $req, $res);

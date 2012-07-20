@@ -107,6 +107,37 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     
   }
 
+  public function test_scoped_middleware() {
+
+    try {
+      $resp = $this->rest_client->http_get('foo');
+      $this->assertEquals('MODIFIED', $resp->decoded);
+    } catch (ZaphpaRestClientException $ex) {
+      $this->fail('Middleware test: bad return code');
+    }
+
+    try {
+      $resp = $this->rest_client->http_put('foo');
+      $this->assertEquals('MODIFIED', $resp->decoded);
+    } catch (ZaphpaRestClientException $ex) {
+      $this->fail('Middleware test: bad return code');
+    }
+
+    try {
+      $resp = $this->rest_client->http_get('foo/bar');
+      $this->assertEquals('GET', $resp->decoded->method);
+    } catch (ZaphpaRestClientException $ex) {
+      $this->fail('Middleware test: bad return code');
+    }
+
+    try {
+      $resp = $this->rest_client->http_put('foo/bar');
+      $this->assertEquals('MODIFIED', $resp->decoded);
+    } catch (ZaphpaRestClientException $ex) {
+      $this->fail('Middleware test: bad return code');
+    }
+
+  }
 
   public function test_middleware_autodoc() {
     try {

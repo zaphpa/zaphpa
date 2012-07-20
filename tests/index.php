@@ -3,17 +3,24 @@
 require_once(__DIR__ . '/../zaphpa.lib.php');
 require_once(__DIR__ . '/TestController.class.php');
 require_once(__DIR__ . '/ZaphpaTestMiddleware.class.php');
+require_once(__DIR__ . '/ZaphpaTestScopedMiddleware.class.php');
 
 $router = new Zaphpa_Router();
 
 $router->attach('ZaphpaTestMiddleware');
+
+$router
+  ->attach('ZaphpaTestScopedMiddleware')
+  ->restrict('prerender', array(
+    '/foo' => '*',
+    '/foo/bar' => array('put'),
+  ));
 
 // This one is a core plugin and should auto-load
 $router->attach('ZaphpaAutoDocumentator', '/testapidocs');
 
 /* THis one is a core plugin and should auto-load */
 $router->attach('ZaphpaCORS', '*', array('/users'));
-
 
 $router->addRoute(array(
       'path'     => '/users',
