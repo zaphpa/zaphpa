@@ -3,17 +3,12 @@
 class ZaphpaCORS extends Zaphpa_Middleware {
 
   private $domain;
-  private $allowedRoutes;
   
-  function __construct($ctx = null) {
-    if (empty($ctx) || empty($ctx[0])) {
-      $this->domain = '*';
-    } else {
-      $this->domain = $ctx[0];
-    }
+  function __construct($domain = '*') {
+    $this->domain = $domain;
   }
   
   function preroute(&$req, &$res) { 
-    header("Access-Control-Allow-Origin: " . $this->domain , TRUE);
-  }
+    header("Access-Control-Allow-Origin: {$this->domain}", true);
+  } 
 }
