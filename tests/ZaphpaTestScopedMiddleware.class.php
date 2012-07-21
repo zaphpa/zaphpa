@@ -3,7 +3,7 @@
 class ZaphpaTestScopedMiddleware extends Zaphpa_Middleware {
   function preprocess(&$router) {
     $router->addRoute(array(
-      'path' => '/foo',
+      'path'   => '/foo',
       'get'    => array('TestController', 'getTestJsonResponse'),
       'post'   => array('TestController', 'getTestJsonResponse'),
       'put'    => array('TestController', 'getTestJsonResponse'),
