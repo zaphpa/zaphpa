@@ -12,16 +12,12 @@ $router->attach('ZaphpaAutoDocumentator', '/testapidocs');
 
 $router
   ->attach('ZaphpaCORS', '*')
-  ->restrict('preroute', array(
-    '/users' => '*',
-  ));
+  ->restrict('preroute', '*', '/users');
 
 $router
   ->attach('ZaphpaTestScopedMiddleware')
-  ->restrict('prerender', array(
-    '/foo' => '*',
-    '/foo/bar' => array('put'),
-  ));
+  ->restrict('prerender', '*', '/foo')
+  ->restrict('prerender', array('put'), '/foo/bar');
 
 $router->addRoute(array(
   'path' => '/users',

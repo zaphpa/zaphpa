@@ -519,8 +519,8 @@ abstract class Zaphpa_Middleware {
    *  @return Zaphpa_Middlware
    *    The current middleware object, to allow for chaining a la jQuery.
    */
-  public function restrict($hook, $rules) {
-    $this->scope[$hook] = $rules;
+  public function restrict($hook, $methods, $route) {
+    $this->scope[$hook][$route] = $methods;
     return $this;
   }
 

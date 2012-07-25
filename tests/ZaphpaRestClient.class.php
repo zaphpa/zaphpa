@@ -44,7 +44,6 @@ class ZaphpaRestClient {
     curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_HEADER, 1);
-    //curl_setopt($curl, CURLOPT_VERBOSE, 1);
     curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($curl, CURLOPT_TIMEOUT_MS, self::HTTP_TIMEOUT);
     curl_setopt($curl, CURLOPT_FORBID_REUSE, false); // Connection-pool for CURL

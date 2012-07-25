@@ -106,33 +106,17 @@ class ZaphpaRestTest extends ZaphpaTestCase {
   }
 
   public function test_scoped_middleware() {
-    try {
-      $resp = $this->rest_client->get('foo');
-      $this->assertEquals('MODIFIED', $resp->decoded);
-    } catch (ZaphpaRestClientException $ex) {
-      $this->fail('Middleware test: bad return code');
-    }
+    $resp = $this->rest_client->get('foo');
+    $this->assertEquals('MODIFIED', $resp->decoded, 'Scoped middleware test: Expected middleware to run and modify response.');
 
-    try {
-      $resp = $this->rest_client->put('foo');
-      $this->assertEquals('MODIFIED', $resp->decoded);
-    } catch (ZaphpaRestClientException $ex) {
-      $this->fail('Middleware test: bad return code');
-    }
+    $resp = $this->rest_client->put('foo');
+    $this->assertEquals('MODIFIED', $resp->decoded, 'Scoped middleware test: Expected middleware to run and modify response.');
 
-    try {
-      $resp = $this->rest_client->get('foo/bar');
-      $this->assertEquals('GET', $resp->decoded->method);
-    } catch (ZaphpaRestClientException $ex) {
-      $this->fail('Middleware test: bad return code');
-    }
+    $resp = $this->rest_client->get('foo/bar');
+    $this->assertEquals('GET', $resp->decoded->method, 'Scoped middleware test: Expected middleware not to run.');
 
-    try {
-      $resp = $this->rest_client->put('foo/bar');
-      $this->assertEquals('MODIFIED', $resp->decoded);
-    } catch (ZaphpaRestClientException $ex) {
-      $this->fail('Middleware test: bad return code');
-    }
+    $resp = $this->rest_client->put('foo/bar');
+    $this->assertEquals('MODIFIED', $resp->decoded, 'Scoped middleware test: Expected middleware to run and modify response.');
   }
 
   public function test_middleware_autodoc() {
@@ -143,9 +127,12 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     }
   }
 
-  /** 
-   * @todo Implement CORS tests. This is currently a little tricky because the default
-   * callback does not expose response headers 
-   */
-  public function test_middleware_cors() {}
+  public function test_middleware_cors() {
+    $resp = $this->rest_client->get('users');
+    $this->assertArrayHasKey('Access-Control-Allow-Origin', $resp->headers, 'CORS test: expected proper CORS headers to be set.');
+    $this->assertEquals('*', $resp->headers['Access-Control-Allow-Origin'], 'CORS test: expected proper CORS headers to be set.');
+
+    $resp = $this->rest_client->get('users/123');
+    $this->assertArrayNotHasKey('Access-Control-Allow-Origin', $resp->headers, 'CORS test: expected CORS headers not to be set.');
+  }
 }
