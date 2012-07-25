@@ -1,5 +1,5 @@
 <phpunit>
   <php>
-    <env name="server_url" value="http://localhost:8000"/>
+    <env name="server_url" value="http://zaphpa.vm:8080" />
   </php>
 </phpunit>
