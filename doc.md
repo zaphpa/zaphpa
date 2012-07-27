@@ -206,7 +206,7 @@ An example implementation (however meaningless) of a middleware can be found in 
           $buffer[0] = json_encode($dc);
       }  
     }
-    
+
 ### Middleware Context
 
 Please note the usage of `self::$context['pattern']` variable in the `->preroute` method. Often `preroute` needs 
@@ -218,6 +218,29 @@ Full list of variables exposed through context:
 * `pattern` - URI pattern being matched (in the format it was defined in the routes configuration, includes placeholders)
 * `http_method` - current HTTP Method being processed.
 * `callback` - callback in PHP format i.e.: name of the function or an array containing classname and method name.
+    
+### Middleware Route Restrictions
+
+As we saw in the example above, frequently you may want to only enable your middleware for certain routes. 
+Instead of hard-coding that logic as part of the middleware implementation, Zaphpa makes it easy to declaratively
+set the scope of Middleware activity ("restrict" middleware execution to only certain routes):
+
+    $router->attach('MyMiddleWare')
+           ->restrict('preroute', 'GET', '/users')
+           ->restrict('prerender', array('POST', 'GET'), '/tags')
+           ->restrict('preroute', '*', '/groups');
+
+In the example above: 
+
+* first argument indicates which hook of the middleware you want to restrict routes for. Out of three
+    currently supported hooks, you can restrict "preroute" and "prerender", but you can not restrict
+    "preprocess", because preprocess hook is typically used to modify routes list and it does not make
+    any sense to have route restrictions at that point of routing execution.
+* the second argument indicates which HTTP methods you want to restrict (can be a single string, an 
+    array, or "*" which indicates: all http methods)
+* third argument is a URL path you want to restrict middleware execution to. `->restrict()` invocations
+    can be chained in a jQuery-like syntax, which you see above.
+
 
 ### Prebuilt Middleware 
 
@@ -262,7 +285,10 @@ or if you want to enable CORS only for specific domain(s):
     
 If you want to enable CORS only for specific routes:
 
-    $router->attach('ZaphpaCORS', '*', array('/users'));
+    $router->attach('ZaphpaCORS', '*')
+           ->restrict('preroute', 'GET', '/users')
+           ->restrict('preroute', array('POST', 'GET'), '/tags')
+           ->restrict('preroute', '*', '/groups');
     
         
 ## Output format aliases
