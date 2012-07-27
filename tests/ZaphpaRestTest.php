@@ -107,16 +107,16 @@ class ZaphpaRestTest extends ZaphpaTestCase {
 
   public function test_scoped_middleware() {
     $resp = $this->rest_client->get('foo');
-    $this->assertEquals('MODIFIED', $resp->decoded, 'Scoped middleware test: Expected middleware to run and modify response.');
+    $this->assertEquals('MODIFIED', $resp->decoded->status, 'Scoped middleware test: Expected middleware to run and modify response.');
 
     $resp = $this->rest_client->put('foo');
-    $this->assertEquals('MODIFIED', $resp->decoded, 'Scoped middleware test: Expected middleware to run and modify response.');
+    $this->assertEquals('MODIFIED', $resp->decoded->status, 'Scoped middleware test: Expected middleware to run and modify response.');
 
     $resp = $this->rest_client->get('foo/bar');
     $this->assertEquals('GET', $resp->decoded->method, 'Scoped middleware test: Expected middleware not to run.');
 
     $resp = $this->rest_client->put('foo/bar');
-    $this->assertEquals('MODIFIED', $resp->decoded, 'Scoped middleware test: Expected middleware to run and modify response.');
+    $this->assertEquals('MODIFIED', $resp->decoded->status, 'Scoped middleware test: Expected middleware to run and modify response.');
   }
 
   public function test_middleware_autodoc() {

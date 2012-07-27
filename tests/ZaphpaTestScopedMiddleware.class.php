@@ -20,6 +20,6 @@ class ZaphpaTestScopedMiddleware extends Zaphpa_Middleware {
   }
   
   function prerender(&$buffer) {
-    $buffer = array(json_encode('MODIFIED'));
+    $buffer = array(json_encode(array('status' => 'MODIFIED')));
   }
 }
