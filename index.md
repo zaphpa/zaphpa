@@ -41,6 +41,7 @@ title: Zaphpa PHP micro-router.
 	<h2>Who uses it?</h2>
 	 <p>Zaphpa is actively used by <a href="http://npr.org">NPR</a>'s software teams in the Digital Media and Digital Services
 	 divisions, benefiting from thorough bug-fixing and various contributions by: <a href="http://github.com/inadarei">@inadarei</a>,  
+   <a href="http://github.com/karoun">@karoun</a>,
 	 <a href="http://github.com/randallsquared">@randallsquared</a>, <a href="http://github.com/johnymonster">@johnymonster</a>, 
 	 <a href="http://github.com/jsgrosman">@jsgrosman</a> and <a href="http://github.com/d1b1">@d1b1</a>.	 
 	  
