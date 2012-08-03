@@ -320,7 +320,7 @@ class Zaphpa_Response {
         $m->prerender($this->chunks);
       }
     }
-        
+
     $out = implode('', $this->chunks);
     $this->chunks = array(); // reset
     echo ($out);

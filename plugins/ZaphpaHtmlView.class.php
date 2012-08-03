@@ -5,7 +5,7 @@ require_once 'ZaphpaSingleton.class.php';
 class ZaphpaHtmlView extends ZaphpaSingleton {
 
     private $templateVariables = array();
-    
+
     private $headerTags = array();
     private $cssTags = array();
     private $javascriptTags = array();
@@ -13,10 +13,10 @@ class ZaphpaHtmlView extends ZaphpaSingleton {
     private $contentTpl = '';
     private $blocks;
     
-    private static $tplRoot = '';
+    private $tplRoot = '';
 
-    public static function static_construct() {
-        self::$tplRoot = realpath('../../');
+    public function __construct() {
+        $this->tplRoot = realpath(__DIR__ . '/../../');
     }
 
     public function get() {
@@ -58,11 +58,12 @@ class ZaphpaHtmlView extends ZaphpaSingleton {
       $blockName = empty($blockName) ? basename($tplPath) : $blockName;
       $render = self::getInstance();      
       ob_start();
+      $this->set('blocks', $this->blocks);
       extract($this->get());
-      include($render->getTpl($tplPath));
-      $blocks[$tplPath] = ob_get_clean();
+      include($this->tplRoot . '/' . $tplPath . '.tpl.php');
+      $this->blocks[$tplPath] = ob_get_clean();
       
-      return $blocks[$tplPath];
+      return $this->blocks[$tplPath];
     }
 
     public function getHeadTags() {
@@ -82,11 +83,11 @@ class ZaphpaHtmlView extends ZaphpaSingleton {
     }
 
     public function setTplRoot($path) {
-        self::$tplRoot = $path;
+        $this->tplRoot = $path;
     }
 
     public function setContentTpl($contentTplFileLocation) {
-        if (file_exists($this->tplRoot . '/' . $contentTplFileLocation)) {
+        if (file_exists($this->tplRoot . '/' . $contentTplFileLocation . '.tpl.php')) {
             $this->contentTpl = $contentTplFileLocation;
         } else {
             throw Exception('Content TPL path does not exist');
@@ -94,7 +95,7 @@ class ZaphpaHtmlView extends ZaphpaSingleton {
     }
 
     public function setPageTpl($pageTplFileLocation) {
-        if (file_exists($this->tplRoot . '/' . $pageTplFileLocation)) {
+        if (file_exists($this->tplRoot . '/' . $pageTplFileLocation . '.tpl.php')) {
             $this->pageTpl = $pageTplFileLocation;
         } else {
             throw Exception('Page TPL path does not exist');
@@ -102,11 +103,11 @@ class ZaphpaHtmlView extends ZaphpaSingleton {
     }
 
     public function getContentTpl() {
-        return self::$tplRoot . '/' . $this->contentTpl;
+        return $this->contentTpl;
     }
 
     public function getPageTpl() {
-        return self::$tplRoot . '/' . $this->pageTpl;
+        return $this->pageTpl;
     }
 
     private function _formatHeaderTag($tagName) {
@@ -127,6 +128,4 @@ class ZaphpaHtmlView extends ZaphpaSingleton {
 
         return $tag;
     }
-
-
-}ZaphpaHtmlView::static_construct();
+}

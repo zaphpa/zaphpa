@@ -5,12 +5,14 @@ class ZaphpaHtmlTemplates extends Zaphpa_Middleware {
 
     function prerender(&$buffer) {
       $view = ZaphpaHtmlView::getInstance();
-      $contentTpl = $render->getContentTpl();
+      $contentTpl = $view->getContentTpl();
       $content = $view->render($contentTpl );
       $view->setBlock('content', $content);
-        
-      $pageTpl = $render->getPageTpl();
+
+      $pageTpl = $view->getPageTpl();
       $buffer = $view->render($pageTpl);
+
+        print_r($buffer);exit;
     }
     
 }
