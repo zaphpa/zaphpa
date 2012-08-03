@@ -18,6 +18,8 @@ class ZaphpaHtmlView extends Zaphpa_Middleware {
         include($render->getPageTpl());
         $page = ob_get_clean();
 
+        print_r($render->get());exit;
+
         $buffer = $page;
     }
 }

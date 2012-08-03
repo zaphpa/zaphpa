@@ -83,6 +83,8 @@
             }
 
             $tag = '>';
+
+            return $tag;
         }
 
 
