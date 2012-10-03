@@ -409,7 +409,8 @@ class Zaphpa_Request {
   public $protocol;
   
   function __construct() {
-    $this->method = $_SERVER['REQUEST_METHOD'];
+        
+    $this->method = Zaphpa_Router::getRequestMethod();    
     
     $this->clientIP = !empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : '';
     $this->clientIP = (empty($this->clientIP) && !empty($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '';
@@ -507,7 +508,7 @@ abstract class Zaphpa_Middleware {
    *  Restrict a middleware hook to certain paths and HTTP methods.
    *  
    *  No actual restriction takes place in this method.
-   *  We simply place the $rules array into $this->scope, keyed by its $hook.
+   *  We simply place the $methods array into $this->scope, keyed by its $hook.
    *  
    *  @param string $hook
    *    A middleware hook, expecting either 'preroute' or 'prerender'.
@@ -550,7 +551,7 @@ abstract class Zaphpa_Middleware {
           return false;
         }
 
-        if (!in_array(self::$context['http_method'], array_map('strtoupper', $methods))) {
+        if (!in_array(self::$context['http_method'], array_map('strtolower', $methods))) {
           return false;
         }
       } else {
@@ -573,6 +574,8 @@ class Zaphpa_Router {
   
   protected $routes  = array();
   public static $middleware = array();
+  
+  /** Allowed HTTP Methods. Restricted to only common ones, for security reasons. **/
   protected static $methods = array('get', 'post', 'put', 'patch', 'delete', 'head', 'options');
   
   /**
@@ -627,7 +630,10 @@ class Zaphpa_Router {
 
   }
   
-  private static function getRequestMethod() {
+  /**
+  * Get lower-cased representation of current HTTP Request method
+  */
+  public static function getRequestMethod() {
     return strtolower($_SERVER['REQUEST_METHOD']);
   }
   
@@ -657,13 +663,13 @@ class Zaphpa_Router {
     }
     
     $routes = $this->getRoutes();
-
+    
     foreach ($routes as $route) {
       $params = $route['template']->match($uri);
       
       if (!is_null($params)) {
         Zaphpa_Middleware::$context['pattern'] = $route['template']->getTemplate();
-        Zaphpa_Middleware::$context['http_method'] = $_SERVER['REQUEST_METHOD'];
+        Zaphpa_Middleware::$context['http_method'] = self::getRequestMethod();
         Zaphpa_Middleware::$context['callback'] = $route['callback'];
         
         $callback = Zaphpa_Callback_Util::getCallback($route['callback'], $route['file']);
