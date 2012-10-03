@@ -104,12 +104,13 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     
     $resp = (object) $this->request->get('/foo/bar');
     $resp->decoded = json_decode($resp->data);     
-    $this->assertEquals('GET', $resp->decoded->method, 'Scoped middleware test: Expected middleware not to run.');
+    $this->assertEquals('get', $resp->decoded->method, 'Scoped middleware test: Expected middleware not to run.');
 
     $resp = (object) $this->request
                           ->data("hobby", "programming")
                           ->put('/foo/bar');
-    $resp->decoded = json_decode($resp->data);     
+    $resp->decoded = json_decode($resp->data);    
+    
     $this->assertEquals('success', $resp->decoded->scopeModification, 'Scoped middleware test: Expected middleware to run and modify response.');    
   }
 
@@ -134,4 +135,15 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     $resp->decoded = json_decode($resp->data);             
     $this->assertArrayNotHasKey('Access-Control-Allow-Origin', $resp->headers, 'CORS test: expected CORS headers not to be set.');
   }
+  
+  public function test_middleware_methodoverride() {
+    $resp = (object) $this->request
+                          ->header("X-HTTP-Method-Override", "patch")
+                          ->post('/users/12345');
+
+    $resp->decoded = json_decode($resp->data);         
+    $this->assertEquals('patch', $resp->decoded->method, 'Method Override test: expected http method to be overriden in POST request.');
+
+  }
+
 }

@@ -22,7 +22,6 @@ class ZaphpaTestScopedMiddleware extends Zaphpa_Middleware {
   function prerender(&$buffer) {
     $dc = json_decode($buffer[0]);
     $dc->scopeModification = "success";
-    $buffer[0] = json_encode($dc);
-    
+    $buffer[0] = json_encode($dc);    
   }
 }

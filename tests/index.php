@@ -10,6 +10,8 @@ $router = new Zaphpa_Router();
 $router->attach('ZaphpaTestMiddleware');
 $router->attach('ZaphpaAutoDocumentator', '/testapidocs');
 
+$router->attach('MethodOverride');
+
 $router
   ->attach('ZaphpaCORS', '*')
   ->restrict('preroute', '*', '/users');
@@ -31,6 +33,7 @@ $router->addRoute(array(
   ),
   'get'      => array('TestController', 'getTestJsonResponse'),
   'post'     => array('TestController', 'getTestJsonResponse'),
+  'patch'    => array('TestController', 'getTestJsonResponse'),
 ));
 
 $router->addRoute(array(
