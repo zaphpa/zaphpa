@@ -1,7 +1,6 @@
 <?php
 
 require_once (__DIR__ . '/ZaphpaTestCase.class.php');
-require_once (__DIR__ . '/ZaphpaRestClient.class.php');
 require_once (__DIR__ . '/restagent.lib.php');
 
 /**
