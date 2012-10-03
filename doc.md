@@ -188,7 +188,7 @@ An example implementation (however meaningless) of a middleware can be found in 
     class ZaphpaTestMiddleware extends Zaphpa_Middleware {
       function preprocess(&$router) {
         $router->addRoute(array(
-              'path'     => '/middlewaretest/{mid}',
+              \<em\>'path'     => '/middlewaretest/{mid}',\</em\>
               'get'      => array('TestController', 'getTestJsonResponse'),
         ));
       }
@@ -243,6 +243,23 @@ In the example above:
 
 
 ### Prebuilt Middleware 
+
+#### HTTP Method Overrides
+
+In REST you typically operate with following common HTTP Methods ("verbs" for CRUD): GET, PUT, POST, 
+DELETE (and sometimes: PATCH). Using these methods can be problematic, in certain cases however. Some HTTP
+Proxies often block any methods but GET AND POST, as well as: making cross-domain Ajax calls with custom
+verbs can be hard.
+
+Zaphpa implements common HTTP Method override trick to allow an effective solution. You can still implement
+proper HTTP Methods and if clients have problem making a particular HTTP Method-based request, they can make
+HTTP POST instead, and indicate the method they "meant" in request headers with the "X-HTTP-Method-Override"
+header.
+
+Method override is a middleware plugin that is disabled by default. To enable it, add following line to your
+router initialization code:
+
+    $router->attach('MethodOverride');
 
 #### Auto-Documentator
 
