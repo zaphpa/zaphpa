@@ -460,7 +460,7 @@ class Zaphpa_Request {
   *        name o the data variable (either request var or HTTP body var).
   */ 
   public function get_var($idx) {
-    return !empty($this->data[$idx]) ? $this->data[$idx] : null;
+    return (is_array($this->data) && isset($this->data[$idx])) ? $this->data[$idx] : null;
   }
   
   /**
