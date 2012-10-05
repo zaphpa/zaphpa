@@ -145,5 +145,23 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     $this->assertEquals('patch', $resp->decoded->method, 'Method Override test: expected http method to be overriden in POST request.');
 
   }
+  
+  public function test_get_query_param() {
+    $resp = (object) $this->request->get('/query_var_test?test_param=');
+    $resp->decoded = json_decode($resp->data);      
+    $this->assertEquals('', $resp->decoded->test_param, '$query->get_var() test. Parameter is empty');
+
+    $resp = (object) $this->request->get('/query_var_test');
+    $resp->decoded = json_decode($resp->data);      
+    $this->assertNull($resp->decoded->test_param, '$query->get_var() test. Parameter is missing');
+
+    $resp = (object) $this->request->get('/query_var_test?test_param=0');
+    $resp->decoded = json_decode($resp->data);      
+    $this->assertEquals(0, $resp->decoded->test_param, '$query->get_var() test. Parameter is zero');
+
+    $resp = (object) $this->request->get('/query_var_test?test_param=3');
+    $resp->decoded = json_decode($resp->data);   
+    $this->assertEquals(3, $resp->decoded->test_param, '$query->get_var() test. Parameter has non-zero value');
+  }
 
 }

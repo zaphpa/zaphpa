@@ -53,6 +53,11 @@ $router->addRoute(array(
   'get'      => array('TestController', 'getTestJsonResponse'),
 ));
 
+$router->addRoute(array(
+  'path'     => '/query_var_test',
+  'get'      => array('TestController', 'getQueryVarTestJsonResponse'),
+));
+
 
 try {
   $router->route();
