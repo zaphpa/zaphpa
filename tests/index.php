@@ -37,6 +37,11 @@ $router->addRoute(array(
 ));
 
 $router->addRoute(array(
+  'path'     => '/entity/{id}',
+  'get'      => array('TestController', 'getTestJsonResponse'),
+));
+
+$router->addRoute(array(
   'path'     => '/tags/{id}',
   'handlers' => array(
     'id'       => Zaphpa_Constants::PATTERN_ALPHA,

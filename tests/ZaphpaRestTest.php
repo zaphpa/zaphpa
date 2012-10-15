@@ -27,6 +27,19 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     $resp = $this->request->get('/users/alpha');
     $this->assertEquals(404, $resp['code'], 'Alpha characters were parsed when a numeric arg was expected.');    
   }  
+  
+  public function test_freeform() {
+    try {
+      $resp = (object) $this->request->get('/entity/2423:12321.;13123');
+      $resp->decoded = json_decode($resp->data);
+      $this->assertEquals('2423:12321.;13123', $resp->decoded->params->id, 'free-form URL parameter was not parsed correctly.');
+    } catch (ZaphpaRestClientException $ex) {
+      $this->fail('Request failed when any characters should have passed.');
+    }
+
+    $resp = $this->request->get('/users/alpha');
+    $this->assertEquals(404, $resp['code'], 'Alpha characters were parsed when a numeric arg was expected.');    
+  }  
 
   public function test_pattern_alpha_single() {
     try {
