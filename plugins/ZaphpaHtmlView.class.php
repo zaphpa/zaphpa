@@ -12,7 +12,9 @@ class ZaphpaHtmlView extends ZaphpaSingleton {
     private $pageTpl = '';
     private $contentTpl = '';
     private $blocks;
-    
+    private $jsVars = array();
+    private static $RESERVED_VARIABLES = array('headerTags', 'css', 'javascript', 'render', 'content');
+
     private $tplRoot = '';
 
     public function __construct() {
@@ -24,6 +26,9 @@ class ZaphpaHtmlView extends ZaphpaSingleton {
     }
 
     public function set($varname, $variable) {
+        if (in_array($varname, self::$RESERVED_VARIABLES)) {
+            throw new Exception("Reserved variable name: $varname");
+        }
         if (!empty($varname)) {
             $this->templateVariables[$varname] = $variable;
         }
@@ -44,43 +49,78 @@ class ZaphpaHtmlView extends ZaphpaSingleton {
         if (!empty($blockName)) {
             $this->blocks[$blockName] = $blockRendered;
         }
-    }        
-    
-    /**
-    * @param $tplPath
-    *   The name of the tpl file (without the extension) that can also include relative path to the file.
-    * 
-    * @param $blockName
-    *   The name of the block as it will be exposed to a wrapper TPL (if any). Defaults
-    *   to the filename part of the $tplPath, if none provided.
-    **/
-    public function render($tplPath, $blockName = null) {
-      $blockName = empty($blockName) ? basename($tplPath) : $blockName;
-      $render = self::getInstance();      
-      ob_start();
-      $this->set('blocks', $this->blocks);
-      extract($this->get());
-      include($this->tplRoot . '/' . $tplPath . '.tpl.php');
-      $this->blocks[$tplPath] = ob_get_clean();
-      
-      return $this->blocks[$tplPath];
     }
+
+    /* == Css / JS == */
+    public function setJavascript($javascript) {
+        $this->javascriptTags[] = $javascript;
+    }
+
+    public function setCss($css) {
+        $this->cssTags[] = $css;
+    }
+
+    public function getJavascript() {
+        $js = '';
+        foreach ($this->javascriptTags as $tag) {
+            $js .= $tag . "\n";
+        }
+        return $js . $this->renderJsVars();
+    }
+
+    public function getCss() {
+        $css = '';
+        foreach ($this->cssTags as $tag) {
+            $css .= $tag . "\n";
+        }
+        return $css;
+    }
+
+    public function addJs($name, $value) {
+        $this->jsVars[$name] = $value;
+    }
+
+    /** Outputs Javascript snippet to be inserted in the header of HTML **/
+    private function renderJsVars()
+    {
+        if(empty($this->jsVars))
+        {
+            return '';
+        }
+
+        $embed_prefix = "var zaphpa = {}; zaphpa.vars = {}; zaphpa.vars = ";
+        $embed_suffix = ";\n";
+
+        // Encode <, >, ', &, and " using the json_encode() options parameters.
+        return ('<script>' . $embed_prefix . json_encode($this->jsVars, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) . $embed_suffix . '</script>');
+    }
+
+    /* == Header tags == */
 
     public function getHeadTags() {
-        return $this->headerTags;
+        $head = '';
+        foreach ($this->headerTags as $tag) {
+            $head .= $tag . "\n";
+        };
+        return $head;
     }
 
-    public function setHeadMeta($headTagName, $headTagValue) {
-        if (!empty($headerName) && !empty($headTagType)) {
-            $this->headerTags[] = $this->_formatHeaderTag('head', 'name', $headTagName, 'content', $headTagValue);
+    public function setHeader($headerName, $arguments) {
+
+        $tag = "<$headerName";
+
+        foreach ($arguments as $key => $value) {
+            if (!empty($value)) {
+                $tag .= ' ' . $key . '="' . $value . '"';
+            }
         }
+
+        $tag .= '>';
+
+        $this->headerTags[] = $tag;
     }
 
-    public function setHeadLink($href, $type='', $rel='', $title='') {
-        if (!empty($headerName) && !empty($headTagType)) {
-            $this->headerTags[] = $this->_formatHeaderTag('head', 'href', $href, 'type', $type,'rel', $rel, 'title', $title);
-        }
-    }
+    /* == Template file loading == */
 
     public function setTplRoot($path) {
         $this->tplRoot = $path;
@@ -110,22 +150,29 @@ class ZaphpaHtmlView extends ZaphpaSingleton {
         return $this->pageTpl;
     }
 
-    private function _formatHeaderTag($tagName) {
-        $numArgs = func_num_args();
-        $arguments = func_get_args();
+    /* == Render Zaphpa Hook == */
+    /**
+     * @param $tplPath
+     *   The name of the tpl file (without the extension) that can also include relative path to the file.
+     *
+     * @param $blockName
+     *   The name of the block as it will be exposed to a wrapper TPL (if any). Defaults
+     *   to the filename part of the $tplPath, if none provided.
+     **/
+    public function render($tplPath, $blockName = null) {
+        $blockName = empty($blockName) ? basename($tplPath) : $blockName;
+        $render = self::getInstance();
+        $headerTags = $render->getHeadTags();
+        $css = $render->getCss();
+        $javascript = $render->getJavascript();
 
-        if ($numArgs % 2 != 0) {
-            $arguments[] = '';
-        }
+        ob_start();
+        $this->set('blocks', $this->blocks);
 
-        $tag = "<$tagName";
+        extract($this->get());
+        include($this->tplRoot . '/' . $tplPath . '.tpl.php');
+        $this->blocks[$blockName] = ob_get_clean();
 
-        for ($i=1; $i < $numArgs; $i+2) {
-            $tag .= ' ' . $arguments[$i] . '="' . $arguments[$i+1] . '"';
-        }
-
-        $tag = '>';
-
-        return $tag;
+        return $this->blocks[$tplPath];
     }
 }

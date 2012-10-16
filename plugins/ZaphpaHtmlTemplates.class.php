@@ -10,9 +10,9 @@ class ZaphpaHtmlTemplates extends Zaphpa_Middleware {
       $view->setBlock('content', $content);
 
       $pageTpl = $view->getPageTpl();
-      $buffer = $view->render($pageTpl);
+      $buffer = array($view->render($pageTpl));
 
-        print_r($buffer);exit;
+      return $buffer;
     }
     
 }
