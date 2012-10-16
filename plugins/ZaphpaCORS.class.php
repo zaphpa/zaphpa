@@ -10,5 +10,11 @@ class ZaphpaCORS extends Zaphpa_Middleware {
   
   function preroute(&$req, &$res) { 
     header("Access-Control-Allow-Origin: {$this->domain}", true);
+    
+    if (strcasecmp(Zaphpa_Router::getRequestMethod(), "options") == 0) {
+        header("Access-Control-Allow-Methods: GET, POST", true);
+        header("Access-Control-Allow-Headers: origin, x-http-method-override, accept", true);
+    }
+    
   } 
 }
