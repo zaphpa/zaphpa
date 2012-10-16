@@ -37,7 +37,7 @@ $router->addRoute(array(
 ));
 
 $router->addRoute(array(
-  'path'     => '/entity/{id}',
+  'path'     => '/v2/times/{dt}/episodes',
   'get'      => array('TestController', 'getTestJsonResponse'),
 ));
 

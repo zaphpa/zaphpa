@@ -653,7 +653,11 @@ class Zaphpa_Router {
   
   public function route($uri = null) {
     if (empty($uri)) {
-      $tokens = parse_url($_SERVER['REQUEST_URI']);
+      // CAUTION: parse_url does not work reliably with relative URIs, it is intended for fully qualified URLs.
+      // Using parse_url with URI can cause bugs like this: https://github.com/zaphpa/zaphpa/issues/13
+      // We have URI and we could really use parse_url however, so let's pretend we have a full URL by prepending
+      // our URI with a meaningless scheme/domain.
+      $tokens = parse_url('http://foo.com' . $_SERVER['REQUEST_URI']);
       $uri = rawurldecode($tokens['path']);
     }
   

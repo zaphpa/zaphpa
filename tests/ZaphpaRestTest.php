@@ -30,9 +30,10 @@ class ZaphpaRestTest extends ZaphpaTestCase {
   
   public function test_freeform() {
     try {
-      $resp = (object) $this->request->get('/entity/2423:12321.;13123');
+      // This test ensures that this bug is fixed: https://github.com/zaphpa/zaphpa/issues/13
+      $resp = (object) $this->request->get('/v2/times/2012-10-11T12:00/episodes?apiKey=SOMETHINGTHATLOOKSLIKEMD5');
       $resp->decoded = json_decode($resp->data);
-      $this->assertEquals('2423:12321.;13123', $resp->decoded->params->id, 'free-form URL parameter was not parsed correctly.');
+      $this->assertEquals('2012-10-11T12:00', $resp->decoded->params->dt, 'free-form URL parameter was not parsed correctly.');
     } catch (ZaphpaRestClientException $ex) {
       $this->fail('Request failed when any characters should have passed.');
     }
