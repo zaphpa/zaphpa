@@ -677,6 +677,11 @@ class Zaphpa_Router {
       }
     }
     
+    if (strcasecmp(Zaphpa_Router::getRequestMethod(), "options") == 0)
+    {
+        return $this->invoke_options();
+    }
+    
     throw new Zaphpa_InvalidPathException('Invalid path');
   }
   
@@ -699,5 +704,24 @@ class Zaphpa_Router {
     
     return call_user_func($callback, $req, $res);
     
+  }
+  
+  protected function invoke_options() {
+      $req = new Zaphpa_Request();
+      $res = new Zaphpa_Response($req);
+      
+      /* Call preprocessors on each middleware impl */
+      foreach (self::$middleware as $m) {
+          if ($m->shouldRun('preroute')) {
+              $m->preroute($req,$res);
+          }
+      }
+      
+      $res->setFormat("httpd/unix-directory");
+      header("Allow: " . implode(",", array_map('strtoupper',Zaphpa_Router::$methods)));
+      $res->send(200);
+      
+      return true;
+      
   }
 } // end Zaphpa_Router
