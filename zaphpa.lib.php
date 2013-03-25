@@ -57,10 +57,11 @@ class Zaphpa_Callback_Util {
     if ($file) {
       self::loadFile($file);
     }
-    
-	$originalClass = array_shift($callback);
 	
     if (is_array($callback)) {
+	
+	  $originalClass = array_shift($callback);
+	  
       $method = new ReflectionMethod($originalClass, array_shift($callback));
       
       if ($method->isPublic()) {
