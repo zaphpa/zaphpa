@@ -624,13 +624,9 @@ class Zaphpa_Router {
       throw new Zaphpa_InvalidMiddlewareClass("Middleware class: '$className' does not exist or is not a sub-class of Zaphpa_Middleware" );
     }
     
-	if (empty($args)) {
-		$instance = new $className;
-	} else {
-		// convert args array to parameter list
-	    $rc = new ReflectionClass($className);
-		$instance = $rc->newInstanceArgs($args);
-	}
+    // convert args array to parameter list
+    $rc = new ReflectionClass($className);
+    $instance = $rc->newInstanceArgs($args);
 
     self::$middleware[] = $instance;
     return $instance;
