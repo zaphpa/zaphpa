@@ -248,6 +248,7 @@ class Zaphpa_Response {
   
   private $format;
   private $req;
+  private $headers = array();
 
   /** Public constructor **/
   function __construct($request = null) {
@@ -313,9 +314,7 @@ class Zaphpa_Response {
     if (empty($this->format)) { $this->format = $this->req->format; }
     if (empty($this->code)) { $this->code = 200; }
 
-    if (!headers_sent()) {
-      header("Content-Type: $this->format;", true, $this->code);
-    }
+    $this->sendHeaders();
     
     /* Call preprocessors on each middleware impl */
     foreach (Zaphpa_Router::$middleware as $m) {
@@ -344,6 +343,28 @@ class Zaphpa_Response {
   
   public function getFormat() {
     return $this->format;
+  }
+
+  /**
+  * Send headers to instruct browser not to cache this content
+  * See http://stackoverflow.com/a/2068407
+  */
+  public function disableBrowserCache() {
+    $this->headers[] = 'Cache-Control: no-cache, no-store, must-revalidate'; // HTTP 1.1.
+    $this->headers[] = 'Pragma: no-cache'; // HTTP 1.0.
+    $this->headers[] = 'Expires: Thu, 26 Feb 1970 20:00:00 GMT'; // Proxies.
+  }
+
+  /**
+  *  Send entire collection of headers if they haven't already been sent
+  */
+  private function sendHeaders() {
+    if (!headers_sent()) {
+      foreach ($this->headers as $header) {
+        header($header);
+      }
+      header("Content-Type: $this->format;", true, $this->code);
+    }
   }
     
   private function codes() {
