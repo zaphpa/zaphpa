@@ -608,6 +608,10 @@ class Zaphpa_Router {
   public function addRoute($params) {
     
     if (!empty($params['path'])) {
+      if (strpos($params['path'], '/*')) {
+        $params['path'] = str_replace("/*", "/{args}", $params['path']);
+        $params['handlers'] += array('args' => self::PATTERN_ARGS);
+      }
       
       $template = new Zaphpa_Template($params['path']);
       
