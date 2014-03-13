@@ -12,6 +12,18 @@ Most importantly: [karoun](http://github.com/karoun), [randallsquared](http://gi
 
 ## [Documentation](http://zaphpa.org)
 
+## Installing Zaphpa with Composer
+
+Add `zaphpa/zaphpa` to your `composer.json`.
+
+```
+{
+  "require": {
+    "zaphpa/zaphpa": "1.x"
+  }
+}
+```
+
 ## Special Thanks
 
 Our sincere gratitude goes to [JetBrains](http://www.jetbrains.com/) for providing an open-source project license 
