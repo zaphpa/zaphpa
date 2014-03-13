@@ -411,8 +411,18 @@ by \w pattern of regular expression syntax).
 could be useful in URLs like: 
     * `/news/212424/**us/politics/elections**/some-title-goes-here/2012` 
 where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator 
-like: <script src="https://gist.github.com/1900311.js?file=gistfile1.txt"></script> and you would get the function arguments 
-in the callback as: 
+like: 
+    
+    ```php
+    'path'     => '/news/{id}/{categories}/{title}/{year}',  
+    'handlers' => array(
+      'id'          => Zaphpa_Constants::PATTERN\_NUM, 
+      'categories'  => Zaphpa_Constants::PATTERN\_ARGS, 
+      'title'       => Zaphpa_Constants::PATTERN\_ALPHA,
+      'year'       => Zaphpa_Constants::PATTERN\_YEAR, 
+     ),
+    ```
+and you would get the function arguments in the callback as: 
 
     ```php
     [params] => Array
