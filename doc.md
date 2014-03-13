@@ -412,7 +412,23 @@ could be useful in URLs like:
     * `/news/212424/**us/politics/elections**/some-title-goes-here/2012` 
 where "us/politics/elections" is a part with variable number of "categories". To parse such URL you could define a validator 
 like: <script src="https://gist.github.com/1900311.js?file=gistfile1.txt"></script> and you would get the function arguments 
-in the callback as: <script src="https://gist.github.com/1900324.js?file=gistfile1.txt"></script>
+in the callback as: 
+
+    ```php
+    [params] => Array
+    (
+      [id] => 212424
+      [categories] => Array
+          (
+              [0] => us
+              [1] => politics
+              [1] => elections
+          )
+      [title] => some-title-goes-here
+      [year] => 2012
+    )
+    ```
+    
 * `PATTERN_ARGS_ALPHA` - acts the exact same way as `PATTERN_ARGS` but limits character set to alpha-numeric ones.
 * `PATTERN_ANY` (default) - matches any one argument
 * `PATTERN_WILD_CARD` - "greedy" version of `PATTERN_ANY` that can match multiple arguments
