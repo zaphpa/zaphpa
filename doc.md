@@ -16,24 +16,26 @@ PHP file, say: api.php (see: [Appendix A](/doc.html#Appendix_A_Setting_Up_Zaphpa
 
 For a very simple case of getting specific user object, the code of api.php would look something like:
 
-    require_once(__DIR__ . '/zaphpa/zaphpa.lib.php');
-    $router = new Zaphpa_Router();
-    
-    $router->addRoute(array(
-      'path'     => '/users/{id}',
-      'handlers' => array(
-        'id'         => Zaphpa_Constants::PATTERN_DIGIT, //enforced to be numeric
-      ),
-      'get'      => array('MyController', 'getPage'),
-    ));
-    
-    try {
-      $router->route();
-    } catch (Zaphpa_InvalidPathException $ex) {      
-      header("Content-Type: application/json;", TRUE, 404);
-      $out = array("error" => "not found");        
-      die(json_encode($out));
-    }     
+```php
+require_once(__DIR__ . '/zaphpa/zaphpa.lib.php');
+$router = new Zaphpa_Router();
+
+$router->addRoute(array(
+  'path'     => '/users/{id}',
+  'handlers' => array(
+    'id'         => Zaphpa_Constants::PATTERN_DIGIT, //enforced to be numeric
+  ),
+  'get'      => array('MyController', 'getPage'),
+));
+
+try {
+  $router->route();
+} catch (Zaphpa_InvalidPathException $ex) {      
+  header("Content-Type: application/json;", TRUE, 404);
+  $out = array("error" => "not found");        
+  die(json_encode($out));
+}     
+```
 
 In this example, {id} is a URI parameter of the type "digit", so `MyController->getPage()` function will get control to serve URLs like:
 
@@ -59,22 +61,24 @@ headers, as well as: the response body.
 
 We will look into the details of $req and $res objects further in the documentation. Following are some example callback implementations:
 
-    class MyController {
-    
-      public function getPage($req, $res) {
-        $res->setFormat("json");
-        $res->add(json_encode($req->params));
-        $res->add(json_encode($req->data));
-        $res->send(301);    
-      }
-    
-      public function postPage($req, $res) {
-      	$res->add(json_encode($req->params));
-        $res->add(json_encode($req->data));
-        $res->send(201, 'json');    
-      }
-    
-    }	
+```php
+class MyController {
+
+  public function getPage($req, $res) {
+    $res->setFormat("json");
+    $res->add(json_encode($req->params));
+    $res->add(json_encode($req->data));
+    $res->send(301);    
+  }
+
+  public function postPage($req, $res) {
+    $res->add(json_encode($req->params));
+    $res->add(json_encode($req->data));
+    $res->send(201, 'json');    
+  }
+
+}	
+```
 
 ## Request Object
 
