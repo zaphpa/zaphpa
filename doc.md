@@ -18,6 +18,7 @@ For a very simple case of getting specific user object, the code of api.php woul
 
 ```php
 <?php
+
 require_once(__DIR__ . '/zaphpa/zaphpa.lib.php');
 $router = new Zaphpa_Router();
 
@@ -63,6 +64,8 @@ headers, as well as: the response body.
 We will look into the details of $req and $res objects further in the documentation. Following are some example callback implementations:
 
 ```php
+<?php
+
 class MyController {
 
   public function getPage($req, $res) {
@@ -92,44 +95,48 @@ class MyController {
 	
 Following is an example request object:
 
-    Zaphpa_Request Object
+```php
+<?php
+
+Zaphpa_Request Object
+(
+  [params] => Array
     (
-      [params] => Array
-        (
-          [id] => 234234
-        )
-      [data] => Array
-        (
-          [api] => 46546456456
-        )
-      [formats] => Array
-        (
-          [0] => text/html
-          [1] => application/xhtml+xml
-          [2] => application/xml
-        )
-      [encodings] => Array
-        (
-          [0] => gzip
-          [1] => deflate
-          [2] => sdch
-        )
-      [charsets] => Array
-        (
-          [0] => ISO-8859-1
-          [1] => utf-8
-        )
-      [languages] => Array
-        (
-          [0] => en-US
-          [1] => en
-        )
-      [version] => 
-      [method] => GET
-      [clientIP] => 172.30.25.142
-      [userAgent] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.2...
-      [protocol] => HTTP/1.1
+      [id] => 234234
     )
+  [data] => Array
+    (
+      [api] => 46546456456
+    )
+  [formats] => Array
+    (
+      [0] => text/html
+      [1] => application/xhtml+xml
+      [2] => application/xml
+    )
+  [encodings] => Array
+    (
+      [0] => gzip
+      [1] => deflate
+      [2] => sdch
+    )
+  [charsets] => Array
+    (
+      [0] => ISO-8859-1
+      [1] => utf-8
+    )
+  [languages] => Array
+    (
+      [0] => en-US
+      [1] => en
+    )
+  [version] => 
+  [method] => GET
+  [clientIP] => 172.30.25.142
+  [userAgent] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.2...
+  [protocol] => HTTP/1.1
+)
+```
 
 ### Request parsing
 
@@ -190,27 +197,31 @@ infrastructural features.
 
 An example implementation (however meaningless) of a middleware can be found in Zaphpa tests:
 
-    class ZaphpaTestMiddleware extends Zaphpa_Middleware {
-      function preprocess(&$router) {
-        $router->addRoute(array(
-              \<em\>'path'     => '/middlewaretest/{mid}',\</em\>
-              'get'      => array('TestController', 'getTestJsonResponse'),
-        ));
-      }
-      
-      function preroute(&$req, &$res) {
-        // you get to customize behavior depending on the pattern being matched in the current request
-        if (self::$context['pattern'] == '/middlewaretest/{mid}') {  
-          $req->params['bogus'] = "foo";
-        }    
-      }
-      
-      function prerender(&$buffer) {
-          $dc = json_decode($buffer[0]);
-          $dc->version = "2.0";
-          $buffer[0] = json_encode($dc);
-      }  
-    }
+```php
+<?php
+
+class ZaphpaTestMiddleware extends Zaphpa_Middleware {
+  function preprocess(&$router) {
+    $router->addRoute(array(
+          \<em\>'path'     => '/middlewaretest/{mid}',\</em\>
+          'get'      => array('TestController', 'getTestJsonResponse'),
+    ));
+  }
+  
+  function preroute(&$req, &$res) {
+    // you get to customize behavior depending on the pattern being matched in the current request
+    if (self::$context['pattern'] == '/middlewaretest/{mid}') {  
+      $req->params['bogus'] = "foo";
+    }    
+  }
+  
+  function prerender(&$buffer) {
+      $dc = json_decode($buffer[0]);
+      $dc->version = "2.0";
+      $buffer[0] = json_encode($dc);
+  }  
+}
+```
 
 ### Middleware Context
 
@@ -230,10 +241,14 @@ As we saw in the example above, frequently you may want to only enable your midd
 Instead of hard-coding that logic as part of the middleware implementation, Zaphpa makes it easy to declaratively
 set the scope of Middleware activity ("restrict" middleware execution to only certain routes):
 
-    $router->attach('MyMiddleWare')
-           ->restrict('preroute', 'GET', '/users')
-           ->restrict('prerender', array('POST', 'GET'), '/tags')
-           ->restrict('preroute', '*', '/groups');
+```php
+<?php
+
+$router->attach('MyMiddleWare')
+       ->restrict('preroute', 'GET', '/users')
+       ->restrict('prerender', array('POST', 'GET'), '/tags')
+       ->restrict('preroute', '*', '/groups');
+```
 
 In the example above: 
 
@@ -307,11 +322,14 @@ or if you want to enable CORS only for specific domain(s):
     
 If you want to enable CORS only for specific routes:
 
-    $router->attach('ZaphpaCORS', '*')
-           ->restrict('preroute', 'GET', '/users')
-           ->restrict('preroute', array('POST', 'GET'), '/tags')
-           ->restrict('preroute', '*', '/groups');
-    
+```php
+<?php
+
+$router->attach('ZaphpaCORS', '*')
+       ->restrict('preroute', 'GET', '/users')
+       ->restrict('preroute', array('POST', 'GET'), '/tags')
+       ->restrict('preroute', '*', '/groups');
+```    
         
 ## Output format aliases
 
@@ -329,36 +347,40 @@ allows indicating some simple aliases for common mime types:
 
 ## A More Advanced Router Example
 
-    $router = new Zaphpa_Router();
-    
-    $router->addRoute(array(
-      'path'     => '/pages/{id}/{categories}/{name}/{year}',
-      'handlers' => array(
-        'id'         => Zaphpa_Constants::PATTERN_DIGIT, //regex
-        'categories' => Zaphpa_Constants::PATTERN_ARGS,  //regex
-        'name'       => Zaphpa_Constants::PATTERN_ANY,   //regex
-        'year'       => 'handle_year',       //callback function
-      ),
-      'get'      => array('MyController', 'getPage'),
-      'post'     => array('MyController', 'postPage'),
-      'file'     => 'controllers/mycontroller.php'
-    ));
-    
-    // Add default 404 handler.
-    try {
-      $router->route();
-    } catch (Zaphpa_InvalidPathException $ex) {
-      header("Content-Type: application/json;", TRUE, 404);
-      $out = array("error" => "not found");        
-      die(json_encode($out));
-    }
-    
-    function handle_year($param) {
-      return preg_match('~^\d{4}$~', $param) ? array(
-        'ohyesdd' => $param,
-        'ba' => 'booooo',
-      ) : null;
-    }
+```php
+<?php
+   
+$router = new Zaphpa_Router();
+
+$router->addRoute(array(
+  'path'     => '/pages/{id}/{categories}/{name}/{year}',
+  'handlers' => array(
+    'id'         => Zaphpa_Constants::PATTERN_DIGIT, //regex
+    'categories' => Zaphpa_Constants::PATTERN_ARGS,  //regex
+    'name'       => Zaphpa_Constants::PATTERN_ANY,   //regex
+    'year'       => 'handle_year',       //callback function
+  ),
+  'get'      => array('MyController', 'getPage'),
+  'post'     => array('MyController', 'postPage'),
+  'file'     => 'controllers/mycontroller.php'
+));
+
+// Add default 404 handler.
+try {
+  $router->route();
+} catch (Zaphpa_InvalidPathException $ex) {
+  header("Content-Type: application/json;", TRUE, 404);
+  $out = array("error" => "not found");        
+  die(json_encode($out));
+}
+
+function handle_year($param) {
+  return preg_match('~^\d{4}$~', $param) ? array(
+    'ohyesdd' => $param,
+    'ba' => 'booooo',
+  ) : null;
+}
+```
 
 Please note the "file" parameter to the `->addRouye()` call. This parameter indicates file where MyController class should be loaded from,
 if you do not already have the corresponding class loaded (through an auto-loader or explicit require() call).
@@ -371,34 +393,42 @@ full Resources or Endpoints - API lingo for objects that can be managed in a ful
 One way you can do this is to fully declare all four routes. But that would mean a lot of duplicated configuration. 
 We hate code duplication, so here's a nifty shortcut you can use:
 
-    $router->addRoute(array(
-      'path'     => '/books/{id}',
-      'handlers' => array(
-        'id'         => Zaphpa_Constants::PATTERN_DIGIT, 
-      ),
-      'get'      => array('BookController', 'getBook'),
-      'post'     => array('BookController', 'createBook'),
-      'put'      => array('BookController', 'updateBook'),
-      'delete'     => array('BookController', 'deleteBook'),
-      'file'     => 'controllers/bookcontroller.php'
-    ));
+```php
+<?php
+
+$router->addRoute(array(
+  'path'     => '/books/{id}',
+  'handlers' => array(
+    'id'         => Zaphpa_Constants::PATTERN_DIGIT, 
+  ),
+  'get'      => array('BookController', 'getBook'),
+  'post'     => array('BookController', 'createBook'),
+  'put'      => array('BookController', 'updateBook'),
+  'delete'     => array('BookController', 'deleteBook'),
+  'file'     => 'controllers/bookcontroller.php'
+));
+```
 
 ## Pre-defined Validator Types
 
 Zaphpa allows indicating completely custom function callbacks as validating handlers, but for convenience it also 
 provides number of pre-defined, common validators:
 
-    const PATTERN_NUM        = '(?P<%s>\d+)';
-    const PATTERN_DIGIT      = '(?P<%s>\d+)';
-    const PATTERN_MD5        = '(?P<%s>[a-z0-9]{32})';
-    const PATTERN_ALPHA      = '(?P<%s>(?:/?[-\w]+))';
-    const PATTERN_ARGS       = '?(?P<%s>(?:/.+)+)';
-    const PATTERN_ARGS_ALPHA = '?(?P<%s>(?:/[-\w]+)+)';
-    const PATTERN_ANY        = '(?P<%s>(?:/?[^/]*))';
-    const PATTERN_WILD_CARD  = '(?P<%s>.*)'; 
-    const PATTERN_YEAR       = '(?P<%s>\d{4})';
-    const PATTERN_MONTH      = '(?P<%s>\d{1,2})';
-    const PATTERN_DAY        = '(?P<%s>\d{1,2})';
+```php
+<?php
+
+const PATTERN_NUM        = '(?P<%s>\d+)';
+const PATTERN_DIGIT      = '(?P<%s>\d+)';
+const PATTERN_MD5        = '(?P<%s>[a-z0-9]{32})';
+const PATTERN_ALPHA      = '(?P<%s>(?:/?[-\w]+))';
+const PATTERN_ARGS       = '?(?P<%s>(?:/.+)+)';
+const PATTERN_ARGS_ALPHA = '?(?P<%s>(?:/[-\w]+)+)';
+const PATTERN_ANY        = '(?P<%s>(?:/?[^/]*))';
+const PATTERN_WILD_CARD  = '(?P<%s>.*)'; 
+const PATTERN_YEAR       = '(?P<%s>\d{4})';
+const PATTERN_MONTH      = '(?P<%s>\d{1,2})';
+const PATTERN_DAY        = '(?P<%s>\d{1,2})';
+```
 
 You may be able to guess the functionality from the regexp patterns associated with each pre-defined validator, but let's 
 go through the expected behavior of each one of them:
@@ -415,6 +445,8 @@ where "us/politics/elections" is a part with variable number of "categories". To
 like: 
     
     ```php
+    <?php
+    
     'path'     => '/news/{id}/{categories}/{title}/{year}',  
     'handlers' => array(
       'id'          => Zaphpa_Constants::PATTERN\_NUM, 
@@ -426,6 +458,8 @@ like:
 and you would get the function arguments in the callback as: 
 
     ```php
+    <?php
+    
     [params] => Array
     (
       [id] => 212424
