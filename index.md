@@ -26,24 +26,24 @@ title: Zaphpa PHP micro-router.
     $router->route();
 
 <div class="intro">
-  <h2>Created to make REST in PHP easy.</h2>
+<h2>Created to make REST in PHP easy.</h2>
 
-   <p>Zaphpa, pronounced as the last name of Frank Zappa, is a routing microkernel inspired by 
-   <a href="http://www.sinatrarb.com/">Sinatra.rb</a>, and implemented in PHP (hence the extra geeky "h" 
-   in the name creating the sub-pattern of: "php").</p>
-   
-	 <p>Zaphpa is a lightweight library that excels at single mission: free PHP API developers from 
-	 the boilerplate of handling HTTP requests and implementing REST.</p> 
-	 
-	 <p>You can think of it as an equivalent of Sinatra (in Ruby) or Express.js (in Javascript) 
-	 frameworks for PHP, if you will.</p>   
-	 
-	<h2>Who uses it?</h2>
-	 <p>Zaphpa is actively used by <a href="http://npr.org">NPR</a>'s software teams in the Digital Media and Digital Services
-	 divisions, benefiting from thorough bug-fixing and various contributions by: <a href="http://github.com/inadarei">@inadarei</a>,  
-   <a href="http://github.com/karoun">@karoun</a>,
-	 <a href="http://github.com/randallsquared">@randallsquared</a>, <a href="http://github.com/johnymonster">@johnymonster</a>, 
-	 <a href="http://github.com/jsgrosman">@jsgrosman</a> and <a href="http://github.com/d1b1">@d1b1</a>.	 
+<p>Zaphpa, pronounced as the last name of Frank Zappa, is a routing microkernel inspired by 
+<a href="http://www.sinatrarb.com/">Sinatra.rb</a>, and implemented in PHP (hence the extra geeky "h" 
+in the name creating the sub-pattern of: "php").</p>
+
+<p>Zaphpa is a lightweight library that excels at single mission: free PHP API developers from 
+the boilerplate of handling HTTP requests and implementing REST.</p> 
+
+<p>You can think of it as an equivalent of Sinatra (in Ruby) or Express.js (in Javascript) 
+frameworks for PHP, if you will.</p>   
+
+<h2>Who uses it?</h2>
+<p>Zaphpa is actively used by <a href="http://npr.org">NPR</a>'s software teams in the Digital Media and Digital Services
+divisions, benefiting from thorough bug-fixing and various contributions by: <a href="http://github.com/inadarei">@inadarei</a>,  
+<a href="http://github.com/karoun">@karoun</a>,
+<a href="http://github.com/randallsquared">@randallsquared</a>, <a href="http://github.com/johnymonster">@johnymonster</a>, 
+<a href="http://github.com/jsgrosman">@jsgrosman</a> and <a href="http://github.com/d1b1">@d1b1</a>.	 
 	  
 </div><!-- /.intro -->
 
