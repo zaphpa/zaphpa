@@ -17,6 +17,7 @@ PHP file, say: api.php (see: [Appendix A](/doc.html#Appendix_A_Setting_Up_Zaphpa
 For a very simple case of getting specific user object, the code of api.php would look something like:
 
 ```php
+<?php
 require_once(__DIR__ . '/zaphpa/zaphpa.lib.php');
 $router = new Zaphpa_Router();
 
