@@ -726,7 +726,14 @@ class Zaphpa_Router {
     /* Call preprocessors on each middleware impl */
     foreach (self::$middleware as $m) {
       if ($m->shouldRun('preroute')) {
-        $m->preroute($req,$res);
+        /* the preroute handled the request and doesn't want the main
+         * code to run.. e.g. if the preroute decided the session wasn't
+         * set and wants to issue a 401, or forward using a 302.
+         */
+        if( $m->preroute($req,$res) === FALSE) {
+          return; // nope! don't do anything else.
+        }
+        // continue as usual.
       }
     }
     
