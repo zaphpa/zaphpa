@@ -4,6 +4,7 @@
   "description":"Intuitive, flexible and powerful HTTP router.",
   "minimum-stability": "dev",
   "keywords": ["routing"],
+  "license":"MIT",
   "authors": [
     {
       "name":"Ioseb Dzmanashvili",
