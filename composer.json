@@ -2,6 +2,7 @@
   "name":"zaphpa/zaphpa",
   "type":"library",
   "description":"Intuitive, flexible and powerful HTTP router.",
+  "homepage":"http://zaphpa.org/",
   "minimum-stability": "dev",
   "keywords": ["routing"],
   "license":"MIT",
