@@ -25,16 +25,11 @@ Add `zaphpa/zaphpa` to your `composer.json`.
 }
 ```
 
-## Special Thanks
-
-Our sincere gratitude goes to [JetBrains](http://www.jetbrains.com/) for providing an open-source project license 
-to the wonderful [PHPStorm](http://jetbrains.com/phpstorm/) IDE for Zaphpa development.
-
 ## License 
 
 The MIT License (MIT)
 
-Copyright (c) 2011-2012 Ioseb Dzmanashvili and Irakli Nadareishvili
+Copyright (c) 2011-2014 Ioseb Dzmanashvili and Irakli Nadareishvili
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
