@@ -54,6 +54,11 @@ class Zaphpa_Callback_Util {
   
   public static function getCallback($callback, $file = null) {
   
+    if ($file && $callback === null) {
+      self::loadFile($file);
+      return;
+    }
+    
     if ($file) {
       self::loadFile($file);
     }
