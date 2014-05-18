@@ -742,6 +742,10 @@ class Zaphpa_Router {
       }
     }
     
+    if($callback === NULL){
+    	return;
+    }
+    
     return call_user_func($callback, $req, $res);
     
   }
