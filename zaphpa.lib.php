@@ -260,6 +260,7 @@ class Zaphpa_Response {
   */
   public function add($out) {
     $this->chunks[]  = $out;
+    return $this;
   }
   
   /**
@@ -339,6 +340,7 @@ class Zaphpa_Response {
       $format = $aliases[$format];
     }    
     $this->format = $format;
+    return $this;
   }
   
   public function getFormat() {
@@ -353,6 +355,7 @@ class Zaphpa_Response {
     $this->headers[] = 'Cache-Control: no-cache, no-store, must-revalidate'; // HTTP 1.1.
     $this->headers[] = 'Pragma: no-cache'; // HTTP 1.0.
     $this->headers[] = 'Expires: Thu, 26 Feb 1970 20:00:00 GMT'; // Proxies.
+    return $this;
   }
 
   /**
