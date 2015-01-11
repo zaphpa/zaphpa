@@ -1,3 +1,7 @@
+## Zaphpa
+
+[![Packagist](https://img.shields.io/packagist/v/zaphpa/zaphpa.svg?style=flat)]()
+
 ## Maintainers
 
 * Ioseb Dzmanashvili - Creator ([ioseb](http://github.com/ioseb))
