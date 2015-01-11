@@ -29,7 +29,7 @@ Add `zaphpa/zaphpa` to your `composer.json`.
 
 The MIT License (MIT)
 
-Copyright (c) 2011-2014 Ioseb Dzmanashvili and Irakli Nadareishvili
+Copyright (c) 2011-2015 Ioseb Dzmanashvili and Irakli Nadareishvili
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
