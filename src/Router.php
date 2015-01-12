@@ -50,12 +50,12 @@ class Router {
         $args = func_get_args();
         $className = array_shift($args);
 
-        if (!is_subclass_of($className, 'Middleware')) {
-            throw new InvalidMiddlewareClass("Middleware class: '$className' does not exist or is not a sub-class of Middleware" );
+        if (!is_subclass_of($className, '\Zaphpa\Middleware')) {
+            throw new Exceptions\InvalidMiddlewareClass("Middleware class: '$className' does not exist or is not a sub-class of \Zaphpa\Middleware" );
         }
 
         // convert args array to parameter list
-        $rc = new ReflectionClass($className);
+        $rc = new \ReflectionClass($className);
         $instance = $rc->newInstanceArgs($args);
 
         self::$middleware[] = $instance;
