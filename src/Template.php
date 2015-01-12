@@ -78,70 +78,70 @@ class Template {
 
     public function match($uri) {
 
-        try {
+        //try {
 
             $uri = rtrim($uri, '\/');
-            if (preg_match($this->getExpression(), $uri, $matches)) {
+            $match_found = preg_match($this->getExpression(), $uri, $matches);
+            if (! $match_found) return;
 
-                foreach($matches as $k => $v) {
-                    if (is_numeric($k)) {
-                        unset($matches[$k]);
-                    } else {
-
-                        if (isset($this->callbacks[$k])) {
-                            $callback = Callback_Util::getCallback($this->callbacks[$k]);
-                            $value    = call_user_func($callback, $v);
-                            if ($value) {
-                                $matches[$k] = $value;
-                            } else {
-                                throw new InvalidURIParameterException('Invalid parameters detected');
-                            }
-                        }
-
-                        if (strpos($v, '/') !== false) {
-                            $matches[$k] = explode('/', trim($v, '\/'));
-                        }
-                    }
-                }
-
-                $params = array_merge(self::$globalQueryParams, $this->params);
-
-                if (!empty($params)) {
-
-                    $matched = false;
-
-                    foreach($params as $name => $param) {
-
-                        if (!isset($_GET[$name]) && $param->value) {
-                            $_GET[$name] = $param->value;
-                            $matched = true;
-                        } else if ($param->pattern && isset($_GET[$name])) {
-                            $result = preg_match(sprintf('~^%s$~', $param->pattern), $_GET[$name]);
-                            if (!$result && $param->value) {
-                                $_GET[$name] = $param->value;
-                                $result = true;
-                            }
-                            $matched = $result;
+            foreach($matches as $k => $v) {
+                if (is_numeric($k)) {
+                    unset($matches[$k]);
+                } else {
+                    if (isset($this->callbacks[$k])) {
+                        $callback = Callback_Util::getCallback($this->callbacks[$k]);
+                        $value    = call_user_func($callback, $v);
+                        if ($value) {
+                            $matches[$k] = $value;
                         } else {
-                            $matched = false;
+                            throw new InvalidURIParameterException('Invalid parameters detected');
                         }
-
-                        if ($matched == false) {
-                            throw new Exception('Request does not match');
-                        }
-
                     }
 
+                    if (strpos($v, '/') !== false) {
+                        $matches[$k] = explode('/', trim($v, '\/'));
+                    }
                 }
-
-                return $matches;
-
             }
 
-        } catch(Exception $ex) {
-            throw $ex;
-        }
+            $params = array_merge(self::$globalQueryParams, $this->params);
 
+            if (!empty($params)) {
+                $this->enforceParamMatching($params);
+            }
+
+            return $matches;
+
+        //} catch(Exception $ex) {
+        //    throw $ex;
+        //}
+
+    }
+
+    protected function enforceParamMatching($params) {
+        $matched = false;
+        
+        foreach($params as $name => $param) {
+
+            if (!isset($_GET[$name]) && $param->value) {
+                $_GET[$name] = $param->value;
+                $matched = true;
+            } else if ($param->pattern && isset($_GET[$name])) {
+                $result = preg_match(sprintf('~^%s$~', $param->pattern), $_GET[$name]);
+                if (!$result && $param->value) {
+                    $_GET[$name] = $param->value;
+                    $result = true;
+                }
+                $matched = $result;
+            } else {
+                $matched = false;
+            }
+
+            if ($matched == false) {
+                throw new Exception('Request does not match');
+            }
+
+        }
     }
 
     public static function regex($pattern) {
