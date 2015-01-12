@@ -56,7 +56,7 @@ class Response {
 
         if (!empty($code)) {
             if (headers_sent()) {
-                throw new InvalidResponseStateException("Response code already sent: {$this->code}");
+                throw new Exceptions\InvalidResponseStateException("Response code already sent: {$this->code}");
             }
 
             $codes = $this->codes();
@@ -65,14 +65,14 @@ class Response {
                 $protocol = $this->req->protocol;
                 $this->code = $code;
             } else {
-                throw new InvalidResponseCodeException("Invalid Response Code: $code");
+                throw new Exceptions\InvalidResponseCodeException("Invalid Response Code: $code");
             }
         }
 
         // If no format was set explicitely, use the request format for response.
         if (!empty($format)) {
             if (headers_sent()) {
-                throw new InvalidResponseStateException("Response format already sent: {$this->format}");
+                throw new Exceptions\InvalidResponseStateException("Response format already sent: {$this->format}");
             }
             $this->setFormat($format);
         }

@@ -13,7 +13,7 @@ class Callback_Util {
         if (file_exists($file)) {
             include_once($file);
         } else {
-            throw new CallbackFileNotFoundException('Controller file not found');
+            throw new Exceptions\CallbackFileNotFoundException('Controller file not found');
         }
 
     }
@@ -43,7 +43,7 @@ class Callback_Util {
             return $callback;
         }
 
-        throw new InvalidCallbackException('Invalid callback');
+        throw new Exceptions\InvalidCallbackException('Invalid callback');
 
     }
 

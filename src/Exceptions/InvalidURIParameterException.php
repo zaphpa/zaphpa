@@ -3,4 +3,4 @@
 namespace Zaphpa\Exceptions;
 
 /** Invalid path exception **/
-class InvalidURIParameterException extends Exception {}
+class InvalidURIParameterException extends \Exception {}

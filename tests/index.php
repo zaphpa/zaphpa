@@ -1,11 +1,12 @@
 <?php
 
-require_once(__DIR__ . '/../zaphpa.lib.php');
+require_once '../vendor/autoload.php';
+
 require_once(__DIR__ . '/TestController.class.php');
 require_once(__DIR__ . '/ZaphpaTestMiddleware.class.php');
 require_once(__DIR__ . '/ZaphpaTestScopedMiddleware.class.php');
 
-$router = new Router();
+$router = new Zaphpa\Router();
 
 $router->attach('ZaphpaTestMiddleware');
 $router->attach('ZaphpaAutoDocumentator', '/testapidocs');

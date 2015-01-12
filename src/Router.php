@@ -119,7 +119,7 @@ class Router {
             return $this->invoke_options();
         }
 
-        throw new InvalidPathException('Invalid path');
+        throw new Exceptions\InvalidPathException('Invalid path');
     }
 
     /**

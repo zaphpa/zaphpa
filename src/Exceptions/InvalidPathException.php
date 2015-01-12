@@ -3,4 +3,4 @@
 namespace Zaphpa\Exceptions;
 
 /** Invalid path exception **/
-class InvalidPathException extends Exception {}
+class InvalidPathException extends \Exception {}
