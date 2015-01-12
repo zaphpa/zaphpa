@@ -54,6 +54,11 @@ class Zaphpa_Callback_Util {
   
   public static function getCallback($callback, $file = null) {
   
+    if ($file && $callback === NULL) {
+      self::loadFile($file);
+      return;
+    }
+    
     if ($file) {
       self::loadFile($file);
     }
@@ -738,6 +743,10 @@ class Zaphpa_Router {
         }
         // continue as usual.
       }
+    }
+    
+    if($callback === NULL){
+    	return;
     }
     
     return call_user_func($callback, $req, $res);
