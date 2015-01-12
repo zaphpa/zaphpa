@@ -11,8 +11,9 @@
 
 ## History
 
-First major user of Zaphpa, in production, was [NPR](http://npr.org)'s software teams, benefiting from
-thorough bug-fixing, various contributions and overall creativity of these wonderful teams.
+First major user of Zaphpa, in production, was [NPR](http://npr.org)'s API. Zaphpa hugely benefited
+from this use through meticulous bug-fixing, various contributions and overall creativity of the
+wonderful NPR software teams.
 
 Zaphpa is now used by a variety of organizations worldwide. If you use Zaphpa and want to be listed here,
 please open a pull request.
