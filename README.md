@@ -1,6 +1,6 @@
 ## Zaphpa
 
-[![Packagist](https://img.shields.io/packagist/v/zaphpa/zaphpa.svg?style=flat)]()
+![Packagist 2.x Alpha](http://b.repl.ca/v1/Packagist-2.x_Alpha-green.png)
 [![Codacy Badge](https://www.codacy.com/project/badge/d22a443acb9d429890dedb7d55c632a9)](https://www.codacy.com/public/irakli/zaphpa)
 [![Download Legacy Stable (1.x)](http://b.repl.ca/v1/Download-Legacy_Stable%20%281.x%29-orange.png)](https://github.com/zaphpa/zaphpa/releases/tag/1.2.2)
 
@@ -27,7 +27,7 @@ Add `zaphpa/zaphpa` to your `composer.json`.
 ```
 {
   "require": {
-    "zaphpa/zaphpa": "1.x"
+    "zaphpa/zaphpa": "^2.0.0"
   }
 }
 ```
