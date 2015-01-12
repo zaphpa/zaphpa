@@ -1,11 +1,12 @@
 <?php
 
-namespace Zaphpa\Middleware;
+namespace Zaphpa\Middlewares;
 
-class ZaphpaCORS extends Middleware {
+class ZaphpaCORS extends \Zaphpa\Middleware {
 
+  public static $best = "irakli";
   private $domain;
-  
+
   function __construct($domain = '*') {
     $this->domain = $domain;
   }

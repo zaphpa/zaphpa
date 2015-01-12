@@ -1,8 +1,8 @@
 <?php
 
-namespace Zaphpa\Middleware;
+namespace Zaphpa\Middlewares;
 
-class MethodOverride extends Middleware {
+class MethodOverride extends \Zaphpa\Middleware {
   
   function preprocess(&$router) {
     if (!empty($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) &&

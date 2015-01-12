@@ -6,19 +6,23 @@ require_once(__DIR__ . '/TestController.class.php');
 require_once(__DIR__ . '/ZaphpaTestMiddleware.class.php');
 require_once(__DIR__ . '/ZaphpaTestScopedMiddleware.class.php');
 
-$router = new Zaphpa\Router();
+// $i = '\Zaphpa\Middlewares\ZaphpaAutoDocumentator';
+// $parent = '\Zaphpa\Middleware';
+// die(is_subclass_of($i, $parent));
 
-$router->attach('ZaphpaTestMiddleware');
-$router->attach('\Zaphpa\Middleware\ZaphpaAutoDocumentator', '/testapidocs');
+$router = new \Zaphpa\Router();
 
-$router->attach('\Zaphpa\Middleware\MethodOverride');
+$router->attach('\ZaphpaTestMiddleware');
+$router->attach('\Zaphpa\Middlewares\ZaphpaAutoDocumentator', '/testapidocs');
+
+$router->attach('\Zaphpa\Middlewares\MethodOverride');
 
 $router
-  ->attach('\Zaphpa\Middleware\ZaphpaCORS', '*')
+  ->attach('\Zaphpa\Middlewares\ZaphpaCORS', '*')
   ->restrict('preroute', '*', '/users');
 
 $router
-  ->attach('\Zaphpa\Middleware\ZaphpaTestScopedMiddleware')
+  ->attach('\ZaphpaTestScopedMiddleware')
   ->restrict('prerender', '*', '/foo')
   ->restrict('prerender', array('put'), '/foo/bar');
 
