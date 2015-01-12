@@ -1,6 +1,7 @@
 ## Zaphpa
 
 [![Packagist](https://img.shields.io/packagist/v/zaphpa/zaphpa.svg?style=flat)]()
+[![Download Legacy Stable (1.x)](http://b.repl.ca/v1/Download-Legacy_Stable%20%281.x%29-orange.png)](https://github.com/zaphpa/zaphpa/releases/tag/1.2.2)
 
 ## Maintainers
 
