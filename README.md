@@ -3,8 +3,8 @@
 ![Packagist 2.x Alpha](http://b.repl.ca/v1/Packagist-2.x_Alpha-green.png)
 [![Download Legacy Stable (1.x)](http://b.repl.ca/v1/Download-Legacy_Stable%20%281.x%29-orange.png)](https://github.com/zaphpa/zaphpa/releases/tag/1.2.2)
 [![Build Status](https://scrutinizer-ci.com/g/zaphpa/zaphpa/badges/build.png?b=v2.x)](https://scrutinizer-ci.com/g/zaphpa/zaphpa/build-status/v2.x)
-[![Codacy Badge](https://www.codacy.com/project/badge/d22a443acb9d429890dedb7d55c632a9)](https://www.codacy.com/public/irakli/zaphpa)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zaphpa/zaphpa/badges/quality-score.png?b=v2.x)](https://scrutinizer-ci.com/g/zaphpa/zaphpa/?branch=v2.x)
+[![Codacy Badge](https://www.codacy.com/project/badge/d22a443acb9d429890dedb7d55c632a9)](https://www.codacy.com/public/irakli/zaphpa)
 
 ## Maintainers
 
