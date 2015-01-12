@@ -55,4 +55,4 @@ was later adopted and iterated upon by Irakli Nadareishvili.
 - [Andrew Winder](http://github.com/awinder)
 - [Randall Randall](http://github.com/randallsquared)
 - [Jason Grosman](http://github.com/jsgrosman)
-- [Stephen Smith](http://github.com/d1b1)
+- [Stephan L. Smith](http://github.com/d1b1)
