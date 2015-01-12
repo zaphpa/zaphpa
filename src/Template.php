@@ -78,49 +78,43 @@ class Template {
 
     public function match($uri) {
 
-        //try {
+        $uri = rtrim($uri, '\/');
+        $match_found = preg_match($this->getExpression(), $uri, $matches);
+        if (! $match_found) return;
 
-            $uri = rtrim($uri, '\/');
-            $match_found = preg_match($this->getExpression(), $uri, $matches);
-            if (! $match_found) return;
-
-            foreach($matches as $k => $v) {
-                if (is_numeric($k)) {
-                    unset($matches[$k]);
-                } else {
-                    if (isset($this->callbacks[$k])) {
-                        $callback = Callback_Util::getCallback($this->callbacks[$k]);
-                        $value    = call_user_func($callback, $v);
-                        if ($value) {
-                            $matches[$k] = $value;
-                        } else {
-                            throw new InvalidURIParameterException('Invalid parameters detected');
-                        }
-                    }
-
-                    if (strpos($v, '/') !== false) {
-                        $matches[$k] = explode('/', trim($v, '\/'));
+        foreach($matches as $k => $v) {
+            if (is_numeric($k)) {
+                unset($matches[$k]);
+            } else {
+                if (isset($this->callbacks[$k])) {
+                    $callback = Callback_Util::getCallback($this->callbacks[$k]);
+                    $value    = call_user_func($callback, $v);
+                    if ($value) {
+                        $matches[$k] = $value;
+                    } else {
+                        throw new InvalidURIParameterException('Invalid parameters detected');
                     }
                 }
+
+                if (strpos($v, '/') !== false) {
+                    $matches[$k] = explode('/', trim($v, '\/'));
+                }
             }
+        }
 
-            $params = array_merge(self::$globalQueryParams, $this->params);
+        $params = array_merge(self::$globalQueryParams, $this->params);
 
-            if (!empty($params)) {
-                $this->enforceParamMatching($params);
-            }
+        if (!empty($params)) {
+            $this->enforceParamMatching($params);
+        }
 
-            return $matches;
-
-        //} catch(Exception $ex) {
-        //    throw $ex;
-        //}
+        return $matches;
 
     }
 
     protected function enforceParamMatching($params) {
         $matched = false;
-        
+
         foreach($params as $name => $param) {
 
             if (!isset($_GET[$name]) && $param->value) {
