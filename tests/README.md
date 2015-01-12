@@ -18,16 +18,10 @@ and then you can just use "composer" as a command.
 
 ## 2. Set up a testing URL
 
-First, we'll set up a new custom domain so as not to conflict with any pre-existing servers.
-
-```shell
-$ sudo sh -c "echo '\n127.0.0.1  zaphpa.vm' >> /etc/hosts"
-```
-
-Now, if you're using PHP 5.4 or higher, you can simply run the built-in webserver like so and skip to (3): 
+If you're using PHP 5.4 or higher, you can simply run the built-in webserver like so and skip to (3):
 
 ```
-php -S zaphpa.vm:8080 -t /path/to/zaphpa/tests
+php -S 0.0.0.0:5454 -t /path/to/zaphpa/tests
 ```
 More information is available on [php.net](http://php.net/manual/en/features.commandline.webserver.php).
 
