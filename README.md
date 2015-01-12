@@ -50,7 +50,9 @@ was later adopted and iterated upon by Irakli Nadareishvili.
 
 ### Additional contributors:
 
-- [John Nelson](http://github.com/johnymonster)
+- [Thomas Bracher](https://github.com/ThomasBracher)
+- [Paul Williams](https://github.com/paulprogrammer)
+- [Jeff Pritchard](https://github.com/jeffpritchard)
 - [Andrew Winder](http://github.com/awinder)
 - [Randall Randall](http://github.com/randallsquared)
 - [Jason Grosman](http://github.com/jsgrosman)
