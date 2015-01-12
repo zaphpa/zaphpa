@@ -13,17 +13,36 @@ title: Zaphpa PHP micro-router.
   </div>
 </header>
 
-    require_once(__DIR__ . '/vendor/zaphpa/zaphpa.lib.php');
-    $router = new Zaphpa_Router();
-    
-    $router->attach('ZaphpaAutoDocumentator', '/apidocs'); //auto-docs middleware
-    
-    $router->addRoute(array(
-    	'path'  => '/users/{id}',
-    	'get'   => array('UserController', 'getUser'),
-    	'post'   => array('UserController', 'updateUser'),
-    ));    
-    $router->route();
+```php
+require_once('./vendor/autoload.php');
+$router = new \Zaphpa\Router();
+
+$router->attach('\Zaphpa\Middlewares\ZaphpaAutoDocumentator', '/apidocs'); //auto-docs middleware
+$router->attach('\Zaphpa\Middlewares\MethodOverride');
+
+$router->addRoute(array(
+  'path'  => '/users/{id}',
+  'get'   => array('\MyAwesomeApp\UserController', 'getUser'),
+  'post'   => array('\MyAwesomeApp\UserController', 'updateUser'),
+));    
+$router->route();
+```
+
+or in Zaphpa 1.x that didn't use PSR-4 or namespaces: 
+
+```php
+require_once(__DIR__ . '/vendor/zaphpa/zaphpa.lib.php');
+$router = new Zaphpa_Router();
+
+$router->attach('ZaphpaAutoDocumentator', '/apidocs'); //auto-docs middleware
+
+$router->addRoute(array(
+  'path'  => '/users/{id}',
+  'get'   => array('UserController', 'getUser'),
+  'post'   => array('UserController', 'updateUser'),
+));    
+$router->route();
+```
 
 <div class="intro">
 <h2>Created to make REST in PHP easy.</h2>
