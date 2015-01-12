@@ -61,8 +61,7 @@ class Response {
 
             $codes = $this->codes();
             if (array_key_exists($code, $codes)) {
-                $resp_text = $codes[$code];
-                $protocol = $this->req->protocol;
+                //$protocol = $this->req->protocol;
                 $this->code = $code;
             } else {
                 throw new Exceptions\InvalidResponseCodeException("Invalid Response Code: $code");
