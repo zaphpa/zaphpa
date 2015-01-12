@@ -53,22 +53,9 @@ class Response {
      *  @return current respons eobject, so you can chain method calls on a response object.
      */
     public function flush($code = null, $format = null) {
+        $this->verifyResponseCode($code);
 
-        if (!empty($code)) {
-            if (headers_sent()) {
-                throw new Exceptions\InvalidResponseStateException("Response code already sent: {$this->code}");
-            }
-
-            $codes = $this->codes();
-            if (array_key_exists($code, $codes)) {
-                //$protocol = $this->req->protocol;
-                $this->code = $code;
-            } else {
-                throw new Exceptions\InvalidResponseCodeException("Invalid Response Code: $code");
-            }
-        }
-
-        // If no format was set explicitely, use the request format for response.
+        // If no format was set explicitly, use the request format for response.
         if (!empty($format)) {
             if (headers_sent()) {
                 throw new Exceptions\InvalidResponseStateException("Response format already sent: {$this->format}");
@@ -93,6 +80,22 @@ class Response {
         $this->chunks = array(); // reset
         echo ($out);
         return $this;
+    }
+
+    protected function verifyResponseCode($code) {
+        if (!empty($code)) {
+            if (headers_sent()) {
+                throw new Exceptions\InvalidResponseStateException("Response code already sent: {$this->code}");
+            }
+
+            $codes = $this->codes();
+            if (array_key_exists($code, $codes)) {
+                //$protocol = $this->req->protocol;
+                $this->code = $code;
+            } else {
+                throw new Exceptions\InvalidResponseCodeException("Invalid Response Code: $code");
+            }
+        }
     }
 
     /**
