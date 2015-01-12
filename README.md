@@ -36,15 +36,6 @@ Add `zaphpa/zaphpa` to your `composer.json`.
 
 ### License & Credits
 
-Released under the MIT open source license. See LICENSE for details.
-
-Pym.js was built by the NPR Visuals team, based on work by the NPR Tech Team and Ioseb Dzmanashvili. Thanks to Erik Hinton for suggesting the name.
-
-Additional contributors:
-
-
-## License & Credits
-
 Released under the MIT open source license. See [LICENSE](LICENSE) for details.
 
 The predecessor to Zaphpa was originally created by [Ioseb Dzmanashvili](http://github.com/iosebi). Project
