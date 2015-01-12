@@ -6,10 +6,6 @@ require_once(__DIR__ . '/TestController.class.php');
 require_once(__DIR__ . '/ZaphpaTestMiddleware.class.php');
 require_once(__DIR__ . '/ZaphpaTestScopedMiddleware.class.php');
 
-// $i = '\Zaphpa\Middlewares\ZaphpaAutoDocumentator';
-// $parent = '\Zaphpa\Middleware';
-// die(is_subclass_of($i, $parent));
-
 $router = new \Zaphpa\Router();
 
 $router->attach('\ZaphpaTestMiddleware');
@@ -28,7 +24,7 @@ $router
 
 $router->addRoute(array(
   'path' => '/users',
-  'get'  => array('TestController', 'getTestJsonResponse'),
+  'get'  => array('\TestController', 'getTestJsonResponse'),
 ));
 
 $router->addRoute(array(
@@ -36,14 +32,14 @@ $router->addRoute(array(
   'handlers' => array(
     'id'       => \Zaphpa\Constants::PATTERN_DIGIT,
   ),
-  'get'      => array('TestController', 'getTestJsonResponse'),
-  'post'     => array('TestController', 'getTestJsonResponse'),
-  'patch'    => array('TestController', 'getTestJsonResponse'),
+  'get'      => array('\TestController', 'getTestJsonResponse'),
+  'post'     => array('\TestController', 'getTestJsonResponse'),
+  'patch'    => array('\TestController', 'getTestJsonResponse'),
 ));
 
 $router->addRoute(array(
   'path'     => '/v2/times/{dt}/episodes',
-  'get'      => array('TestController', 'getTestJsonResponse'),
+  'get'      => array('\TestController', 'getTestJsonResponse'),
 ));
 
 $router->addRoute(array(
@@ -51,7 +47,7 @@ $router->addRoute(array(
   'handlers' => array(
     'id'       => \Zaphpa\Constants::PATTERN_ALPHA,
   ),
-  'get'      => array('TestController', 'getTestJsonResponse'),
+  'get'      => array('\TestController', 'getTestJsonResponse'),
 ));
 
 $router->addRoute(array(
@@ -60,12 +56,12 @@ $router->addRoute(array(
     'user_id'  => \Zaphpa\Constants::PATTERN_NUM,
     'book_id'  => \Zaphpa\Constants::PATTERN_ALPHA,
   ),
-  'get'      => array('TestController', 'getTestJsonResponse'),
+  'get'      => array('\TestController', 'getTestJsonResponse'),
 ));
 
 $router->addRoute(array(
   'path'     => '/query_var_test',
-  'get'      => array('TestController', 'getQueryVarTestJsonResponse'),
+  'get'      => array('\TestController', 'getQueryVarTestJsonResponse'),
 ));
 
 

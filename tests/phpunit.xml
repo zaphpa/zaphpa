@@ -1,5 +1,5 @@
 <phpunit>
   <php>
-    <env name="server_url" value="http://127.0.0.1:5454" />
+    <env name="server_url" value="http://0.0.0.0:5454" />
   </php>
 </phpunit>
