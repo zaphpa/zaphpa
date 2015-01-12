@@ -46,7 +46,7 @@ The MIT License (MIT)
 
 Released under the MIT open source license. See [LICENSE](LICENSE) for details.
 
-The predecessor to Zaphpa was originally created by Ioseb Dzmanashvili. Project
+The predecessor to Zaphpa was originally created by [Ioseb Dzmanashvili](http://github.com/isoebi). Project
 was later adopted and iterated upon by Irakli Nadareishvili.
 
 ### Additional contributors:
