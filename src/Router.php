@@ -55,8 +55,8 @@ class Router {
         }
 
         // convert args array to parameter list
-        $rc = new \ReflectionClass($className);
-        $instance = $rc->newInstanceArgs($args);
+        $reflection = new \ReflectionClass($className);
+        $instance = $reflection->newInstanceArgs($args);
 
         self::$middleware[] = $instance;
         return $instance;
