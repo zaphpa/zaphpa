@@ -53,6 +53,6 @@ was later adopted and iterated upon by Irakli Nadareishvili.
 
 - [John Nelson](http://github.com/johnymonster)
 - [Andrew Winder](http://github.com/awinder)
-- [Randall Randall](http://github.com/randallsquared),
-- [Jason Grosman]((http://github.com/jsgrosman))
+- [Randall Randall](http://github.com/randallsquared)
+- [Jason Grosman](http://github.com/jsgrosman)
 - [Stephen Smith](http://github.com/d1b1)
