@@ -33,5 +33,5 @@ so that it points to the Zaphpa test router in `/path/to/zaphpa/tests/index.php`
 ## 3. Run the tests
 ```
 $ cd /path/to/zaphpa
-$ composer test
+$ php composer.phar test
 ```
