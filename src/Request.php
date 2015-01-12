@@ -22,17 +22,7 @@ class Request {
     function __construct() {
 
         $this->method = Router::getRequestMethod();
-
-        $this->clientIP = !empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : '';
-        $this->clientIP = (empty($this->clientIP) && !empty($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '';
-
-        $this->userAgent = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
-        $this->protocol = !empty($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : null;
-
-        $this->parse_special('encodings', 'HTTP_ACCEPT_ENCODING', array('utf-8'));
-        $this->parse_special('charsets', 'HTTP_ACCEPT_CHARSET', array('text/html'));
-        $this->parse_special('accepted_formats', 'HTTP_ACCEPT');
-        $this->parse_special('languages', 'HTTP_ACCEPT_LANGUAGE', array('en-US'));
+        $this->grabRequestMetadata();
 
         // Caution: this piece of code assumes that both $_GET and $_POST are empty arrays when the request type is not GET or POST
         // This is true for current versions of PHP, but it is PHP so it's subject to change
@@ -49,8 +39,26 @@ class Request {
                 $this->data['_RAW_HTTP_DATA'] = $contents;
         }
 
-        // Requested output format, if any.
-        // Format in the URL request string takes priority over the one in HTTP headers, defaults to HTML.
+    }
+
+    protected function grabRequestMetadata() {
+        $this->clientIP = !empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : '';
+        $this->clientIP = (empty($this->clientIP) && !empty($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : '';
+
+        $this->userAgent = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
+        $this->protocol = !empty($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : null;
+
+        $this->parse_special('encodings', 'HTTP_ACCEPT_ENCODING', array('utf-8'));
+        $this->parse_special('charsets', 'HTTP_ACCEPT_CHARSET', array('text/html'));
+        $this->parse_special('accepted_formats', 'HTTP_ACCEPT');
+        $this->parse_special('languages', 'HTTP_ACCEPT_LANGUAGE', array('en-US'));
+    }
+
+    /**
+     * Requested output format, if any.
+     * Format in the URL request string takes priority over the one in HTTP headers, defaults to HTML.
+     */
+    protected function contentNego() {
         if (!empty($this->data['format'])) {
             $this->format = $this->data['format'];
             $aliases = $this->common_aliases();
