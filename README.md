@@ -6,7 +6,6 @@
 
 ## Maintainers
 
-* Ioseb Dzmanashvili - Creator ([ioseb](http://github.com/ioseb))
 * Irakli Nadareishvili ([inadarei](http://github.com/inadarei))
 * John Nelson ([johnymonster](http://github.com/johnymonster))
 
@@ -31,27 +30,27 @@ Add `zaphpa/zaphpa` to your `composer.json`.
 }
 ```
 
-## License 
+License & Credits
+
+Released under the MIT open source license. See LICENSE for details.
+
+Pym.js was built by the NPR Visuals team, based on work by the NPR Tech Team and Ioseb Dzmanashvili. Thanks to Erik Hinton for suggesting the name.
+
+Additional contributors:
+
+
+## License & Credits
 
 The MIT License (MIT)
 
-Copyright (c) 2011-2015 Ioseb Dzmanashvili and Irakli Nadareishvili
+Released under the MIT open source license. See [LICENSE](LICENSE) for details.
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+The predecessor to Zaphpa was originally created by Ioseb Dzmanashvili. Project
+was later adopted and iterated upon by Irakli Nadareishvili.
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+### Additional contributors:
 
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+- John Nelson
+- Andrew Winder
+- Randall Randall
+- Jason Grosman
