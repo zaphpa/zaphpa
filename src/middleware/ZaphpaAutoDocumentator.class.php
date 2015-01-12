@@ -1,10 +1,12 @@
 <?php
 
+namespace Zaphpa\Middleware;
+
 /**
  * Please note that ZaphpaAutoDocumentation is instantiated twice
- * once as a middleware, another time: as callback
+ * once as a Middleware, another time: as callback
  */
-class ZaphpaAutoDocumentator extends Zaphpa_Middleware {
+class ZaphpaAutoDocumentator extends Middleware {
   private $path = '/docs';
   private static $details = false;
 

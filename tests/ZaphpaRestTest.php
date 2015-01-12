@@ -100,7 +100,7 @@ class ZaphpaRestTest extends ZaphpaTestCase {
       
       
     } catch (ZaphpaRestClientException $ex) {
-      $this->fail('Middleware test: middleware routing test should have passed.');
+      $this->fail('Middleware test: Middleware routing test should have passed.');
     }   
   }
 
@@ -108,24 +108,24 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     $resp = (object) $this->request->get('/foo');
     $resp->decoded = json_decode($resp->data); 
     
-    $this->assertEquals('success', $resp->decoded->scopeModification, 'Scoped middleware test: Expected middleware to run and modify response for GET.');
+    $this->assertEquals('success', $resp->decoded->scopeModification, 'Scoped Middleware test: Expected Middleware to run and modify response for GET.');
     
     $resp = (object) $this->request
                           ->data("hobby", "programming")
                           ->put('/foo');
     $resp->decoded = json_decode($resp->data);     
-    $this->assertEquals('success', $resp->decoded->scopeModification, 'Scoped middleware test: Expected middleware to run and modify response for PUT.');
+    $this->assertEquals('success', $resp->decoded->scopeModification, 'Scoped Middleware test: Expected Middleware to run and modify response for PUT.');
     
     $resp = (object) $this->request->get('/foo/bar');
     $resp->decoded = json_decode($resp->data);     
-    $this->assertEquals('get', $resp->decoded->method, 'Scoped middleware test: Expected middleware not to run.');
+    $this->assertEquals('get', $resp->decoded->method, 'Scoped Middleware test: Expected Middleware not to run.');
 
     $resp = (object) $this->request
                           ->data("hobby", "programming")
                           ->put('/foo/bar');
     $resp->decoded = json_decode($resp->data);    
     
-    $this->assertEquals('success', $resp->decoded->scopeModification, 'Scoped middleware test: Expected middleware to run and modify response.');    
+    $this->assertEquals('success', $resp->decoded->scopeModification, 'Scoped Middleware test: Expected Middleware to run and modify response.');
   }
 
   public function test_middleware_autodoc() {
