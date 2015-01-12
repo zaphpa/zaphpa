@@ -11,7 +11,7 @@ If you hate typing "php composer.phar" and have root access:
 
 ```bash
 $ sudo mv composer.phar /usr/local/bin/composer
-$ php composer.phar composer -v
+$ composer -v
 ```
 
 and then you can just use "composer" as a command.
