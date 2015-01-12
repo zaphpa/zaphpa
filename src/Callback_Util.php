@@ -28,7 +28,7 @@ class Callback_Util {
 
             $originalClass = array_shift($callback);
 
-            $method = new ReflectionMethod($originalClass, array_shift($callback));
+            $method = new \ReflectionMethod($originalClass, array_shift($callback));
 
             if ($method->isPublic()) {
                 if ($method->isStatic()) {
