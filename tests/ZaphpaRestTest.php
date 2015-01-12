@@ -19,6 +19,8 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     try {
       $resp = (object) $this->request->get('/users/1');
       $resp->decoded = json_decode($resp->data);
+      print_r($resp);
+      die("dddd");
       $this->assertEquals(1, $resp->decoded->params->id, '{1} was not parsed correctly.');
     } catch (ZaphpaRestClientException $ex) {
       $this->fail('Request failed when numeric characters should have passed.');

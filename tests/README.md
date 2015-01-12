@@ -1,10 +1,20 @@
-## 1. [Install PHPUnit](https://github.com/sebastianbergmann/phpunit#installation)
+## 1. Install PHPUnit
 
 ```bash
-> wget https://phar.phpunit.de/phpunit.phar
-> chmod +x phpunit.phar
-> mv phpunit.phar /usr/local/bin/phpunit
+$ cd /path/to/zaphpa
+$ curl -sS https://getcomposer.org/installer | php
+$ php composer.phar install
+$ php composer.phar test
 ```
+
+If you hate typing "php composer.phar" and have root access:
+
+```bash
+$ sudo mv composer.phar /usr/local/bin/composer
+$ php composer.phar composer -v
+```
+
+and then you can just use "composer" as a command.
 
 ## 2. Set up a testing URL
 
@@ -23,25 +33,11 @@ More information is available on [php.net](http://php.net/manual/en/features.com
 
 Otherwise, if you prefer using Apache, Nginx, etc. (pick your poison), you'll need to set up a virtualhost 
 so that it points to the Zaphpa test router in `/path/to/zaphpa/tests/index.php` and can process requests to 
-`http://zaphpa.vm:8080`. If you prefer to use a different URL, simply modify the value of `server_url` in `/path/to/zaphpa/tests/phpunit.xml`.
+`http://127.0.0.1:5454`. If you prefer to use a different URL, simply modify the value of `server_url` in `/path/to/zaphpa/tests/phpunit.xml`.
 
-For instance, for Nginx:
-
-```
-server {
-  listen       8080;
-  server_name  zaphpa.vm;
-  root         /path/to/zaphpa/tests;
-
-  location / {
-    try_files  $uri $uri/ /index.php?q=$uri&$args;
-    index      index.php;
-  }
-}
-```
 
 ## 3. Run the tests
 ```
-$ cd /path/to/zaphpa/tests
-$ phpunit . 
+$ cd /path/to/zaphpa
+$ composer test
 ```
