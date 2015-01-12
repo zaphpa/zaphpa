@@ -34,7 +34,7 @@ Add `zaphpa/zaphpa` to your `composer.json`.
 }
 ```
 
-License & Credits
+### License & Credits
 
 Released under the MIT open source license. See LICENSE for details.
 
