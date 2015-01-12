@@ -110,7 +110,7 @@ class Template {
 
                     $matched = false;
 
-                    foreach($params as $name=>$param) {
+                    foreach($params as $name => $param) {
 
                         if (!isset($_GET[$name]) && $param->value) {
                             $_GET[$name] = $param->value;
