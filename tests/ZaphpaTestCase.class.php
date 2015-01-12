@@ -11,7 +11,7 @@ abstract class ZaphpaTestCase extends PHPUnit_Framework_TestCase {
   public function setUp() {
     $this->server_url  = isset($_ENV['server_url'])  ? $_ENV['server_url']  : 'http://127.0.0.1:5555';
 
-    $this->request = new \restagent\Request($this->server_url);
+    $this->request = new \Restagent\Request($this->server_url);
   }
 
 }
