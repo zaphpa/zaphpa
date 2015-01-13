@@ -5,7 +5,7 @@ title: Zaphpa PHP micro-router.
 
 <header class="masthead">
   <h1 id="headline">Zaphpa = PHP + REST</h1>
-  <div id="subhead">Intuitive, flexible and powerful HTTP router.</div>  
+  <div id="subhead">Intuitive, flexible & powerful API micro-router.</div>  
   <div class="project-links">
 <a href="doc.html" class="btn btn-primary btn-large">Read Docs</a>
 <a href="https://github.com/zaphpa/zaphpa/" class="btn btn-large">GitHub</a>
