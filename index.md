@@ -8,8 +8,9 @@ title: Zaphpa PHP micro-router.
   <div id="subhead">Intuitive, flexible and powerful HTTP router.</div>  
   <div class="project-links">
 <a href="doc.html" class="btn btn-primary btn-large">Read Docs</a>
-<a href="https://github.com/zaphpa/zaphpa/" class="btn btn-large">View on GitHub</a>
-<a href="https://github.com/zaphpa/zaphpa/releases" class="btn btn-large">Download Snapshot</a>
+<a href="https://github.com/zaphpa/zaphpa/" class="btn btn-large">GitHub</a>
+<a href="https://github.com/zaphpa/zaphpa/" class="btn btn-large">Packagist</a>
+<a href="https://github.com/zaphpa/zaphpa/releases" class="btn btn-large">Download Older Version</a>
   </div>
 </header>
 
