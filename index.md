@@ -9,8 +9,8 @@ title: Zaphpa PHP micro-router.
   <div class="project-links">
 <a href="doc.html" class="btn btn-primary btn-large">Read Docs</a>
 <a href="https://github.com/zaphpa/zaphpa/" class="btn btn-large">GitHub</a>
-<a href="https://github.com/zaphpa/zaphpa/" class="btn btn-large">Packagist</a>
-<a href="https://github.com/zaphpa/zaphpa/releases" class="btn btn-large">Download Older Version</a>
+<a href="https://packagist.org/packages/zaphpa/zaphpa" class="btn btn-large">Packagist</a>
+<a href="https://github.com/zaphpa/zaphpa/releases" class="btn btn-large">Legacy Versions</a>
   </div>
 </header>
 
