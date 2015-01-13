@@ -9,7 +9,7 @@ title: Zaphpa PHP micro-router.
   <div class="project-links">
 <a href="doc.html" class="btn btn-primary btn-large">Read Docs</a>
 <a href="https://github.com/zaphpa/zaphpa/" class="btn btn-large">View on GitHub</a>
-<a href="https://github.com/zaphpa/zaphpa/zipball/master" class="btn btn-large">Download Snapshot</a>
+<a href="https://github.com/zaphpa/zaphpa/releases" class="btn btn-large">Download Snapshot</a>
   </div>
 </header>
 
