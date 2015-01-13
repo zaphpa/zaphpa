@@ -3,7 +3,7 @@ layout: default
 title: Zaphpa RESTful Microframework
 ---
 
-[![Old Documentation](https://img.shields.io/badge/pdf_docs-for_ver_1.x-800080.svg?style=flat)](assets/zaphpa-doc-v1.0.pdf)
+[![Old Documentation](https://img.shields.io/badge/legacy_pdf_doc-for_ver_1.x-800080.svg?style=flat)](assets/zaphpa-doc-v1.0.pdf)
 [![Link to Github](https://img.shields.io/badge/github-sources-blue.svg?style=flat)](https://github.com/zaphpa/zaphpa)
 
 ## Installation
@@ -11,13 +11,14 @@ title: Zaphpa RESTful Microframework
 To start serving RESTful HTTP requests, you need to go through three simple steps:
 
 1. Configure virtualhost in your web-server so that all HTTP requests to "non-existant" "files" are sent to your 
-PHP file, say: api.php (see: [Appendix A](/doc.html#Appendix_A_Setting_Up_Zaphpa_Library) )
+router configuration PHP file, say: api.php (see: [Appendix A](/doc.html#Appendix_A_Setting_Up_Zaphpa_Library) )
 1. Create api.php where you instantiate and configure a router object
 1. Write controller callbacks.
 
 ## A Simple Router
 
-For a very simple case of getting specific user object, the code of api.php would look something like:
+For a very simple case of getting specific user object, the code of api.php would 
+look something like the following:
 
 ```php
 <?php
