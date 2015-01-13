@@ -3,8 +3,8 @@ layout: default
 title: Zaphpa RESTful Microframework
 ---
 
-[![Old Documentation](https://img.shields.io/badge/pdf_docs-for_ver_1.x-800080.svg?style=flat)]()
-![Link to Github](https://img.shields.io/badge/github-source-blue.svg?style=flat)
+[![Old Documentation](https://img.shields.io/badge/pdf_docs-for_ver_1.x-800080.svg?style=flat)](assets/zaphpa-doc-v1.0.pdf)
+[![Link to Github](https://img.shields.io/badge/github-sources-blue.svg?style=flat)](https://github.com/zaphpa/zaphpa)
 
 ## Installation
 
