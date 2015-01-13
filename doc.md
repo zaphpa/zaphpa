@@ -3,6 +3,9 @@ layout: default
 title: Zaphpa RESTful Microframework
 ---
 
+![Old Documentation](https://img.shields.io/badge/docs-1.x-green.svg?style=flat)
+![Link to Github](https://img.shields.io/badge/github-source-blue.svg?style=flat)
+
 ## Installation
 
 To start serving RESTful HTTP requests, you need to go through three simple steps:
