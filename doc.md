@@ -258,6 +258,11 @@ $router->attach('\Myapp\MyMiddleWare')
        ->restrict('*', '/groups');
 ```
 
+restrict() method takes two arguments:
+
+- `$methods` is an array of HTTP methods that are allowed, or an '*' to match all methods.
+- `$route` is a route to restrict the middleware to. Please note: this must be a route you had added with a `$router->addRoute()`, not just any path.
+
 **Caution:** the restrictions do not apply to the `preprocess` hook of a middleware class. If middleware has `preprocess` declared it will fire for all routes, because this events is raised before routing destination is identified and is generally used to alter routing table itself.
 
 ### Prebuilt Middleware 
