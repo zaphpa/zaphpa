@@ -9,12 +9,12 @@ require_once(__DIR__ . '/ZaphpaTestScopedMiddleware.class.php');
 $router = new \Zaphpa\Router();
 
 $router->attach('\ZaphpaTestMiddleware');
-$router->attach('\Zaphpa\Middleware\ZaphpaAutoDocumentator', '/testapidocs');
+$router->attach('\Zaphpa\Middleware\AutoDocumentator', '/testapidocs');
 
 $router->attach('\Zaphpa\Middleware\MethodOverride');
 
 $router
-  ->attach('\Zaphpa\Middleware\ZaphpaCORS', '*')
+  ->attach('\Zaphpa\Middleware\CORS', '*')
   ->restrict('preroute', '*', '/users');
 
 $router

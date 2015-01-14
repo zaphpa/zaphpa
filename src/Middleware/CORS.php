@@ -10,7 +10,7 @@ namespace Zaphpa\Middleware;
  * $router->attach('ZaphpaCORS', '*')
  *        ->restrict('GET', '/users')
  */
-class ZaphpaCORS extends \Zaphpa\BaseMiddleware {
+class CORS extends \Zaphpa\BaseMiddleware {
 
   private $domain;
 

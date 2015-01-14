@@ -6,7 +6,7 @@ namespace Zaphpa\Middleware;
  * Please note that ZaphpaAutoDocumentation is instantiated twice
  * once as a BaseMiddleware, another time: as callback
  */
-class ZaphpaAutoDocumentator extends \Zaphpa\BaseMiddleware {
+class AutoDocumentator extends \Zaphpa\BaseMiddleware {
   private $path = '/docs';
   private static $details = false;
 
