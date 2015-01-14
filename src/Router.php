@@ -106,6 +106,7 @@ class Router {
 
             if (!is_null($params)) {
                 Middleware::$context['pattern'] = $route['template']->getTemplate();
+                Middleware::$context['request_uri'] = $uri;
                 Middleware::$context['http_method'] = self::getRequestMethod();
                 Middleware::$context['callback'] = $route['callback'];
 
@@ -114,12 +115,42 @@ class Router {
             }
         }
 
-        if (strcasecmp(Router::getRequestMethod(), "options") == 0)
-        {
-            return $this->invoke_options();
+        // None of the pre-defined routes matched. Is this a preflight request?
+        // pre-flight request:
+        if (self::getRequestMethod() == "options") {
+            return $this->invoke_preflight($uri);
         }
 
+
         throw new Exceptions\InvalidPathException('Invalid path');
+    }
+
+    protected function invoke_preflight($uri) {
+        $routes = $this->getRoutes(true);
+
+        $allowedRoutes = array();
+        foreach ($this->getRoutes(true) as $method => $routes) {
+            foreach ($routes as $route) {
+                $params = $route['template']->match($uri);
+                if (!is_null($params)) {
+                    $pattern = $route['template']->getTemplate();
+                    $allowedRoutes[$pattern][] = $method;
+                }
+            }
+        }
+
+        foreach($allowedRoutes as $route => $methods) {
+            foreach (self::$middleware as $m) {
+                Middleware::$context['pattern'] = $route;
+                Middleware::$context['request_uri'] = $uri;
+                Middleware::$context['http_method'] = $methods;
+                if ($m->shouldRun()) {
+                    if ($m->preflight() === FALSE) {
+                        return; // don't execute any more 'preflight' middleware
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -134,7 +165,7 @@ class Router {
 
         /* Call preprocessors on each Middleware impl */
         foreach (self::$middleware as $m) {
-            if ($m->shouldRun('preroute')) {
+            if ($m->shouldRun()) {
                 /* the preroute handled the request and doesn't want the main
                  * code to run.. e.g. if the preroute decided the session wasn't
                  * set and wants to issue a 401, or forward using a 302.
@@ -150,22 +181,4 @@ class Router {
 
     }
 
-    protected function invoke_options() {
-        $req = new Request();
-        $res = new Response($req);
-
-        /* Call preprocessors on each Middleware impl */
-        foreach (self::$middleware as $m) {
-            if ($m->shouldRun('preroute')) {
-                $m->preroute($req,$res);
-            }
-        }
-
-        $res->setFormat("httpd/unix-directory");
-        header("Allow: " . implode(",", array_map('strtoupper',Router::$methods)));
-        $res->send(200);
-
-        return true;
-
-    }
 }

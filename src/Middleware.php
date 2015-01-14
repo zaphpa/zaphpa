@@ -16,8 +16,6 @@ abstract class Middleware {
      *  No actual restriction takes place in this method.
      *  We simply place the $methods array into $this->scope, keyed by its $hook.
      *
-     *  @param string $hook
-     *    A Middleware hook, expecting either 'preroute' or 'prerender'.
      *  @param array $rules
      *    An associative array of paths and their allowed methods:
      *    - path: A URL route string, the same as are used in $router->addRoute().
@@ -27,49 +25,47 @@ abstract class Middleware {
      *    The current Middleware object, to allow for chaining a la jQuery.
      */
     public function restrict($hook, $methods, $route) {
-        $this->scope[$hook][$route] = $methods;
+        $this->scope[$route] = $methods;
         return $this;
     }
 
     /**
      *  Determine whether the current route has any route restrictions for this Middleware.
      *
-     *  If the Middleware has restrictions for a given $hook, we check for the current route.
-     *  If the current route is in the list of allowed paths, we check that the
-     *  request method is also allowed. Otherwise, the current route needn't run the $hook.
-     *
-     *  @param string $hook
-     *    A Middleware hook, expecting either 'preroute' or 'prerender'.
+     *  Middleware must have self::$context['pattern'] and self::$context['http_method'] set.
+     *  Furthermore $context['http_method'] can be an array (preflight uses that).
      *
      *  @return bool
      *    Whether the current route should run $hook.
      */
-    public function shouldRun($hook) {
-        if (isset($this->scope[$hook])) {
-            if (array_key_exists(self::$context['pattern'], $this->scope[$hook])) {
-                $methods = $this->scope[$hook][self::$context['pattern']];
+    public function shouldRun() {
+        if (empty($this->scope)) return true; // no restrictions
 
-                if ($methods == self::ALL_METHODS) {
-                    return true;
-                }
+        if (array_key_exists(self::$context['pattern'], $this->scope)) {
+            $methods = $this->scope[self::$context['pattern']];
 
-                if (!is_array($methods)) {
-                    return false;
-                }
+            if ($methods == self::ALL_METHODS) {
+                return true;
+            }
 
-                if (!in_array(self::$context['http_method'], array_map('strtolower', $methods))) {
-                    return false;
-                }
-            } else {
+            if (!is_array($methods)) {
                 return false;
             }
+
+            if (!in_array(strtolower(self::$context['http_method']), array_map('strtolower', $methods))) {
+                return false;
+            }
+        } else {
+            return false;
         }
         return true;
     }
 
     /** Preprocess. This is where you'd add new routes **/
     public function preprocess(&$router) {}
-    /** Preroute. This is where you would aler request, or implement things like: security etc. **/
+    /** Preflight. This is where do things after routes are finalized but before processing starts **/
+    public function preflight() {}
+    /** Preroute. This is where you would alter request, or implement things like: security etc. **/
     public function preroute(&$req, &$res) {}
     /** This is your chance to override output. It can be called multiple times for each ->flush() invocation! **/
     public function prerender(&$buffer) {}

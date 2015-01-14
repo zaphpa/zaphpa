@@ -71,7 +71,7 @@ class Response {
 
         /* Call preprocessors on each Middleware impl */
         foreach (Router::$middleware as $m) {
-            if ($m->shouldRun('prerender')) {
+            if ($m->shouldRun()) {
                 $m->prerender($this->chunks);
             }
         }
@@ -115,6 +115,14 @@ class Response {
         return $this->format;
     }
 
+    public function addHeader($key, $val) {
+        if (is_array($val)) {
+            $val = implode(", ", $val);
+        }
+        $this->headers[] = "{$key}: $val";
+        return $this;
+    }
+
     /**
      * Send headers to instruct browser not to cache this content
      * See http://stackoverflow.com/a/2068407
@@ -129,12 +137,14 @@ class Response {
     /**
      *  Send entire collection of headers if they haven't already been sent
      */
-    private function sendHeaders() {
+    public function sendHeaders($noContentType = false) {
         if (!headers_sent()) {
             foreach ($this->headers as $header) {
                 header($header);
             }
-            header("Content-Type: $this->format;", true, $this->code);
+            if ($noContentType == false) {
+                header("Content-Type: $this->format;", true, $this->code);
+            }
         }
     }
 

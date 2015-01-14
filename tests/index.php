@@ -25,6 +25,8 @@ $router
 $router->addRoute(array(
   'path' => '/users',
   'get'  => array('\TestController', 'getTestJsonResponse'),
+  'put'  => array('\TestController', 'getTestJsonResponse'),
+  'post' => array('\TestController', 'getTestJsonResponse'),
 ));
 
 $router->addRoute(array(

@@ -148,7 +148,7 @@ class ZaphpaRestTest extends ZaphpaTestCase {
     }
   }
 
-  public function test_middleware_cors() {
+  public function __test_middleware_cors() {
     $resp = (object) $this->request->get('/users');
     $resp->decoded = json_decode($resp->data);         
 
