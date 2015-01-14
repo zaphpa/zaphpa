@@ -113,7 +113,6 @@ class Template {
     }
 
     protected function enforceParamMatching($params) {
-        $matched = false;
 
         foreach($params as $name => $param) {
 

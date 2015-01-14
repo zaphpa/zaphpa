@@ -10,21 +10,22 @@ abstract class BaseMiddleware {
     public static $context = array();
     public static $routes = array();
 
+
     /**
+     *
      *  Restrict a Middleware hook to certain paths and HTTP methods.
      *
      *  No actual restriction takes place in this method.
      *  We simply place the $methods array into $this->scope, keyed by its $hook.
      *
-     *  @param array $rules
-     *    An associative array of paths and their allowed methods:
-     *    - path: A URL route string, the same as are used in $router->addRoute().
-     *      - methods: An array of HTTP methods that are allowed, or an '*' to match all methods.
-     *
-     *  @return BaseBaseMiddlware
-     *    The current BaseMiddleware object, to allow for chaining a la jQuery.
+     * @param $methods
+     *  An array of HTTP methods that are allowed, or an '*' to match all methods.
+     * @param $route
+     *  Route to restrict the middleware to. Please note: this must be a route you added with addRoute(), not
+     *  just any path.
+     * @return $this
      */
-    public function restrict($hook, $methods, $route) {
+    public function restrict($methods, $route) {
         $this->scope[$route] = $methods;
         return $this;
     }
