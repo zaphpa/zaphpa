@@ -18,8 +18,9 @@ title: Zaphpa - Intuitive API Microframework for PHP
 require_once('./vendor/autoload.php');
 $router = new \Zaphpa\Router();
 
-$router->attach('\Zaphpa\Middleware\ZaphpaAutoDocumentator', '/apidocs'); //auto-docs middleware
+$router->attach('\Zaphpa\Middleware\AutoDocumentator', '/apidocs'); //auto-docs middleware
 $router->attach('\Zaphpa\Middleware\MethodOverride');
+$router->attach('\Zaphpa\CORS');
 
 $router->addRoute(array(
   'path'  => '/users/{id}',
