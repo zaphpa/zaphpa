@@ -14,6 +14,23 @@ To start serving RESTful HTTP requests, you need to go through three simple step
 router configuration PHP file, say: api.php (see: [Appendix A](/doc.html#Appendix_A_Setting_Up_Zaphpa_Library) )
 1. Create api.php where you instantiate and configure a router object
 1. Write controller callbacks.
+1. Install Zaphpa through composer:
+    1. In your composer.json, add:
+    
+    	```json
+    	{
+ 		  "require": {
+	        "zaphpa/zaphpa": "^2.0.0"
+		  }
+        }
+    	```
+    	
+    1. Install Composer (if you don't already have it) and then install Zaphpa via Composer:
+     
+        ```bash
+        > curl -sS https://getcomposer.org/installer | php
+        > php composer.phar install
+        ```
 
 ## A Simple Router
 
@@ -23,20 +40,20 @@ look something like the following:
 ```php
 <?php
 
-require_once(__DIR__ . '/zaphpa/zaphpa.lib.php');
-$router = new Zaphpa_Router();
+require_once('./vendor/autoload.php');
+$router = new \Zaphpa\Router();
 
 $router->addRoute(array(
   'path'     => '/users/{id}',
   'handlers' => array(
-    'id'         => Zaphpa_Constants::PATTERN_DIGIT, //enforced to be numeric
+    'id'         => \Zaphpa\Constants::PATTERN_DIGIT, //enforced to be numeric
   ),
-  'get'      => array('MyController', 'getPage'),
+  'get'      => array('\MyApp\MyController', 'getPage'),
 ));
 
 try {
   $router->route();
-} catch (Zaphpa_InvalidPathException $ex) {      
+} catch (\Zaphpa\InvalidPathException $ex) {      
   header("Content-Type: application/json;", TRUE, 404);
   $out = array("error" => "not found");        
   die(json_encode($out));
@@ -48,9 +65,7 @@ In this example, {id} is a URI parameter of the type "digit", so `MyController->
 * http://example.com/users/32424
 * http://example.com/users/23
 
-However, we asked the library to ascertain that the {id} parameter is a number by attaching a validating 
-handler: "Zaphpa_Constants::PATTERN_DIGIT" to it. As such, following URLs will not be handed over to 
-the `MyController->getPage()` callback:
+However, we asked the library to ascertain that the {id} parameter is a number by attaching a validating handler: "\Zaphpa\Constants::PATTERN_DIGIT" to it. As such, following URLs will not be handed over to the `MyController->getPage()` callback:
 
 * http://example.com/users/ertla
 * http://example.com/users/asda32424
@@ -59,7 +74,7 @@ the `MyController->getPage()` callback:
 
 ## Simple Callbacks
 
-A callback can be a simple PHP function. In most cases it will probably be a method on a class. Callbacks are passed two arguments:
+A callback can be a simple PHP function. In most cases, however, it will probably be a method on a class. Callbacks are passed two arguments:
 
 1. `$req` is an object created and populated by Zaphpa from current HTTP request. 
 1. `$res` is a response object. It is used by your callback code to incrementally assemble a response, including both the response 
@@ -102,7 +117,7 @@ Following is an example request object:
 ```php
 <?php
 
-Zaphpa_Request Object
+Zaphpa\Request Object
 (
   [params] => Array
     (
@@ -168,69 +183,58 @@ Following methods are available on the response class:
    you invoke the method, since these values can not be set once output is sent to the client.
 1. `$res->send($code, $format)` - sends current output buffer to the client and terminates response.
 
-## Static Accessors for Req/Res
-
-The request and response objects for the current HTTP process are passed to the callback function as arguments, but
-sometimes you need to access them from code much deeper in your codebase (e.g. models). To make this easy and avoid
-the necessity of extraneous passing around of $req and $res, Zaphpa provides two convenience static functions:
-
-    Zaphpa_Router::request() - returns $req
-    Zaphpa_Router::response() - returns $res
-
 ## Middleware
 
-One of the powerful features of Zaphpa is the ability to intercept request and perform centralized 
-pre- and post- processing of a request. To hook into request processing flow, register your middleware
+One of the powerful features of Zaphpa is the ability to intercept request and perform centralized pre- and post- processing of a request. To hook into request processing flow, register your middleware
 implementation with the router:
 
     $router->attach('MyMiddlewareImpl');
     
 Where `MyMiddlewareImpl` is the class name of an implementation of a Zaphpa_Middleware abstract class. 
+
 You can implement following methods, in your middleware:
 
-* `->preprocess(&$route)`- hooks very early into the process and allows adding custom route mappings.
-* `->preroute(&$req, &$res)` -   hooks into the process once request has been analyzed, route handler has been identified, but
-before route handler 
-* `->prerender(&$buffer)` - gets a chance to alter buffer right before it is assembled for output. Please
-note that this method may be called multiple times, to be more precise: every time your callback function 
-calls `->flush` and tries to output a chunk of response buffer to HTTP, `->prerender` will get a chance
+* `->preprocess(&$route)`- hooks very early into the request servicing process and allows adding custom route mappings.
+* `preflight` - hooks after routes are finalized but before `preroute` processors kick-in. It is reserved for CORS implementation and unless you are implementing an alternative CORS support.
+* `->preroute(&$req, &$res)` -   hooks into the process once request has been analyzed, a route handler has been identified, but before route handler fires. 
+* `->prerender(&$buffer)` - gets a chance to alter output buffer right before it is assembled for output. Please note that this method may be called multiple times. To be more precise: every time your callback function invokes `->flush` and tries to output a chunk of the response buffer to HTTP, `->prerender` will get a chance
 to alter the buffer.
 
-Middleware is an excellent place to implement central authentication, authorization, versioning and other 
-infrastructural features.
+Middleware is an excellent place to implement central authentication, authorization, versioning and other infrastructural features.
 
 An example implementation (however meaningless) of a middleware can be found in Zaphpa tests:
 
 ```php
 <?php
 
-class ZaphpaTestMiddleware extends Zaphpa_Middleware {
+class ZaphpaTestMiddleware extends Zaphpa\BaseMiddleware {
   function preprocess(&$router) {
     $router->addRoute(array(
-          \<em\>'path'     => '/middlewaretest/{mid}',\</em\>
+          'path'     => '/middlewaretest/{mid}',
           'get'      => array('TestController', 'getTestJsonResponse'),
     ));
   }
   
   function preroute(&$req, &$res) {
     // you get to customize behavior depending on the pattern being matched in the current request
-    if (self::$context['pattern'] == '/middlewaretest/{mid}') {  
+    if (self::$context['pattern'] == '/middlewaretest/{mid}') {
       $req->params['bogus'] = "foo";
-    }    
+    }
   }
   
   function prerender(&$buffer) {
-      $dc = json_decode($buffer[0]);
-      $dc->version = "2.0";
-      $buffer[0] = json_encode($dc);
+      if (self::$context['pattern'] == '/middlewaretest/{mid}') {
+        $dc = json_decode($buffer[0]);
+        $dc->version = "2.0";
+        $buffer[0] = json_encode($dc);
+      }
   }  
 }
 ```
 
 ### Middleware Context
 
-Please note the usage of `self::$context['pattern']` variable in the `->preroute` method. Often `preroute` needs 
-to modify behavior based on the current URL Route being matched. The variable `self::$context['pattern']` carries 
+Please note the usage of `self::$context['pattern']` variable in the `->preroute` method. Often `preroute` needs to modify behavior based on the current URL Route being matched. The variable `self::$context['pattern']` carries 
 that pattern. Please make sure to match it with the exact definition(s) in your routes configurations.
 
 Full list of variables exposed through context:
@@ -242,36 +246,25 @@ Full list of variables exposed through context:
 ### Middleware Route Restrictions
 
 As we saw in the example above, frequently you may want to only enable your middleware for certain routes. 
-Instead of hard-coding that logic as part of the middleware implementation, Zaphpa makes it easy to declaratively
-set the scope of Middleware activity ("restrict" middleware execution to only certain routes):
+
+Instead of hard-coding that logic as part of the middleware implementation, Zaphpa makes it easy to declaratively set the scope of Middleware activity ("restrict" middleware execution to only certain routes):
 
 ```php
 <?php
 
-$router->attach('MyMiddleWare')
-       ->restrict('preroute', 'GET', '/users')
-       ->restrict('prerender', array('POST', 'GET'), '/tags')
-       ->restrict('preroute', '*', '/groups');
+$router->attach('\Myapp\MyMiddleWare')
+       ->restrict('GET', '/users')
+       ->restrict(array('POST', 'GET'), '/tags')
+       ->restrict('*', '/groups');
 ```
 
-In the example above: 
-
-* first argument indicates which hook of the middleware you want to restrict routes for. Out of three
-    currently supported hooks, you can restrict "preroute" and "prerender", but you can not restrict
-    "preprocess", because preprocess hook is typically used to modify routes list and it does not make
-    any sense to have route restrictions at that point of routing execution.
-* the second argument indicates which HTTP methods you want to restrict (can be a single string, an 
-    array, or "*" which indicates: all http methods)
-* third argument is a URL path you want to restrict middleware execution to. `->restrict()` invocations
-    can be chained in a jQuery-like syntax, which you see above.
-
+**Caution:** the restrictions do not apply to the `preprocess` hook of a middleware class. If middleware has `preprocess` declared it will fire for all routes, because this events is raised before routing destination is identified and is generally used to alter routing table itself.
 
 ### Prebuilt Middleware 
 
 #### HTTP Method Overrides
 
-In REST you typically operate with following common HTTP Methods ("verbs" for CRUD): GET, PUT, POST, 
-DELETE (and sometimes: PATCH). Using these methods can be problematic, in certain cases however. Some HTTP
+In REST you typically operate with following common HTTP Methods ("verbs" for CRUD): GET, PUT, POST, DELETE (and sometimes: PATCH). Using these methods can be problematic, in certain cases however. Some HTTP
 Proxies often block any methods but GET AND POST, as well as: making cross-domain Ajax calls with custom
 verbs can be hard.
 
@@ -280,10 +273,9 @@ proper HTTP Methods and if clients have problem making a particular HTTP Method-
 HTTP POST instead, and indicate the method they "meant" in request headers with the "X-HTTP-Method-Override"
 header.
 
-Method override is a middleware plugin that is disabled by default. To enable it, add following line to your
-router initialization code:
+Method override is a middleware plugin that is disabled by default. To enable it, add following line to your router initialization code:
 
-    $router->attach('MethodOverride');
+    $router->attach('\Zaphpa\Middleware\MethodOverride');
 
 #### Auto-Documentator
 
@@ -291,16 +283,16 @@ On to more useful middleware implementation, Zaphpa comes with an auto-documenta
 plugin creates an endpoint that can list all available endpoints, even parse PHPDoc comments off your code
 to provide additional documentation. To enable the middleware:
  
-    $router->attach('ZaphpaAutoDocumentator');
+    $router->attach('\Zaphpa\Middleware\AutoDocumentator');
     
 which will create documentation endpoint at: '/docs'. If you would rather create endpoint at another URI:
 
-    $router->attach('ZaphpaAutoDocumentator', '/apidocs');
+    $router->attach('\Zaphpa\Middleware\AutoDocumentator', '/apidocs');
     
 
 If you want documentation to also show filename, class and callback method for each endpoint:
 
-    $router->attach('ZaphpaAutoDocumentator', '/apidocs', $details = true);     
+    $router->attach('\Zaphpa\Middleware\AutoDocumentator', '/apidocs', $details = true);     
     
 If you don't want some endpoints to be exposed in the documentation (say, for security reasons) you can
 easily hide those by adding `@hidden` attribute to the PHP docs of the callback for the endpoint. To build
@@ -312,27 +304,27 @@ when trying to use doc comment parsing in PHP with eAccelerator. There seems to 
 
 #### Ajax-friendly Endpoints
 
-As you probably know, Ajax calls can not normally access API URLs on another domain (or even another port 
+As you probably know, Ajax calls cannot normally access API URLs on another domain (or even another port 
 of the same domain, actually). This is a problem sometimes solved using 
-<a href="http://en.wikipedia.org/wiki/JSONP">JSONP</a>. We think a better solution is: 
-<a href="http://en.wikipedia.org/wiki/Cross-Origin_Resource_Sharing">Cross-Origin Resource Sharing (CORS)</a>.
+[JSONP](http://en.wikipedia.org/wiki/JSONP). We think a better solution is: 
+[CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS).
 Zaphpa comes with a simple pre-built middleware plugin to enable CORS for all endpoints. To enable CORS for any domain:
 
-    $router->attach('ZaphpaCORS');
+    $router->attach('CORS');
     
 or if you want to enable CORS only for specific domain(s):
 
-    $router->attach('ZaphpaCORS', 'http://example.com http://foo.example.com');
+    $router->attach('CORS', 'http://example.com http://foo.example.com');
     
 If you want to enable CORS only for specific routes:
 
 ```php
 <?php
 
-$router->attach('ZaphpaCORS', '*')
-       ->restrict('preroute', 'GET', '/users')
-       ->restrict('preroute', array('POST', 'GET'), '/tags')
-       ->restrict('preroute', '*', '/groups');
+$router->attach('CORS', '*')
+       ->restrict('GET', '/users')
+       ->restrict(array('POST', 'GET'), '/tags')
+       ->restrict('*', '/groups');
 ```    
         
 ## Output format aliases
@@ -359,9 +351,9 @@ $router = new Zaphpa_Router();
 $router->addRoute(array(
   'path'     => '/pages/{id}/{categories}/{name}/{year}',
   'handlers' => array(
-    'id'         => Zaphpa_Constants::PATTERN_DIGIT, //regex
-    'categories' => Zaphpa_Constants::PATTERN_ARGS,  //regex
-    'name'       => Zaphpa_Constants::PATTERN_ANY,   //regex
+    'id'         => \Zaphpa\Constants::PATTERN_DIGIT, //regex
+    'categories' => \Zaphpa\Constants::PATTERN_ARGS,  //regex
+    'name'       => \Zaphpa\Constants::PATTERN_ANY,   //regex
     'year'       => 'handle_year',       //callback function
   ),
   'get'      => array('MyController', 'getPage'),
@@ -372,7 +364,7 @@ $router->addRoute(array(
 // Add default 404 handler.
 try {
   $router->route();
-} catch (Zaphpa_InvalidPathException $ex) {
+} catch (\Zaphpa\InvalidPathException $ex) {
   header("Content-Type: application/json;", TRUE, 404);
   $out = array("error" => "not found");        
   die(json_encode($out));
@@ -386,7 +378,7 @@ function handle_year($param) {
 }
 ```
 
-Please note the "file" parameter to the `->addRouye()` call. This parameter indicates file where MyController class should be loaded from,
+Please note the "file" parameter to the `->addRoute()` call. This parameter indicates file where MyController class should be loaded from,
 if you do not already have the corresponding class loaded (through an auto-loader or explicit require() call).
 
 ## Routing to Entities
@@ -403,7 +395,7 @@ We hate code duplication, so here's a nifty shortcut you can use:
 $router->addRoute(array(
   'path'     => '/books/{id}',
   'handlers' => array(
-    'id'         => Zaphpa_Constants::PATTERN_DIGIT, 
+    'id'         => \Zaphpa\Constants::PATTERN_DIGIT, 
   ),
   'get'      => array('BookController', 'getBook'),
   'post'     => array('BookController', 'createBook'),
@@ -453,10 +445,10 @@ like:
     
     'path'     => '/news/{id}/{categories}/{title}/{year}',  
     'handlers' => array(
-      'id'          => Zaphpa_Constants::PATTERN\_NUM, 
-      'categories'  => Zaphpa_Constants::PATTERN\_ARGS, 
-      'title'       => Zaphpa_Constants::PATTERN\_ALPHA,
-      'year'       => Zaphpa_Constants::PATTERN\_YEAR, 
+      'id'          => \Zaphpa\Constants::PATTERN\_NUM, 
+      'categories'  => \Zaphpa\Constants::PATTERN\_ARGS, 
+      'title'       => \Zaphpa\Constants::PATTERN\_ALPHA,
+      'year'       => \Zaphpa\Constants::PATTERN\_YEAR, 
      ),
     ```
 and you would get the function arguments in the callback as: 
@@ -488,15 +480,15 @@ and you would get the function arguments in the callback as:
 For more custom cases, you can use a custom regex:
 
     'handlers' => array(
-      'id'   => Zaphpa_Constants::PATTERN_DIGIT, //numeric
-      'full_date' => Zaphpa_Template::regex('\d{4}-\d{2}-\d{2}'); // custom regex
+      'id'   => \Zaphpa\Constants::PATTERN_DIGIT, //numeric
+      'full_date' => \Zaphpa\Template::regex('\d{4}-\d{2}-\d{2}'); // custom regex
     ),
 
 or attach a validator (you can also think of it as: URL parameter parser) callback function where you can get almost unlimited
 flexibility: 
 
     'handlers' => array(
-      'id'         => Zaphpa_Constants::PATTERN_DIGIT, //numeric
+      'id'         => \Zaphpa\Constants::PATTERN_DIGIT, //numeric
       'uuid'       => 'handle_uuid',       //callback function
     ),
 
