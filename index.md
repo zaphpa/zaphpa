@@ -4,7 +4,7 @@ title: Zaphpa PHP micro-router.
 ---
 
 <header class="masthead">
-  <h1 id="headline">Zaphpa = PHP + REST</h1>
+  <h1 id="headline">Zaphpa = APIs for PHP</h1>
   <div id="subhead">Intuitive, flexible & powerful API micro-router.</div>  
   <div class="project-links">
 <a href="doc.html" class="btn btn-primary btn-large">Read Docs</a>
@@ -18,29 +18,13 @@ title: Zaphpa PHP micro-router.
 require_once('./vendor/autoload.php');
 $router = new \Zaphpa\Router();
 
-$router->attach('\Zaphpa\Middlewares\ZaphpaAutoDocumentator', '/apidocs'); //auto-docs middleware
-$router->attach('\Zaphpa\Middlewares\MethodOverride');
+$router->attach('\Zaphpa\Middleware\ZaphpaAutoDocumentator', '/apidocs'); //auto-docs middleware
+$router->attach('\Zaphpa\Middleware\MethodOverride');
 
 $router->addRoute(array(
   'path'  => '/users/{id}',
   'get'   => array('\MyAwesomeApp\UserController', 'getUser'),
   'post'   => array('\MyAwesomeApp\UserController', 'updateUser'),
-));    
-$router->route();
-```
-
-or in Zaphpa 1.x that didn't use PSR-4 or namespaces: 
-
-```php
-require_once(__DIR__ . '/vendor/zaphpa/zaphpa.lib.php');
-$router = new Zaphpa_Router();
-
-$router->attach('ZaphpaAutoDocumentator', '/apidocs'); //auto-docs middleware
-
-$router->addRoute(array(
-  'path'  => '/users/{id}',
-  'get'   => array('UserController', 'getUser'),
-  'post'   => array('UserController', 'updateUser'),
 ));    
 $router->route();
 ```
