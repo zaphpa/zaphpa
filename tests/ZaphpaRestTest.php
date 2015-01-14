@@ -127,7 +127,7 @@ class ZaphpaRestTest extends ZaphpaTestCase {
                           ->get('/foo/bar');
     die(print_r($resp, true));
 
-    $this->assertEquals('get', $resp->method, 'Scoped Middleware test: Expected Middleware not to run.');
+    $this->assertEquals('get', $resp->method, 'Scoped BaseMiddleware test: Expected Middleware not to run.');
     */
 
     $resp = (object) $this->request

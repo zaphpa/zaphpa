@@ -69,7 +69,7 @@ class Response {
 
         $this->sendHeaders();
 
-        /* Call preprocessors on each Middleware impl */
+        /* Call preprocessors on each BaseMiddleware impl */
         foreach (Router::$middleware as $m) {
             if ($m->shouldRun()) {
                 $m->prerender($this->chunks);

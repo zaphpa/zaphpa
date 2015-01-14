@@ -4,13 +4,13 @@ namespace Zaphpa\Middlewares;
 
 /**
  * Class ZaphpaCORS
- * @package Zaphpa\Middlewares
+ * @package Zaphpa\BaseMiddlewares
  *
  * Usage:
  * $router->attach('ZaphpaCORS', '*')
  *        ->restrict('GET', '/users')
  */
-class ZaphpaCORS extends \Zaphpa\Middleware {
+class ZaphpaCORS extends \Zaphpa\BaseMiddleware {
 
   private $domain;
 

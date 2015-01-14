@@ -2,7 +2,7 @@
 
 namespace Zaphpa;
 
-abstract class Middleware {
+abstract class BaseMiddleware {
 
     const ALL_METHODS = '*';
 
@@ -21,8 +21,8 @@ abstract class Middleware {
      *    - path: A URL route string, the same as are used in $router->addRoute().
      *      - methods: An array of HTTP methods that are allowed, or an '*' to match all methods.
      *
-     *  @return Middlware
-     *    The current Middleware object, to allow for chaining a la jQuery.
+     *  @return BaseBaseMiddlware
+     *    The current BaseMiddleware object, to allow for chaining a la jQuery.
      */
     public function restrict($hook, $methods, $route) {
         $this->scope[$route] = $methods;
@@ -30,9 +30,9 @@ abstract class Middleware {
     }
 
     /**
-     *  Determine whether the current route has any route restrictions for this Middleware.
+     *  Determine whether the current route has any route restrictions for this BaseMiddleware.
      *
-     *  Middleware must have self::$context['pattern'] and self::$context['http_method'] set.
+     *  BaseMiddleware must have self::$context['pattern'] and self::$context['http_method'] set.
      *  Furthermore $context['http_method'] can be an array (preflight uses that).
      *
      *  @return bool

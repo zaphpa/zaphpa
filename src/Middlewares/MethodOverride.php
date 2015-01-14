@@ -2,7 +2,7 @@
 
 namespace Zaphpa\Middlewares;
 
-class MethodOverride extends \Zaphpa\Middleware {
+class MethodOverride extends \Zaphpa\BaseMiddleware {
   
   function preprocess(&$router) {
     if (!empty($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']) &&

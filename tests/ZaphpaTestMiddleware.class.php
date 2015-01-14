@@ -1,6 +1,6 @@
 <?php
 
-class ZaphpaTestMiddleware extends Zaphpa\Middleware {
+class ZaphpaTestMiddleware extends Zaphpa\BaseMiddleware {
   function preprocess(&$router) {
     $router->addRoute(array(
           'path'     => '/middlewaretest/{mid}',

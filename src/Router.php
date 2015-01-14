@@ -35,7 +35,7 @@ class Router {
                     'file'     => !empty($params['file']) ? $params['file'] : '',
                 );
 
-                Middleware::$routes[$method][$params['path']] = $this->routes[$method][$params['path']];
+                BaseMiddleware::$routes[$method][$params['path']] = $this->routes[$method][$params['path']];
             }
 
         }
@@ -50,8 +50,8 @@ class Router {
         $args = func_get_args();
         $className = array_shift($args);
 
-        if (!is_subclass_of($className, '\Zaphpa\Middleware')) {
-            throw new Exceptions\InvalidMiddlewareClass("Middleware class: '$className' does not exist or is not a sub-class of \Zaphpa\Middleware" );
+        if (!is_subclass_of($className, '\Zaphpa\BaseMiddleware')) {
+            throw new Exceptions\InvalidMiddlewareClass("Middleware class: '$className' does not exist or is not a sub-class of \Zaphpa\BaseMiddleware" );
         }
 
         // convert args array to parameter list
@@ -105,10 +105,10 @@ class Router {
             $params = $route['template']->match($uri);
 
             if (!is_null($params)) {
-                Middleware::$context['pattern'] = $route['template']->getTemplate();
-                Middleware::$context['request_uri'] = $uri;
-                Middleware::$context['http_method'] = self::getRequestMethod();
-                Middleware::$context['callback'] = $route['callback'];
+                BaseMiddleware::$context['pattern'] = $route['template']->getTemplate();
+                BaseMiddleware::$context['request_uri'] = $uri;
+                BaseMiddleware::$context['http_method'] = self::getRequestMethod();
+                BaseMiddleware::$context['callback'] = $route['callback'];
 
                 $callback = Callback_Util::getCallback($route['callback'], $route['file']);
                 return $this->invoke_callback($callback, $params);
@@ -141,9 +141,9 @@ class Router {
 
         foreach($allowedRoutes as $route => $methods) {
             foreach (self::$middleware as $m) {
-                Middleware::$context['pattern'] = $route;
-                Middleware::$context['request_uri'] = $uri;
-                Middleware::$context['http_method'] = $methods;
+                BaseMiddleware::$context['pattern'] = $route;
+                BaseMiddleware::$context['request_uri'] = $uri;
+                BaseMiddleware::$context['http_method'] = $methods;
                 if ($m->shouldRun()) {
                     if ($m->preflight() === FALSE) {
                         return; // don't execute any more 'preflight' middleware
@@ -163,7 +163,7 @@ class Router {
         $req->params = $params;
         $res = new Response($req);
 
-        /* Call preprocessors on each Middleware impl */
+        /* Call preprocessors on each BaseMiddleware impl */
         foreach (self::$middleware as $m) {
             if ($m->shouldRun()) {
                 /* the preroute handled the request and doesn't want the main
