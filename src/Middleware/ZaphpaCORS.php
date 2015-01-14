@@ -1,10 +1,10 @@
 <?php
 
-namespace Zaphpa\Middlewares;
+namespace Zaphpa\Middleware;
 
 /**
  * Class ZaphpaCORS
- * @package Zaphpa\BaseMiddlewares
+ * @package Zaphpa\BaseMiddleware
  *
  * Usage:
  * $router->attach('ZaphpaCORS', '*')

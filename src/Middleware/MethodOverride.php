@@ -1,6 +1,6 @@
 <?php
 
-namespace Zaphpa\Middlewares;
+namespace Zaphpa\Middleware;
 
 class MethodOverride extends \Zaphpa\BaseMiddleware {
   

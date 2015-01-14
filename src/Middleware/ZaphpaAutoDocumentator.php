@@ -1,6 +1,6 @@
 <?php
 
-namespace Zaphpa\Middlewares;
+namespace Zaphpa\Middleware;
 
 /**
  * Please note that ZaphpaAutoDocumentation is instantiated twice
