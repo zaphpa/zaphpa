@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Zaphpa RESTful Microframework
+title: Zaphpa - Intuitive API Microframework for PHP
 ---
 
 [![Old Documentation](https://img.shields.io/badge/legacy_pdf_doc-for_ver_1.x-800080.svg?style=flat)](assets/zaphpa-doc-v1.0.pdf)

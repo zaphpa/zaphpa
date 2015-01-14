@@ -1,6 +1,6 @@
 ---
 layout: index
-title: Zaphpa PHP micro-router.
+title: Zaphpa - Intuitive API Microframework for PHP
 ---
 
 <header class="masthead">
