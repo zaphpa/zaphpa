@@ -31,7 +31,7 @@ $router->route();
 ```
 
 <div class="intro">
-<h2>Make building APIs in PHP easy & enjoyable.</h2>
+<h2>Makes building APIs in PHP easy & enjoyable.</h2>
 
 <p>Zaphpa, pronounced as the last name of Frank Zappa, is a routing microkernel inspired by 
 <a href="http://www.sinatrarb.com/">Sinatra.rb</a>, and implemented in PHP (hence the extra geeky "h" 
