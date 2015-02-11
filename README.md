@@ -6,6 +6,20 @@
 [![Codacy Badge](https://www.codacy.com/project/badge/9f4d07595b3b40278d29c7125037af87)](https://www.codacy.com/public/irakli/zaphpa_2)
 [![Download Old Stable Branch (1.x) – only if you have to](http://b.repl.ca/v1/Download-Old_Stable%20%281.x%29_Only_If_You_Have_To-orange.png)](https://github.com/zaphpa/zaphpa/releases/tag/1.2.2)
 
+## Installing Zaphpa with Composer
+
+Add `zaphpa/zaphpa` to your `composer.json`.
+
+```
+{
+  "require": {
+    "zaphpa/zaphpa": "^2.0.0"
+  }
+}
+```
+
+##### Full Documentation: http://zaphpa.org
+
 ## Maintainers
 
 * Irakli Nadareishvili ([inadarei](http://github.com/inadarei))
@@ -19,20 +33,6 @@ wonderful NPR software teams.
 
 Zaphpa is now used by a variety of organizations worldwide. If you use Zaphpa and want to be listed here,
 please open a pull request.
-
-## [Documentation](http://zaphpa.org)
-
-## Installing Zaphpa with Composer
-
-Add `zaphpa/zaphpa` to your `composer.json`.
-
-```
-{
-  "require": {
-    "zaphpa/zaphpa": "^2.0.0"
-  }
-}
-```
 
 ### License & Credits
 
