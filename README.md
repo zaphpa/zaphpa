@@ -4,6 +4,8 @@
 [![Build Status](https://scrutinizer-ci.com/g/zaphpa/zaphpa/badges/build.png?b=v2.x)](https://scrutinizer-ci.com/g/zaphpa/zaphpa/build-status/v2.x)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/zaphpa/zaphpa/badges/quality-score.png?b=v2.x)](https://scrutinizer-ci.com/g/zaphpa/zaphpa/?branch=v2.x)
 [![Codacy Badge](https://www.codacy.com/project/badge/9f4d07595b3b40278d29c7125037af87)](https://www.codacy.com/public/irakli/zaphpa_2)
+[![Full documentation](https://img.shields.io/badge/Grab-Documentation-brightgreen.svg)
+
 
 ## Installing Zaphpa with Composer
 
