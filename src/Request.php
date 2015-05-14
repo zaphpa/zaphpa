@@ -101,7 +101,11 @@ class Request {
 
 
     /**
-     * Parses some packed $_SERVER variables into more useful arrays.
+     * Parses some packed $_SERVER variables (e.g. 'encoding', 'charsets' etc.) into more useful arrays.
+     *
+     * @param string $varname - alias under which the variable will be 
+     *                          attached to the current Request object
+     * @param string $argname - the name of the argument in $_SERVER
      */
     private function parse_special($varname, $argname, $default=array()) {
         $this->$varname = $default;

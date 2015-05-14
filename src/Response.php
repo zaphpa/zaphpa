@@ -45,12 +45,12 @@ class Response {
     /**
      * Send output to client without ending the script
      *
-     *  @param $code
+     *  @param integer $code
      *      HTTP response Code. Defaults to 200
-     *  @param $format
+     *  @param string $format
      *      Output mime type. Defaults to request format
      *
-     *  @return current respons eobject, so you can chain method calls on a response object.
+     *  @return Response current respons object, so you can chain method calls on a response object.
      */
     public function flush($code = null, $format = null) {
         $this->verifyResponseCode($code);
@@ -115,6 +115,13 @@ class Response {
         return $this->format;
     }
 
+    /**
+    * Add an HTTP header key/value pair
+    *
+    * $key string
+    * $val string
+    *
+    */
     public function addHeader($key, $val) {
         if (is_array($val)) {
             $val = implode(", ", $val);
