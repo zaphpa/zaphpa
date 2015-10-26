@@ -20,7 +20,7 @@ class AutoDocumentator extends \Zaphpa\BaseMiddleware {
   function preprocess(&$router) {
     $router->addRoute(array(
       'path' => $this->path,
-      'get'  => array('ZaphpaAutoDocumentator', 'generateDocs'),
+      'get'  => array('\Zaphpa\Middleware\AutoDocumentator', 'generateDocs'),
     ));
   }
 
@@ -60,7 +60,7 @@ STYLE;
     foreach ($sorted_routes as $method => $mroutes) {
       ksort($mroutes);
       foreach ($mroutes as $id => $route) {
-        $reflector = new ReflectionClass($route['callback'][0]);
+        $reflector = new \ReflectionClass($route['callback'][0]);
         $classFilename = $route['file'];
         if (empty($classFilename)) {
           $classFilename = basename($reflector->getFileName());
