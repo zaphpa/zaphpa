@@ -14,7 +14,7 @@ Add `zaphpa/zaphpa` to your `composer.json`.
 ```
 {
   "require": {
-    "zaphpa/zaphpa": "^2.0.0"
+    "zaphpa/zaphpa": "^2.1.1"
   }
 }
 ```
