@@ -83,6 +83,29 @@ class Request {
     }
 
     /**
+     * @author Damien Lasserre <damien.lasserre@gmail.com>
+     * @param string $name
+     * @param null $default
+     * @param callable $callback
+     * @return null
+     */
+    public function getParam($name, $default = null, \Closure $callback = null)
+    {
+        /** @var mixed $result */
+        $result = $default;
+
+        if(isset($this->params[$name]) and !empty($this->params[$name])) {
+            /** @var mixed $result */
+            $result = $this->params[$name];
+            if(null !== $callback) {
+                $result = $callback($result);
+            }
+        }
+        /** Return */
+        return ($result);
+    }
+
+    /**
      * Subclass this function if you need a different set!
      */
     public function common_aliases() {
