@@ -15,7 +15,7 @@ class Template {
     private $callbacks = array();
 
     public function __construct($path) {
-        if ($path{0} != '/') {
+        if ($path[0] != '/') {
             $path = "/$path";
         }
         $this->template = rtrim($path, '\/');
