@@ -1,6 +1,7 @@
 <?php
 
 namespace Zaphpa;
+use Zaphpa\Exceptions;
 
 /**
  * Generic URI matcher and parser implementation.
@@ -15,7 +16,7 @@ class Template {
     private $callbacks = array();
 
     public function __construct($path) {
-        if ($path{0} != '/') {
+        if ($path[0] != '/') {
             $path = "/$path";
         }
         $this->template = rtrim($path, '\/');
@@ -92,7 +93,7 @@ class Template {
                     if ($value) {
                         $matches[$k] = $value;
                     } else {
-                        throw new InvalidURIParameterException('Invalid parameters detected');
+                        throw new Exceptions\InvalidURIParameterException('Invalid parameters detected');
                     }
                 }
 
@@ -131,7 +132,7 @@ class Template {
             }
 
             if ($matched == false) {
-                throw new Exception('Request does not match');
+                throw new \Exception('Request does not match');
             }
 
         }
