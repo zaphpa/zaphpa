@@ -9,7 +9,7 @@ require_once (__DIR__ . '/ZaphpaTestCase.class.php');
 class ZaphpaRestTest extends ZaphpaTestCase {
 
   
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
   }
 

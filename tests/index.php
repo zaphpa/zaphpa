@@ -1,6 +1,6 @@
 <?php
 
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 require_once(__DIR__ . '/TestController.class.php');
 require_once(__DIR__ . '/ZaphpaTestMiddleware.class.php');
@@ -15,12 +15,12 @@ $router->attach('\Zaphpa\Middleware\MethodOverride');
 
 $router
   ->attach('\Zaphpa\Middleware\CORS', '*')
-  ->restrict('preroute', '*', '/users');
+  ->restrict('*', '/users');
 
 $router
   ->attach('\ZaphpaTestScopedMiddleware')
-  ->restrict('prerender', '*', '/foo')
-  ->restrict('prerender', array('put'), '/foo/bar');
+  ->restrict('*', '/foo')
+  ->restrict(array('put'), '/foo/bar');
 
 $router->addRoute(array(
   'path' => '/users',
